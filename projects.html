@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Проекты — Portfolio</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formcarry.com; object-src 'none'; base-uri 'none'; form-action 'self' https://formcarry.com; frame-ancestors 'none';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://formcarry.com; object-src 'none'; upgrade-insecure-requests; base-uri 'none'; form-action 'self' https://formcarry.com; frame-ancestors 'none';">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <script src="frame-bust.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="a11y.css">
     <script src="theme-init.js"></script>
 </head>
 <body>
+    <a class="skip-link" href="#main">Перейти к содержимому</a>
     <header>
         <a href="index.html" class="logo" aria-label="Home">
             <svg width="24" height="24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -25,7 +27,7 @@
         </a>
         <nav class="desktop-nav">
             <a href="index.html">Главная</a>
-            <a href="projects.html" class="active">Проекты</a>
+            <a href="projects.html" class="active" aria-current="page">Проекты</a>
             <a href="services.html">Услуги</a>
             <a href="contacts.html">Контакты</a>
         </nav>
@@ -42,12 +44,12 @@
     </header>
     <div class="mobile-nav" id="mobileNav">
         <a href="index.html">Главная</a>
-        <a href="projects.html" class="active">Проекты</a>
+        <a href="projects.html" class="active" aria-current="page">Проекты</a>
         <a href="services.html">Услуги</a>
         <a href="contacts.html">Контакты</a>
     </div>
     <div class="page-wrapper">
-        <div class="container">
+        <div class="container" id="main" tabindex="-1">
             <div class="page-header">
                 <h1>Все проекты</h1>
                 <p>Фильтруйте по категориям, тегам или используйте поиск.</p>
@@ -92,4 +94,4 @@
     </div>
     <script src="script.js"></script>
 </body>
-</html>
+</html>
