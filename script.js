@@ -1,3 +1,7 @@
+// Безопасный доступ к localStorage (бывает заблокирован настройками браузера)
+function lsGet(k) { try { return localStorage.getItem(k); } catch (err) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (err) { /* ignore */ } }
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- 1. Переключение темы ---
     const themeToggle = document.getElementById('themeToggle');
@@ -180,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (contactForm) {
         contactForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-            const lastSubmit = localStorage.getItem('lastFormSubmit');
+            const lastSubmit = lsGet('lastFormSubmit');
             if (lastSubmit && Date.now() - lastSubmit < 60000) {
                 notify('Пожалуйста, подождите минуту перед повторной отправкой сообщения.', false);
                 return;
@@ -194,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
                 if (data.status === 'success') {
                     notify('Сообщение отправлено. Я свяжусь с вами.', true);
-                    this.reset(); localStorage.setItem('lastFormSubmit', Date.now());
+                    this.reset(); lsSet('lastFormSubmit', Date.now());
                 } else if (data.code === 422) { notify('Ошибка валидации. Проверьте поля.', false); }
                 else { notify('Ошибка: ' + (data.message || 'Неизвестная ошибка сервиса'), false); }
             } catch (error) { notify('Ошибка сети. Проверьте подключение к интернету.', false); }
@@ -241,17 +245,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
     // --- 9. Cookie Banner ---
-    if (!localStorage.getItem('cookieConsent')) {
+    if (!lsGet('cookieConsent')) {
         const banner = document.createElement('div');
         banner.className = 'cookie-banner';
         banner.innerHTML = `
-            <span>Этот сайт использует cookie для сохранения темы. <a href="privacy.html">Узнать больше</a></span>
+            <span>Этот сайт использует cookie для сохранения темы и избранного. <a href="privacy.html">Узнать больше</a></span>
             <button id="cookieAccept">ОК</button>
         `;
         document.body.appendChild(banner);
         
         document.getElementById('cookieAccept').addEventListener('click', () => {
-            localStorage.setItem('cookieConsent', 'true');
+            lsSet('cookieConsent', 'true');
             banner.remove();
         });
     }
