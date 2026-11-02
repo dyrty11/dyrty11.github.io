@@ -3,33 +3,68 @@
     "title": "VoidForge",
     "category": "website",
     "description": "Интерактивный сайт генератор для soundtag",
-    "tags": ["HTML", "CSS", "JavaScript"],
+    "tags": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
     "type": "link",
     "link": "voidforge.html",
     "buttonText": "Открыть генератор",
     "icon": "layout",
-    "color": "#ccff00"
+    "color": "#ccff00",
+    "image": "img/voidforge.webp",
+    "details": "Загрузите картинку и аудиофайл, нажмите «Сгенерировать» — получите готовую одностраничную страницу для аудио-презентации.\n\nВся работа идёт в браузере: страница не отправляет ваши файлы на сервер.",
+    "features": [
+      "Картинки JPEG, PNG, GIF, WEBP",
+      "Аудио MP3, OGG, WAV, M4A",
+      "Готовый одностраничный сайт одним нажатием",
+      "Без регистрации и установки"
+    ]
   },
   {
     "title": "FilePilot",
     "category": "file",
     "description": "Десктопное приложение (EXE) для Windows: поиск по содержимому, поиск дубликатов и умная автосортировка. Полная приватность.",
-    "tags": ["Python", "Windows", "EXE"],
+    "tags": [
+      "Python",
+      "Windows",
+      "EXE"
+    ],
     "type": "link",
     "link": "https://pomf2.lain.la/f/ff7rdfxg.7z",
     "buttonText": "Скачать .7z (EXE)",
     "icon": "file",
-    "color": "#0ea5e9"
+    "color": "#0ea5e9",
+    "image": "img/filepilot.webp",
+    "details": "Приложение для Windows, которое помогает навести порядок в файлах: ищет по содержимому, находит дубликаты и раскладывает файлы по папкам.\n\nАрхив упакован в формат .7z: для распаковки понадобится 7-Zip или аналог.",
+    "features": [
+      "Поиск по содержимому файлов",
+      "Поиск дубликатов",
+      "Умная автосортировка",
+      "Полная приватность"
+    ]
   },
   {
     "title": "JSON Formatter",
     "category": "website",
     "description": "Утилита для валидации, форматирования и минификации JSON-данных. Работает полностью офлайн.",
-    "tags": ["JavaScript", "Developer Tools"],
+    "tags": [
+      "JavaScript",
+      "Developer Tools"
+    ],
     "type": "link",
     "link": "json-formatter.html",
     "buttonText": "Открыть утилиту",
     "icon": "layout",
-    "color": "#ccff00"
+    "color": "#ccff00",
+    "image": "img/json-formatter.webp",
+    "details": "Небольшая утилита для работы с JSON: проверяет корректность, приводит данные в читаемый вид или сжимает их.\n\nРаботает офлайн: данные остаются на вашем устройстве.",
+    "features": [
+      "Валидация JSON",
+      "Форматирование",
+      "Минификация",
+      "Работа без интернета"
+    ]
   }
 ]

@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentFilters = { category: 'all', tag: 'all', search: '' };
         const fallbackProjects = [{ "title": "VoidForge", "category": "website", "description": "Генератор аудио-сайтов.", "tags": ["HTML", "JavaScript"], "type": "link", "link": "voidforge.html", "buttonText": "Открыть", "icon": "layout", "color": "#ccff00" }];
         
+        function slugify(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9а-яё]+/g, '-').replace(/^-+|-+$/g, ''); }
         function sanitizeURL(url) {
             try {
                 if (url.startsWith('//')) return '#';
@@ -151,7 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 linkEl.appendChild(document.createTextNode(String(project.buttonText || 'Открыть')));
                 const btnIcon = isDownload ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" stroke-linecap="square"><path d="M12 3v12"/><path d="M6.5 10.5L12 16l5.5-5.5"/><path d="M3.5 20.5h17"/></svg>' : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" stroke-linecap="square"><path d="M10.5 4.5h-6v15h15v-6"/><path d="M13 11l7-7"/><path d="M14.5 4H20v5.5"/></svg>';
                 linkEl.insertAdjacentHTML('beforeend', btnIcon);
-                card.appendChild(iconDiv); card.appendChild(titleEl); card.appendChild(descEl); card.appendChild(tagsDiv); card.appendChild(linkEl); projectsGrid.appendChild(card);
+                const moreEl = document.createElement('a'); moreEl.className = 'details-link'; moreEl.href = 'project.html?p=' + encodeURIComponent(slugify(project.title)); moreEl.textContent = 'Подробнее →';
+                card.appendChild(iconDiv); card.appendChild(titleEl); card.appendChild(descEl); card.appendChild(tagsDiv); card.appendChild(moreEl); card.appendChild(linkEl); projectsGrid.appendChild(card);
             });
             setTimeout(observeProjectCards, 50);
         }
