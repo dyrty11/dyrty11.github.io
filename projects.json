@@ -66,5 +66,37 @@
       "Минификация",
       "Работа без интернета"
     ]
+  },
+  {
+    "title": "test",
+    "category": "website",
+    "description": "test",
+    "tags": [
+      "JavaScript",
+      "AI",
+      "Angular",
+      "API",
+      "ASP.NET",
+      "Automation",
+      "AWS",
+      "Azure",
+      "Bot",
+      "Desktop",
+      "Firebase",
+      "Kubernetes",
+      "HTML",
+      "GameDev",
+      "Express",
+      "MongoDB",
+      "Java",
+      "Developer Tools",
+      "CI/CD",
+      "Figma"
+    ],
+    "type": "link",
+    "link": "https://test.com",
+    "buttonText": "Открыть",
+    "icon": "layout",
+    "color": "#ccff00"
   }
 ]
