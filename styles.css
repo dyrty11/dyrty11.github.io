@@ -374,3 +374,5 @@ footer { border-top: 1px solid var(--border); padding: 40px 5%; display: flex; f
         align-items: flex-start;
     }
 }
+/* Второй тон иконок (детали) на карточках проектов */
+.project-icon { --ic2: var(--text-main); }
