@@ -26,3 +26,20 @@ nav a[aria-current="page"], .mobile-nav a[aria-current="page"] { color: var(--ac
 
 /* Замена inline-style (блокируется CSP) */
 .pad-top { padding-top: 120px; }
+
+.legal-body { max-width: 800px; line-height: 1.8; color: var(--text-muted); }
+.legal-body h3 { color: var(--text-main); margin-bottom: 10px; }
+
+/* Статус отправки формы */
+.form-status { margin-top: 14px; font-family: var(--font-mono); font-size: 13px; min-height: 1.4em; }
+.form-status.ok { color: var(--accent); }
+.form-status.err { color: #ff6b6b; }
+
+/* Компактный cookie-баннер на мобильных */
+@media (max-width: 600px) {
+    .cookie-banner { flex-direction: row; align-items: center; left: 8px; right: 8px; bottom: 8px; padding: 10px 12px; gap: 10px; font-size: 12px; }
+    .cookie-banner button { padding: 8px 14px; flex-shrink: 0; }
+}
+
+.cookie-banner { flex-wrap: nowrap; }
+.cookie-banner > :first-child, .cookie-banner span, .cookie-banner p { min-width: 0; }

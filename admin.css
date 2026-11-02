@@ -172,3 +172,4 @@ h1 span { color: var(--accent); }
     h1 { font-size: 1.6em; }
     .header-row { flex-direction: column; gap: 10px; }
 }
+.admin-link { color: var(--accent); }

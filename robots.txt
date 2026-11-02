@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: /admin.html
-Disallow: /404.html
 Allow: /
+
+Sitemap: https://dyrty11.github.io/dyrty_11.github.io/sitemap.xml

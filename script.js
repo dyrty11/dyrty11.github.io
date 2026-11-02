@@ -166,6 +166,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (searchInput) searchInput.addEventListener('input', (e) => { currentFilters.search = e.target.value; applyFilters(); });
     }
 
+    // --- Статус отправки формы (вместо alert) ---
+    function notify(msg, ok) {
+        const el = document.getElementById('formStatus');
+        if (!el) { alert(msg); return; }
+        el.textContent = msg;
+        el.className = 'form-status ' + (ok ? 'ok' : 'err');
+    }
     // --- 5. Обработка формы контактов (Formcarry AJAX) ---
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
@@ -173,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const lastSubmit = localStorage.getItem('lastFormSubmit');
             if (lastSubmit && Date.now() - lastSubmit < 60000) {
-                alert('Пожалуйста, подождите минуту перед повторной отправкой сообщения.');
+                notify('Пожалуйста, подождите минуту перед повторной отправкой сообщения.', false);
                 return;
             }
             const submitBtn = this.querySelector('.submit-btn');
@@ -184,11 +191,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const response = await fetch(this.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
                 const data = await response.json();
                 if (data.status === 'success') {
-                    alert('Сообщение успешно отправлено! Я свяжусь с вами.');
+                    notify('Сообщение отправлено. Я свяжусь с вами.', true);
                     this.reset(); localStorage.setItem('lastFormSubmit', Date.now());
-                } else if (data.code === 422) { alert('Ошибка валидации. Проверьте поля.'); }
-                else { alert('Ошибка: ' + (data.message || 'Неизвестная ошибка Formcarry')); }
-            } catch (error) { alert('Ошибка сети. Проверьте подключение к интернету.'); }
+                } else if (data.code === 422) { notify('Ошибка валидации. Проверьте поля.', false); }
+                else { notify('Ошибка: ' + (data.message || 'Неизвестная ошибка сервиса'), false); }
+            } catch (error) { notify('Ошибка сети. Проверьте подключение к интернету.', false); }
             finally { submitBtn.disabled = false; submitBtn.textContent = originalText; }
         });
     }

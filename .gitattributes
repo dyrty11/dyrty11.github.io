@@ -1,0 +1,7 @@
+# Единые окончания строк: в репозитории LF, на диске git подстраивает под систему
+* text=auto
+*.png binary
+*.webp binary
+*.woff2 binary
+*.7z binary
+*.ps1 text eol=crlf

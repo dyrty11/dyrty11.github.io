@@ -1,0 +1,24 @@
+/* Карточки проектов: превью, 3D-наклон; блок «Обо мне» */
+.project-card.tilt-active {
+    transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) !important;
+    transition: transform 0.12s linear, background 0.3s !important;
+    will-change: transform;
+}
+
+.project-thumb {
+    display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover;
+    border: 1px solid var(--border); margin-bottom: 20px; background: var(--bg-color);
+}
+
+.about-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.about-text p { color: var(--text-muted); font-size: 15px; line-height: 1.7; margin-bottom: 18px; max-width: 560px; }
+.about-side h3 { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 12px; }
+.stack-list { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0 0 28px; }
+.stack-list li { font-family: var(--font-mono); font-size: 12px; padding: 6px 12px; border: 1px solid var(--border); color: var(--text-main); }
+.steps-list { list-style: none; padding: 0; margin: 0; counter-reset: step; display: grid; gap: 10px; }
+.steps-list li { counter-increment: step; display: flex; gap: 14px; align-items: baseline; font-size: 14px; border-bottom: 1px dashed var(--border); padding-bottom: 10px; }
+.steps-list li::before { content: "0" counter(step); font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
+
+@media (max-width: 900px) { .about-grid { grid-template-columns: 1fr; gap: 28px; } }
+
+.about { margin-top: 90px; }
