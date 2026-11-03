@@ -182,11 +182,18 @@
     function markSaved() { hasUnsavedChanges = false; unsavedBadge.classList.add('hidden'); }
     window.addEventListener('beforeunload', (e) => { if (hasUnsavedChanges) { e.preventDefault(); e.returnValue = ''; } });
 
+    // Если ни у одного проекта нет поля featured, на главной показываются первые 3 проекта.
+    // Отмечаем их в админке, чтобы то, что видно на сайте, совпадало с галочками.
+    function applyFeaturedDefault() {
+        if (projects.length && !projects.some(p => typeof p.featured === 'boolean')) projects.slice(0, 3).forEach(p => { p.featured = true; });
+    }
+
     function updateStats() {
         const total = projects.length;
         const websites = projects.filter(p => p.category === 'website').length;
         const files = projects.filter(p => p.category === 'file').length;
-        statsEl.innerHTML = `<span>Всего: <strong>${total}</strong></span><span>Сайтов: <strong>${websites}</strong></span><span>Файлов: <strong>${files}</strong></span>`;
+        const featured = projects.filter(p => p.featured === true).length;
+        statsEl.innerHTML = `<span>Всего: <strong>${total}</strong></span><span>Сайтов: <strong>${websites}</strong></span><span>Файлов: <strong>${files}</strong></span><span>Избранных: <strong>${featured}</strong></span>`;
     }
 
     function b64encode(str) { const bytes = new TextEncoder().encode(str); let binary = ''; for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]); return btoa(binary); }
@@ -225,7 +232,7 @@
             const oldProjects = projects; projects = parsed;
             const errors = validate();
             if (errors.length > 0) { projects = oldProjects; throw new Error('Ошибки в файле: ' + errors.join('; ')); }
-            markSaved(); render(); log('Файл загружен. Проектов: ' + projects.length, 'success'); toast('Файл загружен!');
+            applyFeaturedDefault(); markSaved(); render(); log('Файл загружен. Проектов: ' + projects.length, 'success'); toast('Файл загружен!');
         } catch (e) {
             log('Ошибка загрузки: ' + e.message, 'error');
         } finally {
@@ -275,6 +282,7 @@
             const link = p.link == null ? '' : String(p.link);
             const desc = p.description == null ? '' : String(p.description);
             const btnText = p.buttonText == null ? '' : String(p.buttonText);
+            if (p.featured !== undefined && typeof p.featured !== 'boolean') errors.push(`#${n}: поле featured должно быть true или false`);
 
             if (!title.trim()) errors.push(`#${n}: пустое название`); else if (title.length > LIMITS.title) errors.push(`#${n}: название > ${LIMITS.title}`);
             if (!link.trim()) { errors.push(`#${n}: пустая ссылка`); } else if (link.length > LIMITS.link) { errors.push(`#${n}: ссылка > ${LIMITS.link}`); } else {
@@ -327,10 +335,11 @@
 
             item.innerHTML = `
                 <div class="project-header">
-                    <div class="flex-row"><span class="drag-handle">☰</span><span class="project-number">#${index + 1}</span></div>
+                    <div class="flex-row"><span class="drag-handle">☰</span><span class="project-number">#${index + 1}</span>${proj.featured === true ? '<span class="featured-badge">★ Избранное</span>' : ''}</div>
                     <div class="project-actions"><button class="icon-btn" data-action="duplicate" data-index="${index}" title="Дублировать">⧉</button><button class="icon-btn danger" data-action="delete" data-index="${index}" title="Удалить">✕</button></div>
                 </div>
                 <div class="form-group"><label>Название</label><input type="text" class="field-title" maxlength="${LIMITS.title}" value="${escapeHtml(proj.title || '')}" data-index="${index}"></div>
+                <label class="featured-toggle"><input type="checkbox" class="field-featured" data-index="${index}" ${proj.featured === true ? 'checked' : ''}><span>★ Избранное: показывать в разделе «Избранное» на главной (до 6 проектов)</span></label>
                 <div class="grid-2">
                     <div class="form-group"><label>Категория</label><select class="field-category" data-index="${index}"><option value="website" ${proj.category === 'website' ? 'selected' : ''}>Веб-сайт</option><option value="file" ${proj.category === 'file' ? 'selected' : ''}>Файл</option></select></div>
                     <div class="form-group"><label>Тип ссылки</label><select class="field-type" data-index="${index}"><option value="link" ${proj.type === 'link' ? 'selected' : ''}>Ссылка (открыть)</option><option value="download" ${proj.type === 'download' ? 'selected' : ''}>Скачать</option></select></div>
@@ -374,6 +383,22 @@
                         if (f.key === 'icon') { delete projects[idx].customIcon; render(); }
                     }
                 });
+            });
+        });
+
+        listEl.querySelectorAll('.field-featured').forEach(el => {
+            el.addEventListener('change', (e) => {
+                const idx = parseInt(e.target.dataset.index);
+                if (isNaN(idx) || !projects[idx]) return;
+                projects[idx].featured = e.target.checked; markUnsaved();
+                const item = e.target.closest('.project-item');
+                const holder = item && item.querySelector('.project-number');
+                if (holder) {
+                    let badge = item.querySelector('.featured-badge');
+                    if (e.target.checked && !badge) { badge = document.createElement('span'); badge.className = 'featured-badge'; badge.textContent = '★ Избранное'; holder.parentNode.appendChild(badge); }
+                    else if (!e.target.checked && badge) badge.remove();
+                }
+                updateStats();
             });
         });
 
@@ -427,7 +452,7 @@
                 if (action === 'delete') { if (confirm(`Удалить проект "${projects[idx]?.title || ''}"?`)) { projects.splice(idx, 1); markUnsaved(); render(); } }
                 else if (action === 'duplicate') {
                     if (projects.length >= LIMITS.MAX_COUNT) { toast(`Максимум ${LIMITS.MAX_COUNT} проектов`); return; }
-                    const copy = JSON.parse(JSON.stringify(projects[idx])); copy.title = (copy.title || 'Проект') + ' (копия)';
+                    const copy = JSON.parse(JSON.stringify(projects[idx])); copy.title = (copy.title || 'Проект') + ' (копия)'; copy.featured = false;
                     projects.splice(idx + 1, 0, copy); markUnsaved(); render(); toast('Проект скопирован');
                 }
             });
@@ -449,7 +474,7 @@
 
     document.getElementById('addBtn').addEventListener('click', () => {
         if (projects.length >= LIMITS.MAX_COUNT) { toast(`Максимум ${LIMITS.MAX_COUNT}`); return; }
-        projects.push({ title: 'Новый проект', category: 'website', description: 'Описание', tags: ['JavaScript'], type: 'link', link: 'https://example.com', buttonText: 'Открыть', icon: 'layout', color: '#ccff00' });
+        projects.push({ title: 'Новый проект', category: 'website', description: 'Описание', tags: ['JavaScript'], type: 'link', link: 'https://example.com', buttonText: 'Открыть', icon: 'layout', color: '#ccff00', featured: false });
         markUnsaved(); render();
     });
 
@@ -476,7 +501,7 @@
                 const oldProjects = projects; projects = data;
                 const errors = validate();
                 if (errors.length > 0) { projects = oldProjects; throw new Error('Ошибки валидации: ' + errors[0]); }
-                if (confirm(`Импортировать ${data.length} проектов?`)) { markUnsaved(); render(); toast('Импорт завершён'); } else { projects = oldProjects; }
+                if (confirm(`Импортировать ${data.length} проектов?`)) { applyFeaturedDefault(); markUnsaved(); render(); toast('Импорт завершён'); } else { projects = oldProjects; }
             } catch (err) { alert('Ошибка импорта: ' + err.message); }
         };
         reader.readAsText(file); e.target.value = '';

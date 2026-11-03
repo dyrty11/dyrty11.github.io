@@ -1,4 +1,4 @@
-/* Избранные проекты. Хранятся только в браузере (localStorage), на сервер ничего не отправляется.
+/* Закладки посетителя (сердечки). Хранятся только в браузере (localStorage), на сервер ничего не отправляется.
  * Кнопка-сердечко добавляется ко всем карточкам .project-card (в том числе созданным позже),
  * на страницу проекта, в шапку (счётчик) и на странице «Проекты» появляется фильтр «Избранное». */
 (function () {
@@ -66,18 +66,18 @@
             var s = b.getAttribute('data-slug'), on = has(s), title = b.getAttribute('data-title') || '';
             b.classList.toggle('on', on);
             b.setAttribute('aria-pressed', on ? 'true' : 'false');
-            b.setAttribute('aria-label', (on ? 'Убрать из избранного: ' : 'Добавить в избранное: ') + title);
-            var t = b.querySelector('.fav-text'); if (t) t.textContent = on ? 'В избранном' : 'В избранное';
+            b.setAttribute('aria-label', (on ? 'Убрать из закладок: ' : 'Добавить в закладки: ') + title);
+            var t = b.querySelector('.fav-text'); if (t) t.textContent = on ? 'В закладках' : 'В закладки';
         });
         if (headLink) {
             var c = headLink.querySelector('.fav-count'); if (c) c.textContent = String(favs.length);
             headLink.classList.toggle('has', favs.length > 0);
-            headLink.setAttribute('aria-label', 'Избранное: ' + favs.length);
+            headLink.setAttribute('aria-label', 'Закладки: ' + favs.length);
         }
         if (filterBtn) {
             filterBtn.classList.toggle('active', onlyFav);
             filterBtn.setAttribute('aria-pressed', onlyFav ? 'true' : 'false');
-            filterBtn.textContent = 'Избранное (' + favs.length + ')';
+            filterBtn.textContent = 'Закладки (' + favs.length + ')';
         }
         applyFilter();
     }
@@ -95,7 +95,7 @@
             emptyMsg.hidden = !(onlyFav && shown === 0 && total > 0);
             emptyMsg.textContent = favs.length === 0
                 ? 'Пока пусто. Нажмите на сердечко на карточке проекта, и он появится здесь.'
-                : 'Среди текущих фильтров нет избранных проектов.';
+                : 'Среди текущих фильтров нет проектов в закладках.';
         }
     }
 
@@ -139,6 +139,7 @@
     var detail = document.getElementById('projectDetail');
     if (detail) new MutationObserver(decorate).observe(detail, { childList: true });
     decorate();
+    document.addEventListener('projects:rendered', decorate);
 
     window.addEventListener('storage', function (e) {
         if (e.key === KEY) { favs = load(); refresh(); }

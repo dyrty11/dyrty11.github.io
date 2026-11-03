@@ -180,3 +180,9 @@ h1 span { color: var(--accent); }
 /* Кнопки действий */
 .actions-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
 .actions-row .btn { flex: 1 1 auto; text-align: center; }
+
+/* Избранное в админке */
+.featured-toggle { display: flex; align-items: center; gap: 10px; margin: 0 0 15px; padding: 10px 12px; border: 1px dashed var(--border); cursor: pointer; font-size: 13px; }
+.featured-toggle input { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+.featured-toggle:hover { border-color: var(--accent); }
+.featured-badge { margin-left: 12px; padding: 2px 8px; background: var(--accent); color: #000; font-size: 11px; text-transform: uppercase; font-family: 'IBM Plex Mono', monospace; }

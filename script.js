@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const banner = document.createElement('div');
         banner.className = 'cookie-banner';
         banner.innerHTML = `
-            <span>Этот сайт использует cookie для сохранения темы и избранного. <a href="privacy.html">Узнать больше</a></span>
+            <span>Этот сайт использует cookie для сохранения темы и закладок. <a href="privacy.html">Узнать больше</a></span>
             <button id="cookieAccept">ОК</button>
         `;
         document.body.appendChild(banner);
