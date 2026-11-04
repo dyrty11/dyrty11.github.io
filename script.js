@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('a[href$=".html"]').forEach(link => {
         link.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
-            if (!href || href.startsWith('#') || this.target === '_blank' || href === 'voidforge.html' || href === 'json-formatter.html') return;
+            if (!href || href.startsWith('#') || this.target === '_blank' || href === 'voidforge.html' || href === 'cheatsheets.html') return;
             e.preventDefault(); document.body.classList.add('page-exit'); setTimeout(() => { window.location.href = href; }, 200);
         });
     });

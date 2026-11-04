@@ -47,28 +47,6 @@
     ]
   },
   {
-    "title": "JSON Formatter",
-    "category": "website",
-    "description": "Утилита для валидации, форматирования и минификации JSON-данных. Работает полностью офлайн.",
-    "tags": [
-      "JavaScript",
-      "Developer Tools"
-    ],
-    "type": "link",
-    "link": "json-formatter.html",
-    "buttonText": "Открыть утилиту",
-    "icon": "layout",
-    "color": "#ccff00",
-    "image": "img/json-formatter.webp",
-    "details": "Небольшая утилита для работы с JSON: проверяет корректность, приводит данные в читаемый вид или сжимает их.\n\nРаботает офлайн: данные остаются на вашем устройстве.",
-    "features": [
-      "Валидация JSON",
-      "Форматирование",
-      "Минификация",
-      "Работа без интернета"
-    ]
-  },
-  {
     "title": "Конструктор шпаргалок",
     "category": "website",
     "description": "Делает красивые шпаргалки: шаблоны (Git, PowerShell, VS Code и другие), лист A4, печать, PDF и PNG.",
