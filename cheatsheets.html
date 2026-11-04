@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шпаргалки — P.</title>
+    <link rel="canonical" href="https://dyrty11.github.io/dyrty_11.github.io/cheatsheets.html">
+    <meta name="description" content="Конструктор шпаргалок: готовые шаблоны (Git, PowerShell, VS Code, Markdown, Regex), красивый лист A4, печать, PDF и PNG. Работает в браузере, данные не отправляются.">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'; upgrade-insecure-requests; base-uri 'none'; form-action 'none'; frame-ancestors 'none';">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <script src="frame-bust.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="cheatsheets.css">
+</head>
+<body>
+    <a class="skip" href="#editor">Перейти к редактору</a>
+    <div class="app">
+        <header class="bar">
+            <a class="back" href="index.html">← Назад в портфолио</a>
+            <h1>Конструктор <span>шпаргалок</span></h1>
+            <p class="lead">Выберите шаблон или соберите свой лист, настройте оформление и распечатайте или скачайте. Всё работает в браузере, ничего не отправляется на сервер.</p>
+            <noscript><p class="lead warn">Для работы конструктора нужен включённый JavaScript.</p></noscript>
+        </header>
+
+        <div class="layout">
+            <aside class="panel" id="editor" aria-label="Редактор шпаргалки">
+                <section class="grp">
+                    <h2>Шаблон</h2>
+                    <label for="tpl">Готовый набор</label>
+                    <select id="tpl"></select>
+                </section>
+
+                <section class="grp">
+                    <h2>Лист</h2>
+                    <label for="fTitle">Название</label>
+                    <input type="text" id="fTitle" maxlength="80" autocomplete="off" placeholder="Например: Git">
+                    <label for="fSub">Подзаголовок</label>
+                    <input type="text" id="fSub" maxlength="160" autocomplete="off" placeholder="Коротко: для чего эта шпаргалка">
+                </section>
+
+                <section class="grp">
+                    <h2>Оформление</h2>
+                    <fieldset class="seg-set">
+                        <legend>Ориентация</legend>
+                        <label class="seg"><input type="radio" name="orient" value="p"><span>Книжная</span></label>
+                        <label class="seg"><input type="radio" name="orient" value="l"><span>Альбомная</span></label>
+                    </fieldset>
+                    <fieldset class="seg-set">
+                        <legend>Колонки</legend>
+                        <label class="seg"><input type="radio" name="cols" value="1"><span>1</span></label>
+                        <label class="seg"><input type="radio" name="cols" value="2"><span>2</span></label>
+                        <label class="seg"><input type="radio" name="cols" value="3"><span>3</span></label>
+                    </fieldset>
+                    <fieldset class="seg-set">
+                        <legend>Тема листа</legend>
+                        <label class="seg"><input type="radio" name="theme" value="paper"><span>Бумага</span></label>
+                        <label class="seg"><input type="radio" name="theme" value="cream"><span>Кремовая</span></label>
+                        <label class="seg"><input type="radio" name="theme" value="dark"><span>Тёмная</span></label>
+                    </fieldset>
+                    <fieldset class="seg-set">
+                        <legend>Размер текста</legend>
+                        <label class="seg"><input type="radio" name="size" value="s"><span>Мелкий</span></label>
+                        <label class="seg"><input type="radio" name="size" value="m"><span>Обычный</span></label>
+                        <label class="seg"><input type="radio" name="size" value="l"><span>Крупный</span></label>
+                    </fieldset>
+                    <fieldset class="seg-set">
+                        <legend>Цвет акцента</legend>
+                        <div class="accents" id="accents"></div>
+                        <label class="custom-color">Свой цвет
+                            <input type="color" id="accentCustom" value="#ccff00">
+                        </label>
+                    </fieldset>
+                </section>
+
+                <section class="grp">
+                    <h2>Разделы</h2>
+                    <p class="hint">В каждой строке: <code>что :: описание</code>. Строка без <code>::</code> станет обычным текстом на всю ширину. Изменения сохраняются в вашем браузере автоматически.</p>
+                    <div id="secList"></div>
+                    <button type="button" class="btn btn-wide" id="addSec">+ Добавить раздел</button>
+                </section>
+            </aside>
+
+            <main class="stage-col">
+                <div class="actions" role="toolbar" aria-label="Действия">
+                    <button type="button" class="btn btn-primary" id="btnPrint">Печать / PDF</button>
+                    <button type="button" class="btn" id="btnPng">Скачать PNG</button>
+                    <button type="button" class="btn" id="btnMd">Markdown</button>
+                    <button type="button" class="btn" id="btnJson">JSON</button>
+                    <button type="button" class="btn" id="btnImport">Открыть JSON</button>
+                    <button type="button" class="btn" id="btnLink">Ссылка</button>
+                    <button type="button" class="btn btn-ghost" id="btnReset">Сбросить</button>
+                </div>
+                <p class="status" id="status" role="status" aria-live="polite"></p>
+                <p class="meta" id="pages"></p>
+                <div class="stage" id="stage">
+                    <div class="scaler" id="scaler">
+                        <article class="sheet" id="sheet" aria-label="Предпросмотр шпаргалки"></article>
+                    </div>
+                </div>
+                <p class="meta">Для PDF нажмите «Печать / PDF» и в окне печати выберите «Сохранить как PDF». Поля страницы лучше поставить «Нет» или «Минимальные».</p>
+            </main>
+        </div>
+    </div>
+    <input type="file" id="importFile" accept="application/json,.json" hidden>
+    <script src="cheatsheets.js" defer></script>
+</body>
+</html>
