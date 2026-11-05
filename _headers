@@ -1,0 +1,25 @@
+# HTTP-заголовки безопасности.
+#
+# Этот файл читают хостинги Cloudflare Pages и Netlify. На GitHub Pages он НИЧЕГО не делает:
+# GitHub просто отдаёт его как обычный файл и не применяет заголовки. Он нужен на случай
+# переезда на один из этих хостингов (или если поставить Cloudflare перед своим доменом).
+#
+# Формат: строка с путём без отступа, под ней заголовки с отступом в два пробела.
+#
+# О Content-Security-Policy: у каждой страницы своя политика в <meta> (у VoidForge строже всех).
+# Браузер применяет и заголовок, и <meta> и берёт самое строгое из обоих, поэтому здесь CSP
+# только ДОПОЛНЯЕТ <meta>: добавляет frame-ancestors (в <meta> он не работает) и базовые запреты,
+# но не трогает разрешения скриптов, стилей и шрифтов.
+#
+# COEP (Cross-Origin-Embedder-Policy) специально не включён: он ломает загрузку шрифтов
+# и отправку формы на сторонние сервисы.
+
+/*
+  Content-Security-Policy: frame-ancestors 'none'; base-uri 'none'; object-src 'none'; upgrade-insecure-requests
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+  Strict-Transport-Security: max-age=31536000
