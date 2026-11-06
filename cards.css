@@ -45,3 +45,6 @@
 /* Появление при прокрутке */
 .js-reveal [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; transition-delay: var(--rd, 0s); }
 .js-reveal [data-reveal].in { opacity: 1; transform: none; }
+/* Резерв места под данные, которые подгружает скрипт: страница не «прыгает» (CLS) */
+.projects-grid:not(.is-ready) { min-height: 80vh; }
+#projectDetail { min-height: 70vh; }

@@ -58,6 +58,7 @@
 
         var more = el('a', 'details-link', 'Подробнее →');
         more.href = 'project.html?p=' + encodeURIComponent(slug(p.title));
+        more.setAttribute('aria-label', 'Подробнее о проекте ' + String(p.title || ''));
         c.appendChild(more);
 
         var href = safeUrl(p.link);

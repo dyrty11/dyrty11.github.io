@@ -126,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         function renderProjects(projects) {
             projectsGrid.innerHTML = '';
+            projectsGrid.classList.add('is-ready');
             if (projects.length === 0) {
                 const empty = document.createElement('p'); empty.style.cssText = 'grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px;';
                 empty.textContent = 'Ничего не найдено.'; projectsGrid.appendChild(empty); return;
@@ -156,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 linkEl.appendChild(document.createTextNode(String(project.buttonText || 'Открыть')));
                 const btnIcon = isDownload ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" stroke-linecap="square"><path d="M12 3v12"/><path d="M6.5 10.5L12 16l5.5-5.5"/><path d="M3.5 20.5h17"/></svg>' : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" stroke-linecap="square"><path d="M10.5 4.5h-6v15h15v-6"/><path d="M13 11l7-7"/><path d="M14.5 4H20v5.5"/></svg>';
                 linkEl.insertAdjacentHTML('beforeend', btnIcon);
-                const moreEl = document.createElement('a'); moreEl.className = 'details-link'; moreEl.href = 'project.html?p=' + encodeURIComponent(slugify(project.title)); moreEl.textContent = 'Подробнее →';
+                const moreEl = document.createElement('a'); moreEl.className = 'details-link'; moreEl.href = 'project.html?p=' + encodeURIComponent(slugify(project.title)); moreEl.textContent = 'Подробнее →'; moreEl.setAttribute('aria-label', 'Подробнее о проекте ' + String(project.title || ''));
                 card.appendChild(iconDiv); card.appendChild(titleEl); card.appendChild(descEl); card.appendChild(tagsDiv); card.appendChild(moreEl); card.appendChild(linkEl); projectsGrid.appendChild(card);
             });
             setTimeout(observeProjectCards, 50);

@@ -17,7 +17,7 @@ for f in sorted(root.glob("*.html")):
         errors.append(f"{n}: нет CSP")
     if re.search(r'\sstyle="', t):
         errors.append(f"{n}: style=\"...\" блокируется CSP, вынеси в CSS-класс")
-    if re.search(r'<script(?![^>]*\bsrc=)[^>]*>', t):
+    if re.search(r'<script(?![^>]*\bsrc=)(?![^>]*type="application/ld\+json")[^>]*>', t):
         errors.append(f"{n}: inline <script> блокируется CSP")
     if re.search(r'\son[a-z]+="', t):
         errors.append(f"{n}: inline-обработчик событий блокируется CSP")

@@ -23,11 +23,51 @@
     }
     function message(text) { root.textContent = ''; root.appendChild(el('p', 'detail-msg', text)); }
 
+    /* Метаданные для поисковиков и соцсетей: канонический адрес, Open Graph, Twitter, JSON-LD. */
+    function setMeta(attr, name, content) {
+        var m = document.head.querySelector('meta[' + attr + '="' + name + '"]');
+        if (!m) { m = document.createElement('meta'); m.setAttribute(attr, name); document.head.appendChild(m); }
+        m.setAttribute('content', content);
+    }
+    function absUrl(path) { try { return new URL(path, location.href).href; } catch (e) { return ''; } }
+    function applySeo(p, title) {
+        var fullTitle = title + ' — Portfolio';
+        var desc = String(p.description || 'Проект из портфолио разработчика.').slice(0, 200);
+        var site = absUrl('./');
+        var url = absUrl('project.html') + '?p=' + encodeURIComponent(slug(p.title));
+        var img = absUrl(safeImg(p.image) || 'og-image.png');
+        var link = document.head.querySelector('link[rel="canonical"]');
+        if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+        link.href = url;
+        setMeta('property', 'og:type', 'website'); setMeta('property', 'og:site_name', 'Portfolio'); setMeta('property', 'og:locale', 'ru_RU');
+        setMeta('property', 'og:title', fullTitle); setMeta('property', 'og:description', desc);
+        setMeta('property', 'og:url', url); setMeta('property', 'og:image', img);
+        setMeta('name', 'twitter:card', 'summary_large_image'); setMeta('name', 'twitter:title', fullTitle);
+        setMeta('name', 'twitter:description', desc); setMeta('name', 'twitter:image', img);
+        var data = {
+            '@context': 'https://schema.org',
+            '@graph': [
+                { '@type': 'CreativeWork', '@id': url + '#project', name: title, description: desc, url: url, image: img, inLanguage: 'ru',
+                  keywords: Array.isArray(p.tags) ? p.tags.slice(0, 20).map(String).join(', ') : undefined,
+                  isPartOf: { '@type': 'WebSite', name: 'Portfolio', url: site } },
+                { '@type': 'BreadcrumbList', itemListElement: [
+                    { '@type': 'ListItem', position: 1, name: 'Главная', item: site },
+                    { '@type': 'ListItem', position: 2, name: 'Проекты', item: absUrl('projects.html') },
+                    { '@type': 'ListItem', position: 3, name: title, item: url } ] }
+            ]
+        };
+        var old = document.head.querySelector('script[type="application/ld+json"]');
+        if (old) old.remove();
+        var s = document.createElement('script'); s.type = 'application/ld+json'; s.textContent = JSON.stringify(data);
+        document.head.appendChild(s);
+    }
+
     function render(p) {
         var title = String(p.title || 'Проект');
         document.title = title + ' — Portfolio';
         var md = document.querySelector('meta[name="description"]');
         if (md && p.description) md.setAttribute('content', String(p.description).slice(0, 200));
+        applySeo(p, title);
 
         root.textContent = '';
         var head = el('div', 'page-header');
@@ -78,7 +118,7 @@
         .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
         .then(function (list) {
             var found = Array.isArray(list) ? list.filter(function (p) { return slug(p && p.title) === slug(want); })[0] : null;
-            if (!found) { message('Проект не найден. Посмотрите полный список на странице «Проекты».'); return; }
+            if (!found) { setMeta('name', 'robots', 'noindex'); message('Проект не найден. Посмотрите полный список на странице «Проекты».'); return; }
             render(found);
         })
         .catch(function () { message('Не удалось загрузить проект. Попробуйте обновить страницу.'); });
