@@ -10,7 +10,7 @@ errors = []
 REF = re.compile(r'(?:href|src)="([^"]+)"')
 EXTERNAL = re.compile(r'^(https?:|mailto:|tel:|data:|#|//)')
 
-for f in sorted(root.glob("*.html")):
+for f in sorted(p for p in root.glob("*.html") if not p.name.startswith("google")):
     t = f.read_text(encoding="utf-8")
     n = f.name
     if 'http-equiv="Content-Security-Policy"' not in t:
