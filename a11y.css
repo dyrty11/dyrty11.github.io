@@ -43,3 +43,4 @@ nav a[aria-current="page"], .mobile-nav a[aria-current="page"] { color: var(--ac
 
 .cookie-banner { flex-wrap: nowrap; }
 .cookie-banner > :first-child, .cookie-banner span, .cookie-banner p { min-width: 0; }
+.cookie-banner[hidden] { display: none; }

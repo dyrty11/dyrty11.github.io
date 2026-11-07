@@ -246,17 +246,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
     // --- 9. Cookie Banner ---
-    if (!lsGet('cookieConsent')) {
-        const banner = document.createElement('div');
-        banner.className = 'cookie-banner';
-        banner.innerHTML = `
-            <span>Этот сайт использует cookie для сохранения темы и закладок. <a href="privacy.html">Узнать больше</a></span>
-            <button id="cookieAccept">ОК</button>
-        `;
-        document.body.appendChild(banner);
-        
-        document.getElementById('cookieAccept').addEventListener('click', () => {
-            lsSet('cookieConsent', 'true');
-            banner.remove();
-        });
+    {
+        let banner = document.getElementById('cookieBanner');
+        if (lsGet('cookieConsent')) {
+            if (banner) banner.remove();
+        } else {
+            if (!banner) {
+                banner = document.createElement('div');
+                banner.className = 'cookie-banner';
+                banner.innerHTML = '<span>Этот сайт использует cookie для сохранения темы и закладок. <a href="privacy.html">Узнать больше</a></span><button type="button" id="cookieAccept">ОК</button>';
+                document.body.appendChild(banner);
+            }
+            banner.hidden = false;
+            document.getElementById('cookieAccept').addEventListener('click', () => {
+                lsSet('cookieConsent', 'true');
+                banner.remove();
+            });
+        }
     }
