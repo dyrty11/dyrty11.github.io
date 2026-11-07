@@ -6,7 +6,7 @@
     <title>Контакты — Portfolio</title>
     <meta name="description" content="Контакты разработчика: форма обратной связи, email и GitHub. Отвечу на сообщение в ближайшее время.">
     <link rel="canonical" href="https://dyrty11.github.io/contacts.html">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#050505">
     <meta property="og:site_name" content="Portfolio">
     <meta property="og:locale" content="ru_RU">
     <meta property="og:type" content="website">
@@ -29,11 +29,19 @@
     <link rel="stylesheet" href="fonts.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="a11y.css">
+    <link rel="stylesheet" href="fx.css">
+    <script src="theme-init.js"></script>
 </head>
 <body>
     <a class="skip-link" href="#main">Перейти к содержимому</a>
     <header>
-        <a href="index.html" class="logo" aria-label="dyrty11, на главную"><svg viewBox="0 0 22 26" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 8v14M7 12v10M12 3v19M17 9v13M21 14v8"/></svg><span>DYRTY11</span></a>
+        <a href="index.html" class="logo" aria-label="Home">
+            <svg width="24" height="24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="50,10 84,30 84,70 50,90 16,70 16,30" stroke="currentColor" stroke-width="12" stroke-linejoin="miter"/>
+                <circle cx="50" cy="50" r="14" fill="var(--accent)"/>
+            </svg>
+            P<span>.</span>
+        </a>
         <nav class="desktop-nav">
             <a href="index.html">Главная</a>
             <a href="projects.html">Проекты</a>
@@ -41,6 +49,11 @@
             <a href="contacts.html" class="active" aria-current="page">Контакты</a>
         </nav>
         <div class="header-controls">
+            <div class="theme-switch" id="themeToggle">
+                <div class="theme-switch-ball"></div>
+                <svg class="sun-icon" viewBox="0 0 24 24"><polygon points="16.80,12.00 14.40,16.16 9.60,16.16 7.20,12.00 9.60,7.84 14.40,7.84"/><path d="M17.93,13.81L21.70,17.60L16.53,16.23zM13.39,18.04L12.00,23.20L10.61,18.04zM7.47,16.23L2.30,17.60L6.07,13.81zM6.07,10.19L2.30,6.40L7.47,7.77zM10.61,5.96L12.00,0.80L13.39,5.96zM16.53,7.77L21.70,6.40L17.93,10.19z"/></svg>
+                <svg class="moon-icon" viewBox="0 0 24 24"><path d="M20.5 14.6A8.8 8.8 0 0 1 9.4 3.5 8.8 8.8 0 1 0 20.5 14.6z"/><path d="M18 2.5l.9 1.9 1.9.9-1.9.9-.9 1.9-.9-1.9-1.9-.9 1.9-.9z"/></svg>
+            </div>
             <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" stroke-linecap="square"><path d="M3 6.5h18M3 12h12M3 17.5h18"/></svg>
             </button>
@@ -95,7 +108,13 @@
         </div>
         <footer>
             <div class="footer-content">
-                <a href="index.html" class="logo footer-logo" aria-label="dyrty11, на главную"><svg viewBox="0 0 22 26" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 8v14M7 12v10M12 3v19M17 9v13M21 14v8"/></svg><span>DYRTY11</span></a>
+                <a href="index.html" class="logo footer-logo" aria-label="Home">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="50,10 84,30 84,70 50,90 16,70 16,30" stroke="currentColor" stroke-width="12" stroke-linejoin="miter"/>
+                        <circle cx="50" cy="50" r="14" fill="var(--accent)"/>
+                    </svg>
+                    P<span>.</span>
+                </a>
                 <div class="footer-links">
                     <a href="index.html">Главная</a>
                     <a href="projects.html">Проекты</a>
