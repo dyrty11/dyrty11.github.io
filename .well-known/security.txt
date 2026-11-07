@@ -1,4 +1,4 @@
 Contact: mailto:d81816320@gmail.com
 Expires: 2027-11-01T00:00:00.000Z
 Preferred-Languages: ru, en
-Canonical: https://dyrty11.github.io/dyrty_11.github.io/.well-known/security.txt
+Canonical: https://dyrty11.github.io/.well-known/security.txt
