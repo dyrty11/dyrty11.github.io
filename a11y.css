@@ -44,3 +44,6 @@ nav a[aria-current="page"], .mobile-nav a[aria-current="page"] { color: var(--ac
 .cookie-banner { flex-wrap: nowrap; }
 .cookie-banner > :first-child, .cookie-banner span, .cookie-banner p { min-width: 0; }
 .cookie-banner[hidden] { display: none; }
+.consent-label { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; line-height: 1.5; color: var(--text-muted); text-transform: none; cursor: pointer; }
+.consent-label input { width: 18px; height: 18px; margin-top: 1px; flex-shrink: 0; accent-color: var(--accent); }
+.consent-label a { color: var(--accent); }
