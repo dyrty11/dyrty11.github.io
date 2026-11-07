@@ -3,25 +3,6 @@ function lsGet(k) { try { return localStorage.getItem(k); } catch (err) { return
 function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (err) { /* ignore */ } }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- 1. Переключение темы ---
-    const themeToggle = document.getElementById('themeToggle');
-    const htmlElement = document.documentElement;
-    if (themeToggle) {
-        themeToggle.addEventListener('click', (event) => {
-            const currentTheme = htmlElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            const persistTheme = () => { try { localStorage.setItem('theme', newTheme); } catch (e) {} };
-            if (!document.startViewTransition) { htmlElement.setAttribute('data-theme', newTheme); persistTheme(); return; }
-            const x = event.clientX; const y = event.clientY;
-            const endRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
-            const transition = document.startViewTransition(() => { htmlElement.setAttribute('data-theme', newTheme); });
-            transition.ready.then(() => {
-                document.documentElement.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`] }, { duration: 600, easing: 'ease-in-out', pseudoElement: '::view-transition-new(root)' });
-            });
-            transition.finished.then(persistTheme);
-        });
-    }
-
     // --- 2. Плавный переход между страницами ---
     document.querySelectorAll('a[href$=".html"]').forEach(link => {
         link.addEventListener('click', function (e) {
@@ -217,40 +198,13 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileNav.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { mobileNav.classList.remove('active'); menuBackdrop.classList.remove('active'); document.body.classList.remove('menu-open'); }); });
     }
 
-    // --- 7. Магнитный эффект (ТОЛЬКО ДЛЯ КНОПОК) ---
-    if (window.matchMedia("(pointer: fine)").matches) {
-        // Убрали .project-card из селектора, чтобы карточки не притягивались
-        document.querySelectorAll('.btn').forEach(el => {
-            el.addEventListener('mousemove', (e) => {
-                const rect = el.getBoundingClientRect(); 
-                const x = e.clientX - rect.left - rect.width / 2; 
-                const y = e.clientY - rect.top - rect.height / 2;
-                el.style.transform = `translate(${x * 0.05}px, ${y * 0.05}px)`;
-            });
-            el.addEventListener('mouseleave', () => { el.style.transform = ''; });
-        });
-        
-        // Кастомный курсор
-        const cursor = document.createElement('div'); cursor.className = 'custom-cursor'; document.body.appendChild(cursor);
-        const dot = document.createElement('div'); dot.className = 'custom-cursor-dot'; document.body.appendChild(dot);
-        let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX; mouseY = e.clientY; dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-            const px = (e.clientX / window.innerWidth - 0.5) * 10; const py = (e.clientY / window.innerHeight - 0.5) * 10;
-            document.body.style.setProperty('--mouse-x', `${px}px`); document.body.style.setProperty('--mouse-y', `${py}px`);
-        });
-        (function animate() { curX += (mouseX - curX) * 0.15; curY += (mouseY - curY) * 0.15; cursor.style.transform = `translate(${curX}px, ${curY}px)`; requestAnimationFrame(animate); })();
-        const hoverTargets = 'a, button, .project-card, .btn, .tag-filter-btn';
-        document.body.addEventListener('mouseover', (e) => { if (e.target.closest(hoverTargets)) cursor.classList.add('hover'); });
-        document.body.addEventListener('mouseout', (e) => { if (e.target.closest(hoverTargets)) cursor.classList.remove('hover'); });
-    }
 });
     // --- 9. Cookie Banner ---
     if (!lsGet('cookieConsent')) {
         const banner = document.createElement('div');
         banner.className = 'cookie-banner';
         banner.innerHTML = `
-            <span>Этот сайт использует cookie для сохранения темы и закладок. <a href="privacy.html">Узнать больше</a></span>
+            <span>Этот сайт использует cookie для сохранения закладок. <a href="privacy.html">Узнать больше</a></span>
             <button id="cookieAccept">ОК</button>
         `;
         document.body.appendChild(banner);

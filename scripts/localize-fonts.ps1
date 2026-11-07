@@ -1,4 +1,4 @@
-# Downloads Space Grotesk + IBM Plex Mono (latin + cyrillic subsets) from Google Fonts,
+# Downloads Inter, Oswald, Space Grotesk + IBM Plex Mono (latin + cyrillic subsets) from Google Fonts,
 # writes fonts.css and switches every *.html from Google Fonts to the local copy
 # (also removes fonts.googleapis.com / fonts.gstatic.com from the CSP).
 # Run from anywhere:  powershell -ExecutionPolicy Bypass -File scripts\localize-fonts.ps1
@@ -8,7 +8,7 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $utf8 = New-Object System.Text.UTF8Encoding($false)
 $ua   = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36'
-$cssUrl = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap'
+$cssUrl = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@100..900&family=Oswald:wght@200..700&family=Space+Grotesk:wght@400;500;700&display=swap'
 
 $css = (Invoke-WebRequest -Uri $cssUrl -UserAgent $ua -UseBasicParsing).Content
 $fontsDir = Join-Path $root 'fonts'
