@@ -97,12 +97,18 @@
                         <textarea name="message" placeholder="Расскажите о задаче..." required maxlength="2000"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="fAttach">Прикрепить файлы</label>
-                        <input type="file" id="fAttach" name="attachment" multiple accept=".png,.jpg,.jpeg,.gif,.webp,.pdf,.txt,.zip,.doc,.docx">
+                        <span class="field-label">Прикрепить файлы</span>
+                        <label class="upload" id="uploadZone" for="fAttach">
+                            <input type="file" id="fAttach" name="attachment" multiple accept=".png,.jpg,.jpeg,.gif,.webp,.pdf,.txt,.zip,.doc,.docx" class="sr-only">
+                            <span class="upload-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M12 16V4M7 9l5-5 5 5M4 16v4h16v-4"/></svg></span>
+                            <span class="upload-text"><span class="upload-title">Выбрать файлы</span><span class="upload-sub">или перетащите их сюда</span></span>
+                        </label>
+                        <ul class="file-list" id="fileList" aria-live="polite"></ul>
+                        <div class="upload-meter" id="uploadMeter" hidden><div class="upload-track"><i id="uploadBar"></i></div><span id="uploadTotal"></span></div>
                         <div class="file-hint">До 5 файлов, суммарно до 10 МБ. Файлы пересылаются мне письмом и на сайте не хранятся.</div>
                     </div>
                     <div class="form-group consent">
-                        <label class="consent-label"><input type="checkbox" name="consent" value="yes" required> <span>Я согласен на обработку моих имени, email и сообщения для ответа на обращение (<a href="privacy.html" target="_blank" rel="noopener">политика конфиденциальности</a>)</span></label>
+                        <label class="consent-label check"><input type="checkbox" name="consent" value="yes" required class="sr-only"><span class="check-box" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><span>Я согласен на обработку моих имени, email и сообщения для ответа на обращение (<a href="privacy.html" target="_blank" rel="noopener">политика конфиденциальности</a>)</span></label>
                     </div>
                     <button type="submit" class="submit-btn">Отправить сообщение</button>
                     <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
@@ -138,6 +144,7 @@
         <button type="button" id="cookieAccept">ОК</button>
     </div>
     <script src="script.js"></script>
+    <script src="upload.js" defer></script>
     <script src="favorites.js"></script>
 </body>
 </html>
