@@ -180,30 +180,28 @@ document.addEventListener('DOMContentLoaded', () => {
         el.textContent = msg;
         el.className = 'form-status ' + (ok ? 'ok' : 'err');
     }
-    // --- 5. Обработка формы контактов (Formcarry AJAX) ---
+    // --- 5. Форма контактов (FormSubmit.co: обычная отправка формы, файлы уходят вложениями) ---
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
+        if (/[?&]sent=1\b/.test(location.search)) {
+            notify('Сообщение отправлено. Я свяжусь с вами.', true);
+            if (window.history && history.replaceState) history.replaceState(null, '', location.pathname);
+        }
+        contactForm.addEventListener('submit', function (e) {
             const lastSubmit = lsGet('lastFormSubmit');
             if (lastSubmit && Date.now() - lastSubmit < 60000) {
+                e.preventDefault();
                 notify('Пожалуйста, подождите минуту перед повторной отправкой сообщения.', false);
                 return;
             }
-            const submitBtn = this.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            submitBtn.disabled = true; submitBtn.textContent = 'Отправка...';
-            const formData = new FormData(this);
-            try {
-                const response = await fetch(this.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
-                const data = await response.json();
-                if (data.status === 'success') {
-                    notify('Сообщение отправлено. Я свяжусь с вами.', true);
-                    this.reset(); lsSet('lastFormSubmit', Date.now());
-                } else if (data.code === 422) { notify('Ошибка валидации. Проверьте поля.', false); }
-                else { notify('Ошибка: ' + (data.message || 'Неизвестная ошибка сервиса'), false); }
-            } catch (error) { notify('Ошибка сети. Проверьте подключение к интернету.', false); }
-            finally { submitBtn.disabled = false; submitBtn.textContent = originalText; }
+            const input = this.querySelector('input[type="file"]');
+            const files = input ? Array.from(input.files) : [];
+            const total = files.reduce((sum, f) => sum + f.size, 0);
+            if (files.length > 5) { e.preventDefault(); notify('Можно прикрепить не больше 5 файлов.', false); return; }
+            if (total > 10 * 1024 * 1024) { e.preventDefault(); notify('Файлы слишком большие: суммарно не больше 10 МБ.', false); return; }
+            lsSet('lastFormSubmit', Date.now());
+            const btn = this.querySelector('.submit-btn');
+            if (btn) { btn.textContent = 'Отправка...'; setTimeout(() => { btn.disabled = true; }, 0); }
         });
     }
 

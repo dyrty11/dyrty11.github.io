@@ -23,7 +23,7 @@
     <meta name="twitter:image" content="https://dyrty11.github.io/og-image.png">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://formcarry.com; object-src 'none'; upgrade-insecure-requests; base-uri 'none'; form-action 'self' https://formcarry.com; frame-ancestors 'none';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; upgrade-insecure-requests; base-uri 'none'; form-action 'self' https://formsubmit.co; frame-ancestors 'none';">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <script src="frame-bust.js"></script>
     <link rel="stylesheet" href="fonts.css">
@@ -79,8 +79,11 @@
                 </a>
             </div>
             <div class="contact-form animated-dashed">
-                <form id="contactForm" action="https://formcarry.com/s/-NsPKvdj5sC" method="POST" enctype="multipart/form-data">
-                    <input type="text" name="_gotcha" hidden>
+                <form id="contactForm" action="https://formsubmit.co/d81816320@gmail.com" method="POST" enctype="multipart/form-data">
+                    <input type="text" name="_honey" tabindex="-1" autocomplete="off" hidden>
+                    <input type="hidden" name="_subject" value="Сообщение с сайта dyrty11.github.io">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_next" value="https://dyrty11.github.io/contacts.html?sent=1">
                     <div class="form-group">
                         <label>Ваше имя</label>
                         <input type="text" name="name" placeholder="Иван Иванов" required maxlength="80">
@@ -94,12 +97,9 @@
                         <textarea name="message" placeholder="Расскажите о задаче..." required maxlength="2000"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Прикрепить файл</label>
-                        <div class="file-disabled-notice animated-dashed">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" stroke-linecap="square"><path d="M12 2.5l9.5 9.5-9.5 9.5L2.5 12z"/><path d="M12 7.5v6"/><circle cx="12" cy="16.6" r="1" fill="var(--ic2, currentColor)" stroke="none"/></svg>
-                            ВРЕМЕННО НЕДОСТУПНО
-                        </div>
-                        <div class="file-hint">Мы работаем над возобновлением загрузки файлов.</div>
+                        <label for="fAttach">Прикрепить файлы</label>
+                        <input type="file" id="fAttach" name="attachment" multiple accept=".png,.jpg,.jpeg,.gif,.webp,.pdf,.txt,.zip,.doc,.docx">
+                        <div class="file-hint">До 5 файлов, суммарно до 10 МБ. Файлы пересылаются мне письмом и на сайте не хранятся.</div>
                     </div>
                     <div class="form-group consent">
                         <label class="consent-label"><input type="checkbox" name="consent" value="yes" required> <span>Я согласен на обработку моих имени, email и сообщения для ответа на обращение (<a href="privacy.html" target="_blank" rel="noopener">политика конфиденциальности</a>)</span></label>
