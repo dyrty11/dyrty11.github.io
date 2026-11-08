@@ -34,7 +34,7 @@ html::before {
 @keyframes glassDrift { to { transform: translate3d(5%, -4%, 0) scale(1.08) rotate(4deg); } }
 
 /* Поверхности из стекла */
-body > header, .project-card, .service-card, .contact-card, .contact-form, .cookie-banner, .mobile-nav, .term, .upload, .file-chip, .tag, .btn, .tag-filter-btn, .tab-btn, .fav-filter {
+body > header, .project-card, .service-card, .contact-card, .contact-form, .cookie-banner, .mobile-nav, .term, .upload, .file-chip, .tag, .btn, .tag-filter-btn, .tab-btn {
     -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
 }
 .project-card, .service-card, .contact-card, .contact-form, .term { position: relative; }
@@ -76,13 +76,12 @@ body > header {
 @media (max-width: 600px) { body > header { left: 10px; width: calc(100% - 20px); padding: 10px 16px; border-radius: 18px !important; } }
 
 /* Кнопки, теги, фильтры */
-.btn, .tag-filter-btn, .tab-btn, .fav-filter { border-radius: 14px !important; border-color: rgba(255,255,255,0.16); background-color: rgba(255,255,255,0.06); box-shadow: inset 0 1px 0 rgba(255,255,255,0.2); }
-[data-theme="light"] .btn, [data-theme="light"] .tag-filter-btn, [data-theme="light"] .tab-btn, [data-theme="light"] .fav-filter { border-color: rgba(255,255,255,0.8); background-color: rgba(255,255,255,0.5); box-shadow: inset 0 1px 0 #fff, 0 4px 14px rgba(40,50,20,0.1); }
+.btn, .tag-filter-btn, .tab-btn { border-radius: 14px !important; border-color: rgba(255,255,255,0.16); background-color: rgba(255,255,255,0.06); box-shadow: inset 0 1px 0 rgba(255,255,255,0.2); }
+[data-theme="light"] .btn, [data-theme="light"] .tag-filter-btn, [data-theme="light"] .tab-btn { border-color: rgba(255,255,255,0.8); background-color: rgba(255,255,255,0.5); box-shadow: inset 0 1px 0 #fff, 0 4px 14px rgba(40,50,20,0.1); }
 .btn-primary { border-color: color-mix(in srgb, var(--accent) 70%, transparent); background-color: color-mix(in srgb, var(--accent) 14%, transparent); box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 0 24px color-mix(in srgb, var(--accent) 22%, transparent); }
 .tag { border-radius: 999px !important; padding: 4px 11px; border-color: rgba(255,255,255,0.14); background: rgba(255,255,255,0.06); }
 [data-theme="light"] .tag { border-color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.55); }
 .project-thumb { border-radius: 12px !important; border-color: rgba(255,255,255,0.12); }
-.project-card > .fav-btn { border-radius: 12px !important; background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 
 /* Форма: поля как вдавленное стекло */
 .form-group input, .form-group textarea {
@@ -164,3 +163,16 @@ body:not(.cursor-on) .custom-cursor, body:not(.cursor-on) .custom-cursor-dot { v
 
 /* Шпаргалки: панель действий без сплошной подложки */
 .actions { background: transparent; }
+
+/* Шпаргалки: отступы шапки, поля и превью в стиле стекла */
+.bar { padding: 22px 28px 24px; }
+.grp input[type="text"], .grp select, .grp textarea, .sec-card input[type="text"], .sec-card textarea {
+    border-radius: 12px !important; background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.14); box-shadow: inset 0 2px 8px rgba(0,0,0,0.25);
+}
+.grp input[type="text"]:focus, .grp select:focus, .grp textarea:focus, .sec-card input[type="text"]:focus, .sec-card textarea:focus { background: rgba(255,255,255,0.09); border-color: var(--accent); }
+.sec-card { background: rgba(255,255,255,0.03); }
+.sw { border-radius: 50% !important; }
+.custom-color input { border-radius: 8px !important; overflow: hidden; }
+.stage { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 20px !important; box-shadow: inset 0 2px 14px rgba(0,0,0,0.3); }
+.sheet { border-radius: 4px !important; }
+@media print { html::before { display: none !important; } }

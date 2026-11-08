@@ -1,35 +1,15 @@
 /* Избранное, бегущая строка, печатающийся текст, подсветка карточек, свечение */
 
-/* ---------- Избранное ---------- */
+/* ---------- Пустой список проектов ---------- */
 .project-card { position: relative; }
-.fav-btn {
     display: inline-flex; align-items: center; gap: 8px; padding: 0; cursor: pointer;
     background: transparent; border: 1px solid var(--border); color: var(--text-muted);
     font-family: var(--font-mono); font-size: 12px; text-transform: uppercase;
     transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.15s;
 }
-.fav-btn svg { width: 18px; height: 18px; display: block; transition: fill 0.2s; }
-.fav-btn:hover { color: var(--text-main); border-color: var(--text-main); }
-.fav-btn.on { color: var(--accent); border-color: var(--accent); }
-.fav-btn.on svg { fill: var(--accent); }
-.fav-btn:active { transform: scale(0.92); }
-.fav-btn.pop { animation: favPop 0.35s ease; }
-@keyframes favPop { 40% { transform: scale(1.28); } }
-.project-card > .fav-btn { position: absolute; top: 18px; right: 18px; width: 36px; height: 36px; justify-content: center; background: var(--bg-color); z-index: 2; }
-.fav-btn-lg { padding: 10px 16px; margin-top: 18px; }
-[data-theme="light"] .fav-btn.on { color: #000; border-color: #000; }
-[data-theme="light"] .fav-btn.on svg { stroke: #000; }
 
-.fav-link { display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); text-decoration: none; font-family: var(--font-mono); font-size: 12px; transition: color 0.2s; }
-.fav-link svg { width: 18px; height: 18px; display: block; }
-.fav-link:hover, .fav-link:focus-visible { color: var(--accent); }
-.fav-link.has { color: var(--text-main); }
-.fav-link.has svg { fill: var(--accent); stroke: var(--accent); }
 
-.fav-filter { background: transparent; border: 1px solid var(--border); color: var(--text-main); padding: 8px 16px; font-family: var(--font-mono); font-size: 13px; cursor: pointer; text-transform: uppercase; margin-left: auto; }
-.fav-filter:hover, .fav-filter.active { background: var(--accent); color: #000; border-color: var(--accent); }
 .tabs { flex-wrap: wrap; }
-.project-card.fav-hidden { display: none; }
 .fav-empty { color: var(--text-muted); font-family: var(--font-mono); font-size: 13px; padding: 40px 0; }
 .fav-empty[hidden] { display: none; }
 
@@ -72,7 +52,6 @@
 }
 
 /* ---------- Мелкие исправления читаемости ---------- */
-[data-theme="light"] .fav-link.has svg { stroke: #000; }
 [data-theme="light"] .btn-primary { color: #000; background: var(--accent); border-color: var(--accent); }
 @media (max-width: 600px) { .section-header { flex-wrap: wrap; gap: 8px 16px; } }
 
