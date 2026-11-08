@@ -233,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const dot = document.createElement('div'); dot.className = 'custom-cursor-dot'; document.body.appendChild(dot);
         let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
         document.addEventListener('mousemove', (e) => {
+            if (!document.body.classList.contains('cursor-on')) { curX = e.clientX; curY = e.clientY; document.body.classList.add('cursor-on'); }
             mouseX = e.clientX; mouseY = e.clientY; dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
             const px = (e.clientX / window.innerWidth - 0.5) * 10; const py = (e.clientY / window.innerHeight - 0.5) * 10;
             document.body.style.setProperty('--mouse-x', `${px}px`); document.body.style.setProperty('--mouse-y', `${py}px`);
