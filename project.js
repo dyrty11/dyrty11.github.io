@@ -30,7 +30,9 @@
         m.setAttribute('content', content);
     }
     function absUrl(path) { try { return new URL(path, location.href).href; } catch (e) { return ''; } }
+    var STATIC = document.head.querySelector('meta[name="project-slug"]'); /* готовая страница project-<имя>.html: метаданные уже в HTML */
     function applySeo(p, title) {
+        if (STATIC) return;
         var fullTitle = title + ' — Portfolio';
         var desc = String(p.description || 'Проект из портфолио разработчика.').slice(0, 200);
         var site = absUrl('./');
@@ -113,12 +115,13 @@
         root.appendChild(grid);
     }
 
-    var want = new URLSearchParams(location.search).get('p') || '';
+    var want = STATIC ? String(STATIC.getAttribute('content') || '') : (new URLSearchParams(location.search).get('p') || '');
     fetch('projects.json', { cache: 'no-cache' })
         .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
         .then(function (list) {
             var found = Array.isArray(list) ? list.filter(function (p) { return slug(p && p.title) === slug(want); })[0] : null;
             if (!found) { setMeta('name', 'robots', 'noindex'); message('Проект не найден. Посмотрите полный список на странице «Проекты».'); return; }
+            if (!STATIC && /^project-[a-z0-9-]+\.html$/.test(String(found.page || ''))) { location.replace(found.page); return; }
             render(found);
         })
         .catch(function () { message('Не удалось загрузить проект. Попробуйте обновить страницу.'); });

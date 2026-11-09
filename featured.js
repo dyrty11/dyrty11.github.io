@@ -57,7 +57,7 @@
         c.appendChild(tags);
 
         var more = el('a', 'details-link', 'Подробнее →');
-        more.href = 'project.html?p=' + encodeURIComponent(slug(p.title));
+        more.href = /^project-[a-z0-9-]+\.html$/.test(String(p.page || '')) ? p.page : 'project.html?p=' + encodeURIComponent(slug(p.title));
         more.setAttribute('aria-label', 'Подробнее о проекте ' + String(p.title || ''));
         c.appendChild(more);
 

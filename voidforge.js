@@ -205,8 +205,6 @@
 
     function previewSite() {
         if (!generatedHTML) return;
-        const blob = new Blob([generatedHTML], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
         const modal = document.createElement('div');
         modal.className = 'preview-modal';
         const header = document.createElement('div');
@@ -214,10 +212,11 @@
         const closeBtn = document.createElement('button');
         closeBtn.className = 'preview-modal-close';
         closeBtn.textContent = 'Закрыть';
-        closeBtn.addEventListener('click', () => { document.body.removeChild(modal); URL.revokeObjectURL(url); });
+        closeBtn.addEventListener('click', () => { document.body.removeChild(modal); });
         const iframe = document.createElement('iframe');
-        iframe.src = url;
         iframe.setAttribute('sandbox', 'allow-scripts');
+        iframe.addEventListener('load', () => { try { iframe.contentWindow.postMessage({ html: generatedHTML }, '*'); } catch (e) { /* ignore */ } }, { once: true });
+        iframe.src = 'voidforge-preview.html';
         header.appendChild(closeBtn);
         modal.appendChild(header);
         modal.appendChild(iframe);
