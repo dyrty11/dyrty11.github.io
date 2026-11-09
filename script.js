@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentTheme = htmlElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             const persistTheme = () => { try { localStorage.setItem('theme', newTheme); } catch (e) {} };
-            if (!document.startViewTransition) { htmlElement.setAttribute('data-theme', newTheme); persistTheme(); return; }
+            if (!document.startViewTransition || htmlElement.classList.contains('lite') || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) { htmlElement.setAttribute('data-theme', newTheme); persistTheme(); return; }
             const x = event.clientX; const y = event.clientY;
             const endRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
             const transition = document.startViewTransition(() => { htmlElement.setAttribute('data-theme', newTheme); });
