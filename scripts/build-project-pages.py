@@ -33,9 +33,9 @@ def main():
         title = str(p.get('title', 'Проект'))
         desc = str(p.get('description') or 'Проект из портфолио разработчика.')[:200]
         url = '%s/%s' % (SITE, page)
-        og_img = '%s/img/og-%s.png' % (SITE, slug)
-        if not (ROOT / 'img' / ('og-%s.png' % slug)).exists():
-            og_img = SITE + '/og-image.png'
+        og_img = '%s/img/og-%s.jpg' % (SITE, slug)
+        if not (ROOT / 'img' / ('og-%s.jpg' % slug)).exists():
+            og_img = SITE + '/og-image.jpg'
         full = '%s — Portfolio' % title
         t = tpl
         def sub(pat, rep):

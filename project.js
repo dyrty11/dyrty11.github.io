@@ -37,7 +37,7 @@
         var desc = String(p.description || 'Проект из портфолио разработчика.').slice(0, 200);
         var site = absUrl('./');
         var url = absUrl('project.html') + '?p=' + encodeURIComponent(slug(p.title));
-        var img = absUrl(safeImg(p.image) || 'og-image.png');
+        var img = absUrl(safeImg(p.image) || 'og-image.jpg');
         var link = document.head.querySelector('link[rel="canonical"]');
         if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
         link.href = url;

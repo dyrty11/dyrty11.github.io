@@ -231,14 +231,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Кастомный курсор
         const cursor = document.createElement('div'); cursor.className = 'custom-cursor'; document.body.appendChild(cursor);
         const dot = document.createElement('div'); dot.className = 'custom-cursor-dot'; document.body.appendChild(dot);
-        let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
+        let mouseX = 0, mouseY = 0, curX = 0, curY = 0, rafId = 0;
+        // Цикл анимации работает только пока курсор догоняет мышь, а не вечно
+        const animate = () => {
+            curX += (mouseX - curX) * 0.18; curY += (mouseY - curY) * 0.18;
+            cursor.style.transform = `translate(${curX}px, ${curY}px)`;
+            rafId = (Math.abs(mouseX - curX) > 0.3 || Math.abs(mouseY - curY) > 0.3) ? requestAnimationFrame(animate) : 0;
+        };
         document.addEventListener('mousemove', (e) => {
             if (!document.body.classList.contains('cursor-on')) { curX = e.clientX; curY = e.clientY; document.body.classList.add('cursor-on'); }
             mouseX = e.clientX; mouseY = e.clientY; dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-            const px = (e.clientX / window.innerWidth - 0.5) * 10; const py = (e.clientY / window.innerHeight - 0.5) * 10;
-            document.body.style.setProperty('--mouse-x', `${px}px`); document.body.style.setProperty('--mouse-y', `${py}px`);
-        });
-        (function animate() { curX += (mouseX - curX) * 0.15; curY += (mouseY - curY) * 0.15; cursor.style.transform = `translate(${curX}px, ${curY}px)`; requestAnimationFrame(animate); })();
+            if (!rafId) rafId = requestAnimationFrame(animate);
+        }, { passive: true });
         const hoverTargets = 'a, button, .project-card, .btn, .tag-filter-btn';
         document.body.addEventListener('mouseover', (e) => { if (e.target.closest(hoverTargets)) cursor.classList.add('hover'); });
         document.body.addEventListener('mouseout', (e) => { if (e.target.closest(hoverTargets)) cursor.classList.remove('hover'); });

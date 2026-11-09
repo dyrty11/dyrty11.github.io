@@ -42,10 +42,7 @@ body::before {
     background-image: 
         linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), 
         linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    transform: translate(var(--mouse-x, 0px), var(--mouse-y, 0px));
-    transition: transform 0.1s ease-out;
-    will-change: transform;
+    background-size: 40px 40px;
 }
 [data-theme="light"] body::before {
     background-image: 
