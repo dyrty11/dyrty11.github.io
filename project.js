@@ -103,6 +103,11 @@
             p.features.slice(0, 20).forEach(function (f) { ul.appendChild(el('li', null, String(f))); });
             info.appendChild(ul);
         }
+        if (p.sha256 && /^[0-9a-fA-F]{64}$/.test(String(p.sha256))) {
+            info.appendChild(el('h2', 'detail-sub', 'Контрольная сумма SHA-256'));
+            info.appendChild(el('code', 'detail-hash', String(p.sha256).toLowerCase()));
+            info.appendChild(el('p', 'detail-text', 'Проверить скачанный файл: Get-FileHash .\\имя_файла -Algorithm SHA256 (PowerShell). Если значение не совпало, не запускайте файл.'));
+        }
         var href = safeUrl(p.link);
         if (href) {
             var a = el('a', 'btn btn-primary detail-cta', String(p.buttonText || 'Открыть'));
@@ -113,6 +118,20 @@
         }
         grid.appendChild(info);
         root.appendChild(grid);
+        if (Array.isArray(p.gallery) && p.gallery.length) {
+            var gal = el('section', 'detail-gallery');
+            gal.appendChild(el('h2', 'detail-sub', 'Скриншоты'));
+            p.gallery.slice(0, 6).forEach(function (g) {
+                var src = safeImg(g && g.src); if (!src) return;
+                var fig = el('figure', 'detail-shot');
+                var gi = el('img'); gi.src = src; gi.alt = String(g.alt || ''); gi.loading = 'lazy'; gi.decoding = 'async';
+                if (g.width && g.height) { gi.width = Number(g.width) || 0; gi.height = Number(g.height) || 0; }
+                fig.appendChild(gi);
+                if (g.caption) fig.appendChild(el('figcaption', null, String(g.caption)));
+                gal.appendChild(fig);
+            });
+            root.appendChild(gal);
+        }
     }
 
     var want = STATIC ? String(STATIC.getAttribute('content') || '') : (new URLSearchParams(location.search).get('p') || '');

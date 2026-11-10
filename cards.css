@@ -48,3 +48,12 @@
 /* Резерв места под данные, которые подгружает скрипт: страница не «прыгает» (CLS) */
 .projects-grid:not(.is-ready) { min-height: 80vh; }
 #projectDetail { min-height: 70vh; }
+.detail-gallery { margin-top: 48px; display: grid; gap: 28px; }
+.detail-gallery .detail-sub { margin: 0; }
+.detail-shot { margin: 0; }
+.detail-shot img { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: 12px !important; }
+.detail-shot figcaption { margin-top: 10px; color: var(--text-muted); font-size: 13px; line-height: 1.5; }
+.detail-hash { display: block; font-family: var(--font-mono); font-size: 12px; word-break: break-all; padding: 10px 12px; border: 1px solid var(--border); margin-bottom: 10px; }
+#facts { margin-top: 90px; }
+.service-card p a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.service-card p a:hover { color: var(--text-main); }
