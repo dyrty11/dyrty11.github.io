@@ -57,3 +57,9 @@
 #facts { margin-top: 90px; }
 .service-card p a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 .service-card p a:hover { color: var(--text-main); }
+.detail-downloads { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 6px; }
+.detail-downloads .detail-cta + .detail-cta { margin: 0; }
+.detail-note { font-size: 0.9rem; opacity: 0.8; margin: 4px 0 14px; max-width: 62ch; }
+.detail-group { grid-column: 1 / -1; font-size: 1.05rem; margin: 22px 0 4px; }
+.detail-en { margin-top: 34px; padding-top: 6px; border-top: 1px solid rgba(128, 128, 128, 0.25); }
+

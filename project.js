@@ -64,6 +64,22 @@
         document.head.appendChild(s);
     }
 
+    function addDownloads(parent, p, en) {
+        if (!Array.isArray(p.downloads) || !p.downloads.length) return;
+        var box = el('div', 'detail-downloads');
+        var n = 0;
+        p.downloads.slice(0, 6).forEach(function (d) {
+            var u = safeUrl(d && d.url); if (!u) return;
+            var b = el('a', 'btn ' + (n === 0 ? 'btn-primary ' : '') + 'detail-cta', String((en ? d.labelEn : d.label) || d.label || 'Скачать'));
+            b.href = u; b.target = '_blank'; b.rel = 'noopener noreferrer';
+            box.appendChild(b); n++;
+        });
+        if (!n) return;
+        parent.appendChild(box);
+        var note = en ? p.downloadNoteEn : p.downloadNote;
+        if (note) parent.appendChild(el('p', 'detail-note', String(note)));
+    }
+
     function render(p) {
         var title = String(p.title || 'Проект');
         document.title = title + ' — Portfolio';
@@ -92,6 +108,7 @@
             info.appendChild(tags);
         }
         info.appendChild(el('p', 'detail-lead', String(p.description || '')));
+        addDownloads(info, p, false);
         if (p.details) {
             String(p.details).split(/\n\s*\n/).forEach(function (para) {
                 if (para.trim()) info.appendChild(el('p', 'detail-text', para.trim()));
@@ -121,8 +138,15 @@
         if (Array.isArray(p.gallery) && p.gallery.length) {
             var gal = el('section', 'detail-gallery');
             gal.appendChild(el('h2', 'detail-sub', 'Скриншоты'));
-            p.gallery.slice(0, 6).forEach(function (g) {
+            var lastGroup = '';
+            p.gallery.slice(0, 12).forEach(function (g) {
                 var src = safeImg(g && g.src); if (!src) return;
+                if (g.group && g.group !== lastGroup) {
+                    lastGroup = String(g.group);
+                    var gh = el('h3', 'detail-group', lastGroup);
+                    if (/^[A-Za-z]/.test(lastGroup)) gh.setAttribute('lang', 'en');
+                    gal.appendChild(gh);
+                }
                 var fig = el('figure', 'detail-shot');
                 var gi = el('img'); gi.src = src; gi.alt = String(g.alt || ''); gi.loading = 'lazy'; gi.decoding = 'async';
                 if (g.width && g.height) { gi.width = Number(g.width) || 0; gi.height = Number(g.height) || 0; }
