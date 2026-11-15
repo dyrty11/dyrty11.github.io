@@ -132,3 +132,11 @@ nav.desktop-nav a:hover::after, nav.desktop-nav a.active::after { width: 100%; }
     .btn, .btn:hover, nav.desktop-nav a::after, .project-card, .project-thumb { transition: none; }
     .btn:hover { transform: none; }
 }
+
+/* Открытый исходный код: ссылка в карточке и блок на странице проекта */
+.card-links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0 0 16px; align-self: flex-start; }
+.card-links .details-link { margin: 0; align-self: auto; }
+.detail-source { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; border: 1px solid var(--border); padding: 12px 14px; margin: 0 0 18px; max-width: 560px; }
+.detail-source-label { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); display: inline-flex; align-items: center; gap: 10px; }
+.detail-source-label::before { content: ""; width: 7px; height: 7px; background: var(--accent); }
+.detail-source-link { font-family: var(--font-mono); font-size: 13px; color: var(--accent); text-underline-offset: 3px; }

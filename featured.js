@@ -59,7 +59,16 @@
         var more = el('a', 'details-link', 'Подробнее →');
         more.href = /^project-[a-z0-9-]+\.html$/.test(String(p.page || '')) ? p.page : 'project.html?p=' + encodeURIComponent(slug(p.title));
         more.setAttribute('aria-label', 'Подробнее о проекте ' + String(p.title || ''));
-        c.appendChild(more);
+        var links = el('div', 'card-links');
+        links.appendChild(more);
+        var src = safeUrl(p.source);
+        if (src) {
+            var sa = el('a', 'details-link', 'Исходный код ↗');
+            sa.href = src; sa.target = '_blank'; sa.rel = 'noopener noreferrer';
+            sa.setAttribute('aria-label', 'Исходный код проекта ' + String(p.title || '') + ' на GitHub');
+            links.appendChild(sa);
+        }
+        c.appendChild(links);
 
         var href = safeUrl(p.link);
         if (href) {

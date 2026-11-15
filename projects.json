@@ -22,7 +22,8 @@
       "Встроенный гайд: хостинг, запись метки, использование",
       "Без регистрации, файлы не уходят на сервер"
     ],
-    "page": "project-voidforge.html"
+    "page": "project-voidforge.html",
+    "source": "https://github.com/dyrty11/dyrty11.github.io"
   },
   {
     "title": "FilePilot",
@@ -168,7 +169,8 @@
       "Russian and English UI, chosen automatically",
       "Update check, one-click install and a “What's new” window",
       "The index stays on your computer"
-    ]
+    ],
+    "license": "MIT"
   },
   {
     "title": "Конструктор шпаргалок",
@@ -193,6 +195,7 @@
       "Ссылка на готовую шпаргалку",
       "Без регистрации, данные остаются в браузере"
     ],
-    "page": "project-cheatsheets.html"
+    "page": "project-cheatsheets.html",
+    "source": "https://github.com/dyrty11/dyrty11.github.io"
   }
 ]

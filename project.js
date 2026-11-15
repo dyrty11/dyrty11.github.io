@@ -64,7 +64,19 @@
         document.head.appendChild(s);
     }
 
+    function addSource(parent, p, en) {
+        var u = safeUrl(p.source); if (!u) return;
+        var box = el('div', 'detail-source');
+        var lic = p.license ? String(p.license) : '';
+        box.appendChild(el('span', 'detail-source-label', (en ? 'Open source' : 'Открытый исходный код') + (lic ? ' · ' + (en ? 'license ' : 'лицензия ') + lic : '')));
+        var a = el('a', 'detail-source-link', en ? 'Source code on GitHub ↗' : 'Исходный код на GitHub ↗');
+        a.href = u; a.target = '_blank'; a.rel = 'noopener noreferrer';
+        box.appendChild(a);
+        parent.appendChild(box);
+    }
+
     function addDownloads(parent, p, en) {
+        addSource(parent, p, en);
         if (!Array.isArray(p.downloads) || !p.downloads.length) return;
         var box = el('div', 'detail-downloads');
         var n = 0;
