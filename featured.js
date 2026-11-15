@@ -26,7 +26,7 @@
     function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
     function card(p) {
-        var c = el('div', 'project-card animated-dashed visible');
+        var c = el('div', 'project-card visible');
 
         var icon = el('div', 'project-icon');
         if (typeof p.customIcon === 'string' && DATA_ICON.test(p.customIcon) && p.customIcon.length < 300 * 1024) {

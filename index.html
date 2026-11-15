@@ -6,7 +6,7 @@
     <title>Portfolio — разработчик: сайты, утилиты и приложения</title>
     <meta name="description" content="Портфолио разработчика: веб-проекты, утилиты, приложения. Генератор сайтов для NFC-меток, поиск файлов по содержимому, конструктор шпаргалок.">
     <link rel="canonical" href="https://dyrty11.github.io/">
-    <meta name="theme-color" content="#050505">
+    <meta name="theme-color" content="#101113">
     <meta property="og:site_name" content="Portfolio">
     <meta property="og:locale" content="ru_RU">
     <meta property="og:type" content="website">
@@ -27,13 +27,11 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; upgrade-insecure-requests; base-uri 'none'; form-action 'self'; frame-ancestors 'none';">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <script src="frame-bust.js"></script>
-    <script src="lite.js"></script>
     <link rel="stylesheet" href="fonts.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="a11y.css">
-    <link rel="stylesheet" href="fx.css">
     <link rel="stylesheet" href="cards.css">
-    <link rel="stylesheet" href="glass.css">
+    <link rel="stylesheet" href="theme.css">
     <script src="theme-init.js"></script>
 </head>
 <body>
@@ -71,41 +69,25 @@
     </div>
     <div class="page-wrapper">
         <div class="container" id="main" tabindex="-1">
-            <section class="hero hero-split">
+            <section class="hero">
                 <div class="hero-copy" data-reveal>
-                    <div class="badge animated-dashed">Open to work</div>
-                    <h1>CREATIVE<br><span>DEVELOPER</span></h1>
-                    <p class="hero-roll" data-roll="сайты|утилиты|приложения" role="text" aria-label="Делаю сайты, утилиты, приложения"><span aria-hidden="true">Делаю <span class="roll-word">сайты</span><span class="caret"></span></span></p>
-                    <p>Делаю браузерные инструменты и утилиты для Windows: от генератора сайтов для NFC-меток до приложения для поиска файлов по содержимому. Без регистрации и лишних зависимостей.</p>
+                    <div class="badge">Открыт к проектам</div>
+                    <h1>Сайты, утилиты<br>и приложения</h1>
+                    <p>Браузерные инструменты и утилиты для Windows: от генератора сайтов для NFC-меток до приложения для поиска файлов по содержимому. Без регистрации и лишних зависимостей.</p>
                     <div class="hero-buttons">
                         <a href="projects.html" class="btn btn-primary">Смотреть проекты</a>
                         <a href="contacts.html" class="btn">Связаться</a>
                         <a href="https://github.com/dyrty11" target="_blank" rel="noopener noreferrer" class="btn">GitHub</a>
                     </div>
                 </div>
-                <div class="hero-stage" data-reveal>
-                    <div class="term" aria-hidden="true">
-                        <div class="term-bar"><i></i><i></i><i></i><span>dyrty11 ~ portfolio</span></div>
-                        <div class="term-body">
-                            <p class="tl"><b>$</b> whoami</p>
-                            <p class="tl out">dyrty11 — разработчик</p>
-                            <p class="tl"><b>$</b> ls projects/</p>
-                            <p class="tl out">voidforge/ filepilot/ cheatsheets/</p>
-                            <p class="tl"><b>$</b> git push origin main</p>
-                            <p class="tl out ok">✓ сайт обновлён</p>
-                            <p class="tl"><b>$</b> <span class="caret"></span></p>
-                        </div>
-                    </div>
-                </div>
             </section>
-            <div class="marquee" aria-hidden="true"><div class="marquee-track"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Python</span><span>Git</span><span>GitHub Pages</span><span>UI / UX</span><span>Автоматизация</span><span>Безопасность</span><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Python</span><span>Git</span><span>GitHub Pages</span><span>UI / UX</span><span>Автоматизация</span><span>Безопасность</span></div></div>
             <section id="projects">
                 <div class="section-header" data-reveal>
                     <h2 class="section-title">Избранное</h2>
                     <a href="projects.html" class="view-all">Все проекты <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" stroke-linecap="square"><path d="M3 12h16"/><path d="M14 6.5l5.5 5.5-5.5 5.5"/></svg></a>
                 </div>
                 <div class="projects-grid">
-                    <div class="project-card animated-dashed">
+                    <div class="project-card">
                         <div class="project-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="miter" stroke-linecap="square"><path d="M3 4h18v13l-3 3H3z"/><path d="M3 9h18"/><path d="M9 9v11" stroke="var(--ic2, currentColor)"/></svg></div>
                         <img class="project-thumb" src="img/voidforge.webp" alt="Интерфейс VoidForge" width="640" height="400" loading="lazy" decoding="async">
                         <h3>VoidForge</h3>
@@ -120,7 +102,7 @@
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" stroke-linecap="square"><path d="M10.5 4.5h-6v15h15v-6"/><path d="M13 11l7-7"/><path d="M14.5 4H20v5.5"/></svg>
                         </a>
                     </div>
-                    <div class="project-card animated-dashed">
+                    <div class="project-card">
                         <div class="project-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="miter" stroke-linecap="square"><path d="M5 2.5h9l5 5v14H5z"/><path d="M14 2.5v5h5"/><path d="M12 18.5v-6M9.5 15l2.5-2.5 2.5 2.5" stroke="var(--ic2, currentColor)"/></svg></div>
                         <img class="project-thumb" src="img/filepilot.webp" alt="Иллюстрация приложения FilePilot" width="640" height="400" loading="lazy" decoding="async">
                         <h3>FilePilot</h3>
@@ -204,9 +186,7 @@
         <button type="button" id="cookieAccept">ОК</button>
     </div>
     <script src="script.js"></script>
-    <script src="tilt.js"></script>
     <script src="reveal.js"></script>
-    <script src="fx.js"></script>
     <script src="featured.js"></script>
 </body>
 </html>

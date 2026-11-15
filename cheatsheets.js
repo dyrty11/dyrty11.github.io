@@ -9,7 +9,7 @@
     var FZ = { s: 0.9, m: 1, l: 1.12 };
     var THEMES = ['paper', 'cream', 'dark'];
     var ACCENTS = [
-        ['#ccff00', 'Лайм'], ['#00e5ff', 'Циан'], ['#ff3d71', 'Малина'], ['#ffb300', 'Янтарь'],
+        ['#7fc28a', 'Зелёный'], ['#00e5ff', 'Циан'], ['#ff3d71', 'Малина'], ['#ffb300', 'Янтарь'],
         ['#7c4dff', 'Фиолет'], ['#00c853', 'Зелёный'], ['#111111', 'Графит']
     ];
 
@@ -49,7 +49,7 @@
             ['Поиск', ['Ctrl+F :: поиск в файле', 'Ctrl+H :: замена в файле', 'Ctrl+Shift+F :: поиск по всему проекту']],
             ['Код', ['Shift+Alt+F :: форматировать документ', 'F2 :: переименовать символ везде', 'Ctrl+. :: быстрые исправления', 'Ctrl+Space :: показать подсказки']]
         ]),
-        T('markdown', 'Markdown', 'Markdown', 'Разметка текста для README и заметок', '#ccff00', [
+        T('markdown', 'Markdown', 'Markdown', 'Разметка текста для README и заметок', '#7fc28a', [
             ['Заголовки', ['# Заголовок :: первый уровень', '## Заголовок :: второй уровень', '### Заголовок :: третий уровень']],
             ['Оформление текста', ['**текст** :: жирный', '*текст* :: курсив', '~~текст~~ :: зачёркнутый', '`код` :: код в строке']],
             ['Списки', ['- пункт :: маркированный список', '1. пункт :: нумерованный список', '- [ ] задача :: чекбокс', '  - вложенный :: два пробела для вложенности']],
@@ -80,7 +80,7 @@
     ];
 
     function blank() {
-        return { title: 'Моя шпаргалка', subtitle: 'Коротко о главном', theme: 'paper', accent: '#ccff00', cols: 2, orient: 'p', size: 'm',
+        return { title: 'Моя шпаргалка', subtitle: 'Коротко о главном', theme: 'paper', accent: '#7fc28a', cols: 2, orient: 'p', size: 'm',
             sections: [{ title: 'Первый раздел', text: 'команда :: что она делает\nЕщё одна :: описание\nСтрока без двойного двоеточия станет обычным текстом' }] };
     }
     function fromTemplate(t) {
@@ -95,7 +95,7 @@
         var s = {
             title: str(o.title, LIM.title), subtitle: str(o.subtitle, LIM.sub),
             theme: THEMES.indexOf(o.theme) >= 0 ? o.theme : 'paper',
-            accent: (typeof o.accent === 'string' && /^#[0-9a-f]{6}$/i.test(o.accent)) ? o.accent.toLowerCase() : '#ccff00',
+            accent: (typeof o.accent === 'string' && /^#[0-9a-f]{6}$/i.test(o.accent)) ? o.accent.toLowerCase() : '#7fc28a',
             cols: [1, 2, 3].indexOf(o.cols) >= 0 ? o.cols : 2,
             orient: o.orient === 'l' ? 'l' : 'p',
             size: (o.size === 's' || o.size === 'l') ? o.size : 'm',

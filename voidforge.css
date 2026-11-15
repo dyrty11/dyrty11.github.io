@@ -1,4 +1,4 @@
-:root { --bg: #050505; --surface: #0a0a0a; --border: #333; --text: #fff; --text-muted: #888; --accent: #ccff00; }
+:root { --bg: #101113; --surface: #16181b; --border: #2c2f34; --text: #e8e8e4; --text-muted: #8d9198; --accent: #7fc28a; }
 * { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0 !important; }
 body { font-family: 'IBM Plex Mono', monospace; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
 .container { width: 100%; max-width: 800px; background: var(--surface); border: 1px solid var(--border); padding: 40px; }
@@ -9,10 +9,8 @@ body { font-family: 'IBM Plex Mono', monospace; background: var(--bg); color: va
 .section { margin-bottom: 25px; }
 .section-title { font-size: 0.8em; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 10px; }
 .section-title::before { content: '> '; color: var(--accent); }
-.file-upload-area { padding: 30px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg); border: none; position: relative; }
-.file-upload-area::after { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(90deg, var(--border) 50%, transparent 50%), linear-gradient(90deg, var(--border) 50%, transparent 50%), linear-gradient(0deg, var(--border) 50%, transparent 50%), linear-gradient(0deg, var(--border) 50%, transparent 50%); background-repeat: repeat-x, repeat-x, repeat-y, repeat-y; background-size: 12px 1px, 12px 1px, 1px 12px, 1px 12px; background-position: 0 0, 0 100%, 0 0, 100% 0; animation: borderMarch 0.8s linear infinite; }
-.file-upload-area:hover::after { background-image: linear-gradient(90deg, var(--accent) 50%, transparent 50%), linear-gradient(90deg, var(--accent) 50%, transparent 50%), linear-gradient(0deg, var(--accent) 50%, transparent 50%), linear-gradient(0deg, var(--accent) 50%, transparent 50%); }
-@keyframes borderMarch { from { background-position: 0 0, 0 100%, 0 0, 100% 0; } to { background-position: 12px 0, -12px 100%, 0 -12px, 100% 12px; } }
+.file-upload-area { padding: 30px; text-align: center; cursor: pointer; transition: border-color 0.2s; background: var(--bg); border: 1px dashed var(--border); position: relative; }
+.file-upload-area:hover { border-color: var(--accent); }
 .file-upload-area .upload-icon { font-size: 24px; display: block; margin-bottom: 10px; }
 .file-upload-area .upload-text { font-size: 0.9em; color: var(--text-muted); }
 .file-upload-area .file-name { font-size: 0.8em; color: var(--accent); margin-top: 10px; word-break: break-all; }
@@ -27,22 +25,22 @@ input[type="file"] { display: none; }
 .btn { flex: 1; padding: 15px; border: 1px solid var(--border); background: transparent; color: var(--text); font-family: 'IBM Plex Mono', monospace; font-size: 0.9em; font-weight: 500; text-transform: uppercase; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; }
 .btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-generate { background: var(--accent); color: #000; border-color: var(--accent); }
-.btn-generate:hover:not(:disabled) { background: #aadd00; color: #000; }
+.btn-generate { background: var(--accent); color: #0b0d0c; border-color: var(--accent); }
+.btn-generate:hover:not(:disabled) { background: #98d4a2; color: #0b0d0c; }
 .btn-download, .btn-preview { display: none; }
 .btn-download.visible, .btn-preview.visible { display: flex; }
 .generated-info { display: none; margin-top: 20px; padding: 15px; border: 1px solid var(--accent); color: var(--accent); font-size: 0.9em; text-align: center; text-transform: uppercase; }
 .generated-info.visible { display: block; }
 .preview-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9999; display: flex; flex-direction: column; padding: 20px; }
 .preview-modal-header { display: flex; justify-content: flex-end; margin-bottom: 15px; }
-.preview-modal-close { background: var(--accent); color: #000; border: none; padding: 10px 20px; font-family: 'IBM Plex Mono', monospace; font-weight: bold; text-transform: uppercase; cursor: pointer; }
+.preview-modal-close { background: var(--accent); color: #0b0d0c; border: none; padding: 10px 20px; font-family: 'IBM Plex Mono', monospace; font-weight: bold; text-transform: uppercase; cursor: pointer; }
 .preview-modal iframe { width: 100%; height: 100%; border: 1px solid var(--border); background: #000; }
 .hidden { display: none !important; }
 
 /* ===== СТИЛИ ДЛЯ ГАЙДА ===== */
 .guide-trigger { margin-top: 40px; text-align: center; border-top: 1px solid var(--border); padding-top: 20px; }
 .btn-guide { width: 100%; background: var(--bg); border-style: dashed; font-size: 1em; padding: 18px; }
-.btn-guide:hover { border-style: solid; background: rgba(204, 255, 0, 0.05); }
+.btn-guide:hover { border-style: solid; background: rgba(127, 194, 138, 0.05); }
 
 /* Бронебойная анимация через max-height */
 .guide-section { 
@@ -67,7 +65,7 @@ input[type="file"] { display: none; }
 .guide-header h2 { font-family: 'Space Grotesk', sans-serif; color: var(--accent); margin-bottom: 10px; font-size: 1.5em; text-transform: uppercase; letter-spacing: -1px; }
 .guide-header p { font-size: 0.9em; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
 .guide-header b { color: var(--text); }
-.guide-alert { padding: 15px; background: rgba(255, 153, 0, 0.1); border-left: 4px solid #ff9800; color: #ff9800; font-size: 0.85em; margin-bottom: 30px; line-height: 1.5; }
+.guide-alert { padding: 15px; background: rgba(210, 154, 58, 0.1); border-left: 4px solid #d29a3a; color: #d29a3a; font-size: 0.85em; margin-bottom: 30px; line-height: 1.5; }
 .guide-section h3 { color: var(--text); margin-top: 30px; margin-bottom: 15px; font-size: 1.1em; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
 
 /* Сетка ссылок */
@@ -77,7 +75,7 @@ input[type="file"] { display: none; }
 .link-item a { color: var(--accent); font-family: monospace; font-size: 1em; word-break: break-all; text-decoration: none; }
 .link-item a:hover { text-decoration: underline; }
 .link-item span { color: var(--text-muted); text-align: right; font-size: 0.9em; flex-shrink: 0; margin-left: auto; }
-.copy-btn { background: transparent; border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; padding: 4px 8px; font-size: 1em; transition: all 0.2s; flex-shrink: 0; border-radius: 0; }
+.copy-btn { background: transparent; border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; padding: 4px 8px; font-size: 0.75em; text-transform: uppercase; transition: all 0.2s; flex-shrink: 0; border-radius: 0; }
 .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
 .copy-btn:active { transform: scale(0.9); }
 
@@ -94,7 +92,7 @@ input[type="file"] { display: none; }
 .step-list a { color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent); transition: opacity 0.2s; }
 .step-list a:hover { opacity: 0.8; border-bottom-style: solid; }
 
-.guide-warning { margin-top: 30px; padding: 15px; background: rgba(255, 51, 51, 0.1); border: 1px solid #ff3333; color: #ff3333; font-size: 0.85em; line-height: 1.5; text-align: center; font-weight: 500; }
+.guide-warning { margin-top: 30px; padding: 15px; background: rgba(224, 108, 90, 0.1); border: 1px solid #e06c5a; color: #e06c5a; font-size: 0.85em; line-height: 1.5; text-align: center; font-weight: 500; }
 
 @media (max-width: 600px) { 
     .container { padding: 20px; } 

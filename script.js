@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let allProjects = [];
         let currentFilters = { category: 'all', tag: 'all', search: '' };
-        const fallbackProjects = [{ "title": "VoidForge", "category": "website", "description": "Генератор аудио-сайтов.", "tags": ["HTML", "JavaScript"], "type": "link", "link": "voidforge.html", "buttonText": "Открыть", "icon": "layout", "color": "#ccff00" }];
+        const fallbackProjects = [{ "title": "VoidForge", "category": "website", "description": "Генератор аудио-сайтов.", "tags": ["HTML", "JavaScript"], "type": "link", "link": "voidforge.html", "buttonText": "Открыть", "icon": "layout", "color": "#7fc28a" }];
         
         function slugify(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9а-яё]+/g, '-').replace(/^-+|-+$/g, ''); }
         function sanitizeURL(url) {
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 empty.textContent = 'Ничего не найдено.'; projectsGrid.appendChild(empty); return;
             }
             projects.forEach(project => {
-                const card = document.createElement('div'); card.className = 'project-card animated-dashed';
+                const card = document.createElement('div'); card.className = 'project-card';
                 const iconDiv = document.createElement('div'); iconDiv.className = 'project-icon';
                 if (project.customIcon && /^data:image\/(png|jpe?g|gif|webp);base64,[A-Za-z0-9+/=]+$/.test(project.customIcon)) {
                     const img = document.createElement('img'); img.src = project.customIcon; img.className = 'custom-project-icon'; img.alt = ''; iconDiv.appendChild(img);
@@ -215,38 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileNav.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { mobileNav.classList.remove('active'); menuBackdrop.classList.remove('active'); document.body.classList.remove('menu-open'); }); });
     }
 
-    // --- 7. Магнитный эффект (ТОЛЬКО ДЛЯ КНОПОК) ---
-    if (window.matchMedia("(pointer: fine)").matches) {
-        // Убрали .project-card из селектора, чтобы карточки не притягивались
-        document.querySelectorAll('.btn').forEach(el => {
-            el.addEventListener('mousemove', (e) => {
-                const rect = el.getBoundingClientRect(); 
-                const x = e.clientX - rect.left - rect.width / 2; 
-                const y = e.clientY - rect.top - rect.height / 2;
-                el.style.transform = `translate(${x * 0.05}px, ${y * 0.05}px)`;
-            });
-            el.addEventListener('mouseleave', () => { el.style.transform = ''; });
-        });
-        
-        // Кастомный курсор
-        const cursor = document.createElement('div'); cursor.className = 'custom-cursor'; document.body.appendChild(cursor);
-        const dot = document.createElement('div'); dot.className = 'custom-cursor-dot'; document.body.appendChild(dot);
-        let mouseX = 0, mouseY = 0, curX = 0, curY = 0, rafId = 0;
-        // Цикл анимации работает только пока курсор догоняет мышь, а не вечно
-        const animate = () => {
-            curX += (mouseX - curX) * 0.18; curY += (mouseY - curY) * 0.18;
-            cursor.style.transform = `translate(${curX}px, ${curY}px)`;
-            rafId = (Math.abs(mouseX - curX) > 0.3 || Math.abs(mouseY - curY) > 0.3) ? requestAnimationFrame(animate) : 0;
-        };
-        document.addEventListener('mousemove', (e) => {
-            if (!document.body.classList.contains('cursor-on')) { curX = e.clientX; curY = e.clientY; document.body.classList.add('cursor-on'); }
-            mouseX = e.clientX; mouseY = e.clientY; dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-            if (!rafId) rafId = requestAnimationFrame(animate);
-        }, { passive: true });
-        const hoverTargets = 'a, button, .project-card, .btn, .tag-filter-btn';
-        document.body.addEventListener('mouseover', (e) => { if (e.target.closest(hoverTargets)) cursor.classList.add('hover'); });
-        document.body.addEventListener('mouseout', (e) => { if (e.target.closest(hoverTargets)) cursor.classList.remove('hover'); });
-    }
 });
     // --- 9. Cookie Banner ---
     {

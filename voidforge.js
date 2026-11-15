@@ -33,7 +33,7 @@
             try {
                 await navigator.clipboard.writeText(textToCopy);
                 const originalText = e.currentTarget.textContent;
-                e.currentTarget.textContent = '✅';
+                e.currentTarget.textContent = '✓';
                 e.currentTarget.style.borderColor = 'var(--accent)';
                 setTimeout(() => {
                     e.currentTarget.textContent = originalText;
@@ -72,7 +72,7 @@
 
     function setupDragDrop(zone, input, handler) {
         if (!zone || !input) return;
-        zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.background = 'rgba(204,255,0,0.05)'; });
+        zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.background = 'rgba(127,194,138,0.05)'; });
         zone.addEventListener('dragleave', () => { zone.style.background = ''; });
         zone.addEventListener('drop', e => { e.preventDefault(); zone.style.background = ''; const f = e.dataTransfer.files[0]; if (f) handler(f); });
         zone.addEventListener('click', () => input.click());
@@ -135,7 +135,7 @@
     }
 
     function generateSite() {
-        if (!imageBase64 || !audioBase64) { alert('⚠️ Загрузите изображение и аудиофайл.'); return; }
+        if (!imageBase64 || !audioBase64) { alert('Загрузите изображение и аудиофайл.'); return; }
         const imgSrc = 'data:' + imageMime + ';base64,' + imageBase64;
         const audioSrc = 'data:' + audioMime + ';base64,' + audioBase64;
         const nonce = generateNonce();
@@ -160,14 +160,14 @@
             '<style nonce="' + nonce + '">',
             '*{margin:0;padding:0;box-sizing:border-box;border-radius:0!important}',
             'body{background:#050505;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:"IBM Plex Mono",monospace;cursor:pointer;user-select:none;overflow:hidden;position:relative;}',
-            'body::before{content:\'\';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(204,255,0,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(204,255,0,0.05) 1px,transparent 1px);background-size:40px 40px;}',
+            'body::before{content:\'\';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(127,194,138,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(127,194,138,0.05) 1px,transparent 1px);background-size:40px 40px;}',
             '.image-wrapper{position:relative;z-index:10;padding:20px;animation:fadeIn 1s ease;border:1px solid #333;background:#0a0a0a;}',
             '@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}',
             '.main-image{max-width:80vw;max-height:75vh;object-fit:contain;border:1px solid #333;filter:grayscale(100%) contrast(1.2);transition:all 0.4s;}',
-            '.main-image:hover{filter:grayscale(0%) contrast(1);border-color:#ccff00;}',
+            '.main-image:hover{filter:grayscale(0%) contrast(1);border-color:#7fc28a;}',
             '.main-image:active{transform:scale(0.98);}',
             '.hint{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:20;color:#888;font-size:0.8em;letter-spacing:2px;text-transform:uppercase;}',
-            '.corner{position:fixed;font-size:24px;color:#ccff00;opacity:0.3;z-index:1;}',
+            '.corner{position:fixed;font-size:24px;color:#7fc28a;opacity:0.3;z-index:1;}',
             '.corner.tl{top:20px;left:20px;}.corner.tr{top:20px;right:20px;}.corner.bl{bottom:20px;left:20px;}.corner.br{bottom:20px;right:20px;}',
             '@media(max-width:600px){.main-image{max-width:90vw;max-height:60vh;}.hint{font-size:0.6em;}}',
             '<\/style>', '<\/head>', '<body>',
@@ -178,7 +178,7 @@
             '<script nonce="' + nonce + '">',
             '(function(){var a=document.getElementById("audio");var s=false;var ctx=null;var gainNode=null;',
             'try{var AudioContext=window.AudioContext||window.webkitAudioContext;if(AudioContext){ctx=new AudioContext();var source=ctx.createMediaElementSource(a);gainNode=ctx.createGain();gainNode.gain.value=2.5;source.connect(gainNode);gainNode.connect(ctx.destination);}else{a.volume=1;}}catch(e){a.volume=1;}',
-            'function triggerAudio(e){if(s)return;e.stopPropagation();e.preventDefault();if(ctx&&ctx.state==="suspended"){ctx.resume();}a.volume=1;var p=a.play();if(p){p.then(function(){s=true;var h=document.querySelector(".hint");if(h){h.textContent="[ ИГРАЕТ ]";h.style.color="#ccff00";}}).catch(function(){s=false})}};',
+            'function triggerAudio(e){if(s)return;e.stopPropagation();e.preventDefault();if(ctx&&ctx.state==="suspended"){ctx.resume();}a.volume=1;var p=a.play();if(p){p.then(function(){s=true;var h=document.querySelector(".hint");if(h){h.textContent="[ ИГРАЕТ ]";h.style.color="#7fc28a";}}).catch(function(){s=false})}};',
             'document.addEventListener("click",triggerAudio);',
             'a.addEventListener("volumechange",function(){if(a.volume<1&&s)a.volume=1});a.addEventListener("pause",function(){if(s&&!a.ended)a.play().catch(function(){})});a.addEventListener("ended",function(){a.currentTime=0;a.play().catch(function(){})});',
             'setInterval(function(){if(s&&a.volume<1)a.volume=1;if(s&&a.paused&&!a.ended)a.play().catch(function(){});},400);})();',

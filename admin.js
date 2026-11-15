@@ -22,7 +22,7 @@
         'security': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" stroke-linecap="square"><path d="M12 2.5l8 3v6c0 5.2-3.4 9-8 10.5-4.6-1.5-8-5.3-8-10.5v-6z"/><path d="M8.5 12l2.5 2.5 4.5-5" stroke="var(--ic2, currentColor)"/></svg>',
         'tools': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" stroke-linecap="square"><path d="M12 2.5l8.5 5v9l-8.5 5-8.5-5v-9z"/><path d="M12 8l3.5 2v4L12 16l-3.5-2v-4z" fill="var(--ic2, currentColor)" stroke="none"/></svg>'
     };
-    const PRESET_COLORS = ['#ccff00', '#0ea5e9', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444'];
+    const PRESET_COLORS = ['#7fc28a', '#0ea5e9', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444'];
     const PRESET_TAGS = ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'C#', 'Go', 'Rust', 'PHP', 'Ruby', 'Swift', 'Kotlin', 'React', 'Vue', 'Angular', 'Svelte', 'Next.js', 'Nuxt', 'Tailwind CSS', 'SASS', 'Webpack', 'Vite', 'Node.js', 'Express', 'Django', 'Flask', 'FastAPI', 'Spring', 'Laravel', 'ASP.NET', 'SQL', 'PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'SQLite', 'Firebase', 'Docker', 'Kubernetes', 'AWS', 'Azure', 'Google Cloud', 'Linux', 'Windows', 'macOS', 'CI/CD', 'Nginx', 'Git', 'GitHub', 'VS Code', 'Figma', 'Postman', 'Jira', 'Notion', 'Web', 'Mobile', 'Desktop', 'API', 'CLI', 'Bot', 'Parser', 'Automation', 'GameDev', 'AI', 'ML', 'Security', 'Tools', 'Testing', 'Design', 'UI/UX', 'Performance', 'Open Source', 'Productivity'];
 
     let projects = [];
@@ -64,8 +64,8 @@
         switch (state) {
             case 'connected': tokenStatus.textContent = '✓ Подключено' + (extra ? ' (' + extra + ')' : ''); tokenStatus.classList.add('connected'); break;
             case 'checking': tokenStatus.textContent = 'Проверка...'; tokenStatus.classList.add('checking'); break;
-            case 'warning': tokenStatus.textContent = '⚠ ' + (extra || 'Ограниченные права'); tokenStatus.classList.add('warning'); break;
-            case 'error': tokenStatus.textContent = '✗ ' + (extra || 'Не подключено'); tokenStatus.classList.add('error'); break;
+            case 'warning': tokenStatus.textContent = (extra || 'Ограниченные права'); tokenStatus.classList.add('warning'); break;
+            case 'error': tokenStatus.textContent = (extra || 'Не подключено'); tokenStatus.classList.add('error'); break;
             default: tokenStatus.textContent = 'Не подключено';
         }
     }
@@ -257,7 +257,7 @@
             const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
                 method: 'PUT',
                 headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
-                body: JSON.stringify({ message: 'Update projects.json via admin v2', content, sha: fileSha })
+                body: JSON.stringify({ message: 'Update projects.json via admin', content, sha: fileSha })
             });
             if (!res.ok) {
                 let serverMsg = ''; try { const j = await res.json(); serverMsg = j.message || ''; } catch (e) {}
@@ -323,7 +323,7 @@
             if (searchFilter) { const haystack = `${proj.title || ''} ${proj.description || ''} ${(proj.tags || []).join(' ')}`.toLowerCase(); if (!haystack.includes(searchFilter)) return; }
             visibleCount++;
             const item = document.createElement('div');
-            item.className = 'project-item animated-dashed'; item.draggable = true; item.dataset.index = index;
+            item.className = 'project-item'; item.draggable = true; item.dataset.index = index;
             const iconSVG = getIcon(proj.icon);
             const currentTags = Array.isArray(proj.tags) ? proj.tags : [];
             let displayIcon = iconSVG;
@@ -357,7 +357,7 @@
                         <select class="field-icon" data-index="${index}"><option value="layout" ${proj.icon === 'layout' ? 'selected' : ''}>Макет</option><option value="file" ${proj.icon === 'file' ? 'selected' : ''}>Файл</option><option value="shopping-bag" ${proj.icon === 'shopping-bag' ? 'selected' : ''}>Магазин</option><option value="archive" ${proj.icon === 'archive' ? 'selected' : ''}>Архив</option><option value="react" ${proj.icon === 'react' ? 'selected' : ''}>React</option><option value="javascript" ${proj.icon === 'javascript' ? 'selected' : ''}>JavaScript</option><option value="python" ${proj.icon === 'python' ? 'selected' : ''}>Python</option><option value="windows" ${proj.icon === 'windows' ? 'selected' : ''}>Windows</option><option value="exe" ${proj.icon === 'exe' ? 'selected' : ''}>EXE</option><option value="security" ${proj.icon === 'security' ? 'selected' : ''}>Безопасность</option><option value="tools" ${proj.icon === 'tools' ? 'selected' : ''}>Инструменты</option></select></div>
                         <div class="custom-icon-upload"><input type="file" class="field-customIconFile hidden" accept="image/*" data-index="${index}" id="customIconFile_${index}"><label for="customIconFile_${index}">📁 Загрузить иконку</label>${proj.customIcon ? `<button class="icon-btn danger" data-action="removeCustomIcon" data-index="${index}" title="Сбросить">✕</button>` : ''}</div>
                     </div>
-                    <div class="form-group"><label>Цвет</label><div class="color-row">${colorSwatches}<input type="text" class="field-color color-input" value="${escapeHtml(proj.color || '#ccff00')}" data-index="${index}" maxlength="7" pattern="^#[0-9a-fA-F]{6}$"></div></div>
+                    <div class="form-group"><label>Цвет</label><div class="color-row">${colorSwatches}<input type="text" class="field-color color-input" value="${escapeHtml(proj.color || '#7fc28a')}" data-index="${index}" maxlength="7" pattern="^#[0-9a-fA-F]{6}$"></div></div>
                 </div>
             `;
             listEl.appendChild(item);
@@ -474,7 +474,7 @@
 
     document.getElementById('addBtn').addEventListener('click', () => {
         if (projects.length >= LIMITS.MAX_COUNT) { toast(`Максимум ${LIMITS.MAX_COUNT}`); return; }
-        projects.push({ title: 'Новый проект', category: 'website', description: 'Описание', tags: ['JavaScript'], type: 'link', link: 'https://example.com', buttonText: 'Открыть', icon: 'layout', color: '#ccff00', featured: false });
+        projects.push({ title: 'Новый проект', category: 'website', description: 'Описание', tags: ['JavaScript'], type: 'link', link: 'https://example.com', buttonText: 'Открыть', icon: 'layout', color: '#7fc28a', featured: false });
         markUnsaved(); render();
     });
 

@@ -1,0 +1,84 @@
+/* Тема: минимализм и терминал. Плоские поверхности, тонкие линии, один спокойный акцент.
+   Токены лежат в styles.css (:root и [data-theme="light"]). Остальные страницы (404, админка,
+   VoidForge, шпаргалки) держат свои токены в собственных CSS с теми же значениями. */
+
+.project-card { position: relative; }
+.tabs { flex-wrap: wrap; }
+.fav-empty { color: var(--text-muted); font-family: var(--font-mono); font-size: 13px; padding: 40px 0; }
+.fav-empty[hidden] { display: none; }
+
+/* Первый экран */
+.hero { min-height: 0; padding: 40px 0 70px; margin-bottom: 50px; }
+.hero .badge { border-color: var(--border); color: var(--text-muted); letter-spacing: 1px; text-transform: none; font-size: 13px; }
+.hero p { font-size: 16px; line-height: 1.7; max-width: 560px; }
+.hero-buttons { flex-wrap: wrap; }
+.btn-primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.btn-primary:hover { background: transparent; color: var(--accent); }
+
+/* Заголовки: обычный регистр, без капса и подчёркивающих полос */
+.section-title, .page-header h1, .mobile-nav a { text-transform: none; letter-spacing: -0.5px; }
+.section-title { font-size: 28px; }
+.page-header h1 { font-size: 40px; }
+
+/* Поверхности: плоские, без свечения */
+.badge, .tag, .project-card, .contact-form { box-shadow: none; }
+.project-card:hover { background: var(--card-bg); border-color: var(--border); }
+.tag:hover { border-color: var(--accent); color: var(--accent); }
+.details-link:hover, .action-btn:hover { color: var(--accent); }
+
+/* Мелочи */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+::selection { background: var(--accent); color: var(--on-accent); }
+html { scrollbar-color: var(--border) var(--bg-color); scrollbar-width: thin; }
+.footer-links a, .footer-socials a { transition: color 0.2s; }
+.tag { transition: border-color 0.2s, color 0.2s; }
+@media (max-width: 600px) { .section-header { flex-wrap: wrap; gap: 8px 16px; } }
+
+/* Форма */
+.field-label { display: block; margin-bottom: 8px; font-size: 13px; color: var(--text-muted); }
+.form-group input, .form-group textarea { transition: border-color 0.2s; }
+.form-status { transition: opacity 0.3s; }
+
+/* Загрузка файлов */
+.upload { position: relative; display: flex; align-items: center; gap: 18px; padding: 20px 22px; cursor: pointer;
+    border: 1px dashed var(--border); background: var(--card-bg); transition: border-color 0.2s, background 0.2s; }
+.upload:hover, .upload.dragover, .upload:focus-within { border-color: var(--accent); }
+.upload.dragover { border-style: solid; }
+.upload-icon { flex-shrink: 0; width: 46px; height: 46px; display: grid; place-items: center; border: 1px solid var(--border); color: var(--accent); }
+.upload-icon svg { width: 22px; height: 22px; }
+.upload-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.upload-title { font-size: 14px; font-weight: 600; color: var(--text-main); }
+.upload-sub { font-size: 12px; color: var(--text-muted); }
+.file-list { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; }
+.file-list:empty { display: none; }
+.file-chip { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; padding: 6px 6px 6px 12px; border: 1px solid var(--border); background: var(--card-bg); font-size: 12px; }
+.file-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; color: var(--text-main); }
+.file-size { color: var(--text-muted); white-space: nowrap; }
+.file-remove { width: 24px; height: 24px; display: grid; place-items: center; border: 0; background: transparent; color: var(--text-muted); font-size: 18px; line-height: 1; cursor: pointer; }
+.file-remove:hover, .file-remove:focus-visible { background: var(--text-main); color: var(--bg-color); }
+.upload-meter { display: flex; align-items: center; gap: 12px; margin-top: 10px; font-size: 11px; color: var(--text-muted); }
+.upload-meter[hidden] { display: none; }
+.upload-track { flex: 1; height: 4px; background: var(--border); overflow: hidden; }
+.upload-track i { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.35s ease; }
+.upload-meter.over .upload-track i { background: #b3402f; }
+
+/* Чекбокс согласия */
+.consent-label.check { position: relative; display: flex; align-items: flex-start; gap: 12px; cursor: pointer; font-size: 12px; line-height: 1.55; color: var(--text-muted); text-transform: none; }
+.consent-label.check a { color: var(--accent); }
+.check-box { position: relative; flex-shrink: 0; width: 22px; height: 22px; display: grid; place-items: center; border: 1px solid var(--border); background: var(--card-bg); color: var(--on-accent); }
+.check-box svg { width: 14px; height: 14px; stroke-dasharray: 24; stroke-dashoffset: 24; }
+.consent-label.check:hover .check-box { border-color: var(--accent); }
+.consent-label.check input:focus-visible + .check-box { outline: 2px solid var(--accent); outline-offset: 2px; }
+.consent-label.check input:checked + .check-box { background: var(--accent); border-color: var(--accent); }
+.consent-label.check input:checked + .check-box svg { stroke-dashoffset: 0; }
+.submit-btn:disabled { opacity: 0.6; cursor: progress; }
+@media (max-width: 600px) { .upload { padding: 16px; gap: 14px; } .file-name { max-width: 150px; } }
+
+/* Телефон */
+@media (max-width: 968px) {
+    .hero h1 { font-size: clamp(32px, 9.5vw, 52px); max-width: none; letter-spacing: -1px; }
+    .section-title { font-size: 24px; }
+    .page-header h1 { font-size: 32px; }
+}
+.footer-links { flex-wrap: wrap; }
+.footer-content { min-width: 0; }

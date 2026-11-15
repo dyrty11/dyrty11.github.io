@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Admin v2 — P.</title>
+    <title>Админка проектов — P.</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <meta name="robots" content="noindex, nofollow">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://api.github.com; object-src 'none'; upgrade-insecure-requests; base-uri 'none'; form-action 'none'; frame-ancestors 'none';">
     <script src="frame-bust.js"></script>
-    <script src="lite.js"></script>
     <link rel="stylesheet" href="fonts.css">
     <link rel="stylesheet" href="admin.css">
-    <link rel="stylesheet" href="glass.css">
 </head>
 <body>
     <div class="container">
@@ -23,7 +21,7 @@
                         <polygon points="50,10 84,30 84,70 50,90 16,70 16,30" stroke="currentColor" stroke-width="8" stroke-linejoin="miter"/>
                         <circle cx="50" cy="50" r="10" fill="var(--accent)"/>
                     </svg>
-                    <h1>Online <span>Admin</span> v2</h1>
+                    <h1>Админка <span>проектов</span></h1>
                 </div>
                 <p class="subtitle">Управление projects.json прямо на GitHub</p>
             </div>
@@ -34,9 +32,9 @@
             </div>
         </div>
 
-        <div class="stats animated-dashed" id="stats"></div>
+        <div class="stats" id="stats"></div>
 
-        <div class="token-section animated-dashed">
+        <div class="token-section">
             <label>GitHub Personal Access Token (fine-grained, Contents: Read & Write)</label>
             <input type="password" id="tokenInput" placeholder="github_pat_..." autocomplete="off" spellcheck="false">
             <div class="token-hint">
@@ -45,7 +43,7 @@
                 <a href="https://github.com/settings/tokens" target="_blank" rel="noopener noreferrer">Создать токен →</a>
                 (fine-grained, права <b>Contents: Read &amp; Write</b>, доступ к репозиторию <b>dyrty11/dyrty11.github.io</b>)
             </div>
-            <div class="token-warning">⚠️ Вводите токен только на этом сайте. Не используйте админку на чужих устройствах.</div>
+            <div class="token-warning">Вводите токен только на этом сайте. Не используйте админку на чужих устройствах.</div>
             <div class="token-row">
                 <span class="status-badge" id="tokenStatus">Не подключено</span>
                 <button type="button" class="forget-btn" id="forgetTokenBtn">Забыть токен</button>
@@ -53,7 +51,7 @@
         </div>
 
         <div class="toolbar">
-            <input type="text" id="searchAdmin" placeholder="🔍 Поиск по названию, описанию, тегам...">
+            <input type="text" id="searchAdmin" placeholder="Поиск по названию, описанию, тегам...">
             <span class="unsaved-badge hidden" id="unsavedBadge">● Не сохранено</span>
         </div>
 

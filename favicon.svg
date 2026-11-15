@@ -1,18 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
     <style>
-        .bg     { fill: #050505; }
-        .stroke { stroke: #ccff00; }
-        .dot    { fill: #ccff00; }
+        .bg     { fill: #101113; }
+        .stroke { stroke: #7fc28a; }
+        .dot    { fill: #7fc28a; }
         
         /* Светлая тема браузера */
         @media (prefers-color-scheme: light) {
-            .bg     { fill: #ffffff; }
-            .stroke { stroke: #050505; }
-            .dot    { fill: #88cc00; }
+            .bg     { fill: #f5f4ef; }
+            .stroke { stroke: #1a1b1d; }
+            .dot    { fill: #2e6b3d; }
         }
     </style>
     
     <rect class="bg" width="100" height="100"/>
     <polygon class="stroke" points="50,12 83,31 83,69 50,88 17,69 17,31" fill="none" stroke-width="6" stroke-linejoin="miter"/>
-        <circle cx="50" cy="50" r="10" fill="var(--accent)"/>
+        <circle class="dot" cx="50" cy="50" r="10"/>
 </svg>

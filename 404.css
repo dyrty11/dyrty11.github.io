@@ -1,10 +1,10 @@
 :root {
-    --bg: #050505; --surface: #0a0a0a; --border: #333;
-    --text: #fff; --text-muted: #888; --accent: #ccff00;
+    --bg: #101113; --surface: #16181b; --border: #2c2f34;
+    --text: #e8e8e4; --text-muted: #8d9198; --accent: #7fc28a; --on-accent: #0b0d0c;
 }
 [data-theme="light"] {
-    --bg: #f4f4f4; --surface: #ffffff; --border: #d4d4d4;
-    --text: #050505; --text-muted: #555555; --accent: #ccff00;
+    --bg: #f5f4ef; --surface: #fbfaf6; --border: #d6d4cc;
+    --text: #1a1b1d; --text-muted: #5b5e64; --accent: #2e6b3d; --on-accent: #ffffff;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0 !important; }
 body {
@@ -13,43 +13,31 @@ body {
     min-height: 100vh; display: flex; flex-direction: column;
     -webkit-font-smoothing: antialiased; transition: background 0.3s, color 0.3s;
 }
-.animated-dashed { position: relative; border: none !important; }
-.animated-dashed::after {
-    content: ''; position: absolute; inset: 0; pointer-events: none;
-    background-image: linear-gradient(90deg, var(--border) 50%, transparent 50%), linear-gradient(90deg, var(--border) 50%, transparent 50%), linear-gradient(0deg, var(--border) 50%, transparent 50%), linear-gradient(0deg, var(--border) 50%, transparent 50%);
-    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
-    background-size: 12px 1px, 12px 1px, 1px 12px, 1px 12px;
-    background-position: 0 0, 0 100%, 0 0, 100% 0;
-    animation: borderMarch 0.8s linear infinite;
-}
-.animated-dashed:hover::after {
-    background-image: linear-gradient(90deg, var(--accent) 50%, transparent 50%), linear-gradient(90deg, var(--accent) 50%, transparent 50%), linear-gradient(0deg, var(--accent) 50%, transparent 50%), linear-gradient(0deg, var(--accent) 50%, transparent 50%);
-}
-@keyframes borderMarch { from { background-position: 0 0, 0 100%, 0 0, 100% 0; } to { background-position: 12px 0, -12px 100%, 0 -12px, 100% 12px; } }
+.animated-dashed { position: relative; }
 .wrapper { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; text-align: center; }
-.error-code { font-family: 'Space Grotesk', sans-serif; font-size: clamp(120px, 25vw, 280px); font-weight: 700; line-height: 0.85; letter-spacing: -8px; color: transparent; -webkit-text-stroke: 2px var(--text); position: relative; user-select: none; margin-bottom: 20px; }
-.error-code span { color: var(--accent); -webkit-text-stroke: 0; }
-.error-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(20px, 3vw, 32px); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
+.error-code { font-family: 'Space Grotesk', sans-serif; font-size: clamp(96px, 20vw, 200px); font-weight: 600; line-height: 0.9; letter-spacing: -4px; color: var(--text); margin-bottom: 20px; }
+.error-code span { color: var(--accent); }
+.error-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(20px, 3vw, 32px); font-weight: 700; letter-spacing: -0.5px; margin-bottom: 15px; }
 .error-desc { font-size: 14px; color: var(--text-muted); max-width: 480px; line-height: 1.6; margin-bottom: 40px; }
 .error-nav { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-bottom: 50px; }
 .btn { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; text-transform: uppercase; padding: 16px 32px; border: 1px solid var(--border); background: transparent; color: var(--text); cursor: pointer; text-decoration: none; transition: all 0.2s; }
-.btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+.btn:hover { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 .btn-primary { border-color: var(--accent); color: var(--accent); }
-.btn-primary:hover { background: var(--accent); color: #000; }
+.btn-primary:hover { background: var(--accent); color: var(--on-accent); }
 .error-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); max-width: 600px; width: 100%; }
 .error-grid a { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 25px; background: var(--surface); color: var(--text); text-decoration: none; transition: background 0.2s; }
 .error-grid a:hover { background: var(--bg); }
 .grid-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
 .grid-path { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--accent); }
-.error-hint { margin-top: 40px; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
+.error-hint { margin-top: 40px; font-size: 11px; color: var(--text-muted);  }
 .theme-toggle-wrap { position: absolute; top: 20px; right: 20px; }
 .theme-switch { width: 50px; height: 26px; background: var(--bg); border: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; position: relative; padding: 2px; }
 .theme-switch svg { width: 14px; height: 14px; fill: var(--text-muted); transition: all 0.3s; }
 .theme-switch .sun-icon { position: absolute; left: 4px; }
 .theme-switch .moon-icon { position: absolute; right: 4px; }
-.theme-switch-ball { width: 20px; height: 20px; background: var(--accent); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.theme-switch-ball { width: 20px; height: 20px; background: var(--accent); transition: transform 0.3s ease; }
 [data-theme="dark"] .theme-switch-ball { transform: translateX(24px); }
 [data-theme="light"] .theme-switch-ball { transform: translateX(0); }
-[data-theme="dark"] .theme-switch .moon-icon { fill: #000; }
-[data-theme="light"] .theme-switch .sun-icon { fill: #000; }
+[data-theme="dark"] .theme-switch .moon-icon { fill: var(--on-accent); }
+[data-theme="light"] .theme-switch .sun-icon { fill: var(--on-accent); }
 @media (max-width: 600px) { .error-code { letter-spacing: -4px; margin-bottom: 10px; } .error-grid { grid-template-columns: 1fr; } .btn { width: 100%; text-align: center; padding: 14px 20px; } .theme-toggle-wrap { top: 15px; right: 15px; } }
