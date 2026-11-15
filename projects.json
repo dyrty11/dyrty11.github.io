@@ -6,7 +6,8 @@
     "tags": [
       "HTML",
       "CSS",
-      "JavaScript"
+      "JavaScript",
+      "Open Source"
     ],
     "type": "link",
     "link": "voidforge.html",
@@ -23,7 +24,8 @@
       "Без регистрации, файлы не уходят на сервер"
     ],
     "page": "project-voidforge.html",
-    "source": "https://github.com/dyrty11/dyrty11.github.io"
+    "source": "https://github.com/dyrty11/dyrty11.github.io",
+    "featured": true
   },
   {
     "title": "FilePilot",
@@ -33,7 +35,8 @@
       "Python",
       "Windows",
       "Open source",
-      "RU / EN"
+      "RU / EN",
+      "Open Source"
     ],
     "type": "link",
     "link": "https://github.com/dyrty11/filepilot/releases/latest/download/FilePilotSetup.exe",
@@ -170,7 +173,8 @@
       "Update check, one-click install and a “What's new” window",
       "The index stays on your computer"
     ],
-    "license": "MIT"
+    "license": "MIT",
+    "featured": true
   },
   {
     "title": "Конструктор шпаргалок",
@@ -178,7 +182,8 @@
     "description": "Собирает шпаргалки: шаблоны (Git, PowerShell, VS Code и другие), лист A4, печать, PDF и PNG.",
     "tags": [
       "JavaScript",
-      "Developer Tools"
+      "Developer Tools",
+      "Open Source"
     ],
     "type": "link",
     "link": "cheatsheets.html",
@@ -196,6 +201,7 @@
       "Без регистрации, данные остаются в браузере"
     ],
     "page": "project-cheatsheets.html",
-    "source": "https://github.com/dyrty11/dyrty11.github.io"
+    "source": "https://github.com/dyrty11/dyrty11.github.io",
+    "featured": true
   }
 ]
