@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         function buildTagFilters() {
             const tagFiltersContainer = document.getElementById('tagFilters'); if (!tagFiltersContainer) return;
             tagFiltersContainer.innerHTML = '';
-            const allTags = new Set(); allProjects.forEach(p => { if (Array.isArray(p.tags)) p.tags.forEach(t => allTags.add(String(t))); });
+            const allTags = new Set(); const seenTags = new Set(); allProjects.forEach(p => { if (Array.isArray(p.tags)) p.tags.forEach(t => { const k = String(t).toLowerCase(); if (!seenTags.has(k)) { seenTags.add(k); allTags.add(String(t)); } }); });
             const makeFilterBtn = (label, tagValue, isActive) => {
                 const btn = document.createElement('button'); btn.className = 'tag-filter-btn' + (isActive ? ' active' : ''); btn.setAttribute('data-tag', tagValue);
                 const iconSvg = tagValue !== 'all' ? getTagIcon(tagValue) : '';
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const title = String(project.title || ''); const desc = String(project.description || '');
                 const tags = Array.isArray(project.tags) ? project.tags.map(String) : [];
                 const matchCategory = currentFilters.category === 'all' || project.category === currentFilters.category;
-                const matchTag = currentFilters.tag === 'all' || tags.includes(currentFilters.tag);
+                const matchTag = currentFilters.tag === 'all' || tags.some(x => x.toLowerCase() === String(currentFilters.tag).toLowerCase());
                 const searchLower = currentFilters.search.toLowerCase();
                 const matchSearch = title.toLowerCase().includes(searchLower) || desc.toLowerCase().includes(searchLower);
                 return matchCategory && matchTag && matchSearch;
