@@ -78,6 +78,11 @@
     function addDownloads(parent, p, en) {
         addSource(parent, p, en);
         if (!Array.isArray(p.downloads) || !p.downloads.length) return;
+        var cur = Array.isArray(p.changelog) && p.changelog[0];
+        if (cur && /^\d+\.\d+\.\d+$/.test(String(cur.version))) {
+            var d0 = /^\d{4}-\d{2}-\d{2}$/.test(String(cur.date || '')) ? ' · ' + cur.date : '';
+            parent.appendChild(el('p', 'detail-version', (en ? 'Current version: v' : 'Текущая версия: v') + cur.version + d0));
+        }
         var box = el('div', 'detail-downloads');
         var n = 0;
         p.downloads.slice(0, 6).forEach(function (d) {

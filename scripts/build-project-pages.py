@@ -58,6 +58,19 @@ def main():
                 {'@type': 'ListItem', 'position': 1, 'name': 'Главная', 'item': SITE + '/'},
                 {'@type': 'ListItem', 'position': 2, 'name': 'Проекты', 'item': SITE + '/projects.html'},
                 {'@type': 'ListItem', 'position': 3, 'name': title, 'item': url}]}]}, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+        if p.get('downloads'):  # программа: описание для поисковиков (версия берётся из «Что нового»)
+            app = {'@type': 'SoftwareApplication', '@id': url + '#app', 'name': title, 'description': desc, 'url': url,
+                   'applicationCategory': 'UtilitiesApplication', 'operatingSystem': 'Windows 10, Windows 11',
+                   'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'}, 'image': og_img}
+            if p.get('license'):
+                app['license'] = 'https://opensource.org/licenses/%s' % p['license']
+            if p.get('source'):
+                app['codeRepository'] = p['source']
+            if p.get('link'):
+                app['downloadUrl'] = p['link']
+            if p.get('changelog'):
+                app['softwareVersion'] = p['changelog'][0]['version']
+            ld = ld[:-2] + ',' + json.dumps(app, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/') + ']}'
         extra = nl.join([
             '    <link rel="canonical" href="%s">' % url,
             '    <meta property="og:url" content="%s">' % url,
