@@ -140,3 +140,9 @@ nav.desktop-nav a:hover::after, nav.desktop-nav a.active::after { width: 100%; }
 .detail-source-label { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); display: inline-flex; align-items: center; gap: 10px; }
 .detail-source-label::before { content: ""; width: 7px; height: 7px; background: var(--accent); }
 .detail-source-link { font-family: var(--font-mono); font-size: 13px; color: var(--accent); text-underline-offset: 3px; }
+
+/* Что нового (project.js: addChangelog) */
+.detail-changelog { max-width: 820px; margin: 3rem auto 0; padding: 0 1rem; }
+.changelog-entry { border-left: 2px solid var(--border); padding: .2rem 0 .2rem 1.1rem; margin-bottom: 1.4rem; }
+.changelog-version { font-family: var(--font-mono, ui-monospace, monospace); font-size: 1.05rem; margin: 0 0 .4rem; color: var(--accent); display: flex; gap: .8rem; align-items: baseline; }
+.changelog-date { font-size: .8rem; color: var(--text-muted); font-weight: 400; }

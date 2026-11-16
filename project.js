@@ -92,6 +92,35 @@
         if (note) parent.appendChild(el('p', 'detail-note', String(note)));
     }
 
+    function addChangelog(parent, p) {
+        var blocks = [['changelog', 'Что нового', 'Все версии на GitHub ↗', ''], ['changelogEn', "What's new (English)", 'All versions on GitHub ↗', 'en']];
+        blocks.forEach(function (b) {
+            var list = p[b[0]];
+            if (!Array.isArray(list) || !list.length) return;
+            var sec = el('section', 'detail-changelog');
+            if (b[3]) sec.setAttribute('lang', b[3]);
+            sec.appendChild(el('h2', 'detail-sub', b[1]));
+            list.slice(0, 5).forEach(function (v) {
+                if (!v || !/^\d+\.\d+\.\d+$/.test(String(v.version))) return;
+                var row = el('div', 'changelog-entry');
+                var h = el('h3', 'changelog-version', 'v' + v.version);
+                if (/^\d{4}-\d{2}-\d{2}$/.test(String(v.date || ''))) h.appendChild(el('span', 'changelog-date', String(v.date)));
+                row.appendChild(h);
+                var ul = el('ul', 'feature-list');
+                (Array.isArray(v.items) ? v.items : []).slice(0, 12).forEach(function (t) { ul.appendChild(el('li', null, String(t))); });
+                row.appendChild(ul);
+                sec.appendChild(row);
+            });
+            var u = safeUrl(p.source);
+            if (u && b[3] === '') {
+                var a = el('a', 'detail-source-link', b[2]);
+                a.href = u.replace(/\/$/, '') + '/blob/main/CHANGELOG.md'; a.target = '_blank'; a.rel = 'noopener noreferrer';
+                sec.appendChild(a);
+            }
+            parent.appendChild(sec);
+        });
+    }
+
     function render(p) {
         var title = String(p.title || 'Проект');
         document.title = title + ' — Portfolio';
@@ -147,6 +176,7 @@
         }
         grid.appendChild(info);
         root.appendChild(grid);
+        addChangelog(root, p);
         if (Array.isArray(p.gallery) && p.gallery.length) {
             var gal = el('section', 'detail-gallery');
             gal.appendChild(el('h2', 'detail-sub', 'Скриншоты'));

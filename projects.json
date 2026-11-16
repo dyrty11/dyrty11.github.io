@@ -173,7 +173,74 @@
       "The index stays on your computer"
     ],
     "license": "MIT",
-    "featured": true
+    "featured": true,
+    "changelog": [
+      {
+        "version": "0.6.0",
+        "items": [
+          "Операторы в строке поиска: ext:pdf,docx, in:\"C:\\Папка\", older:30, bigger:5mb, smaller:100kb. Они сильнее панели «Фильтры»; фраза в кавычках ищется как есть. Работают и в консоли.",
+          "История запросов: Enter или «Найти» запоминает запрос (последние 20), подсказки появляются при наборе.",
+          "Папки перетаскиваются из Проводника прямо в окно программы: они добавляются в индекс, и индексация начинается сама.",
+          "Экспорт в CSV для списка дубликатов и таблицы карты диска (Excel открывает файл сразу, кодировка UTF-8 с BOM, разделитель ;).",
+          "README: установка и быстрый старт идут первыми, запуск из исходников, консольные команды и сборка вынесены в раздел «Для разработчиков»."
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "version": "0.5.0",
+        "items": [
+          "Исключения индексации: в окне «Папки» можно исключить папку целиком или маску имени (node_modules, *.tmp, ~$*). Уже проиндексированные файлы из исключённых мест убираются из индекса при следующей индексации. В консоли: filepilot exclude add|remove|list.",
+          "Поиск в выбранной папке: в панели «Фильтры» появился список «Папка» (по умолчанию «Все папки»). Выбор сохраняется в сохранённых поисках. В консоли: filepilot search ... --folder <путь>."
+        ],
+        "date": "2026-11-14"
+      },
+      {
+        "version": "0.4.2",
+        "items": [
+          "Постоянная ссылка на установщик: FilePilotSetup.exe (рядом с версионным файлом), её используют кнопки «Скачать» на сайте и в README.",
+          "Окно «О программе» (меню «Обновления»): версия, ссылки на сайт, установщик и исходный код.",
+          "Новое описание и скриншоты на русском и английском (README.md, README.en.md), скрипт scripts/make_screenshots.py.",
+          "Окно пробного запуска правил: колонки подгоняются под содержимое."
+        ],
+        "date": "2026-11-14"
+      },
+      {
+        "version": "0.4.1",
+        "items": [
+          "Уведомление об обновлении: после установки новой версии (автообновление или установщик, скачанный заново) программа показывает уведомление Windows и окно «Что нового» с описанием изменений. При первой установке и при повторной установке той же версии ничего не показывается."
+        ],
+        "date": "2026-11-13"
+      },
+      {
+        "version": "0.4.0",
+        "items": [
+          "Дубликаты: можно выбрать, какую копию оставить (первую в списке, самую старую, самую новую или с самым коротким путём), и отметить остальные одним нажатием.",
+          "Фоновое обновление индекса: меню «Фоновое обновление» (выкл., каждые 15 минут, каждый час, каждые 6 часов), пока программа открыта."
+        ],
+        "date": "2026-11-13"
+      }
+    ],
+    "changelogEn": [
+      {
+        "version": "0.6.0",
+        "items": [
+          "Operators in the search box: ext:pdf,docx, in:\"C:\\Folder\", older:30, bigger:5mb, smaller:100kb. They override the Filters panel; a quoted phrase is searched as is. They work in the command line too.",
+          "Query history: Enter or Find saves the query (last 20), suggestions appear as you type.",
+          "Drag folders from Explorer into the app window: they are added to the index and indexing starts by itself.",
+          "CSV export for the duplicates list and the disk map table (opens in Excel right away, UTF-8 with BOM, ; separator).",
+          "README: install and quick start come first; running from source, command line and build moved to a \"For developers\" section."
+        ],
+        "date": "2026-11-15"
+      },
+      {
+        "version": "0.5.0",
+        "items": [
+          "Index exclusions: in the Folders window you can exclude a whole folder or a name mask (node_modules, *.tmp, ~$*). Files already indexed from excluded places are removed from the index on the next run. Command line: filepilot exclude add|remove|list.",
+          "Search inside one folder: a \"Folder\" list in the Filters panel (default \"All folders\"). The choice is saved with saved searches. Command line: filepilot search ... --folder <path>."
+        ],
+        "date": "2026-11-14"
+      }
+    ]
   },
   {
     "title": "Конструктор шпаргалок",
