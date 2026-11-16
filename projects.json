@@ -176,6 +176,16 @@
     "featured": true,
     "changelog": [
       {
+        "version": "0.7.0",
+        "items": [
+          "Индексация целого диска стала безопасной и быстрее: системные папки в корне диска (Windows, Program Files, ProgramData, корзина) и AppData пропускаются, папки-junction не обходятся, заглушки облака (OneDrive и др.) не читаются, чтобы не запускать скачивание файлов.",
+          "Обход папок ускорен: размер и даты берутся прямо из обхода без лишних обращений к диску (50 000 файлов обходятся за доли секунды). Счётчик прогресса больше не заваливает интерфейс, при повторной индексации показывается процент по прошлому проходу.",
+          "Индексация идёт с пониженным приоритетом, компьютер не тормозит.",
+          "При добавлении диска целиком программа предупреждает, сколько это займёт, и спрашивает подтверждение."
+        ],
+        "date": "2026-11-16"
+      },
+      {
         "version": "0.6.0",
         "items": [
           "Операторы в строке поиска: ext:pdf,docx, in:\"C:\\Папка\", older:30, bigger:5mb, smaller:100kb. Они сильнее панели «Фильтры»; фраза в кавычках ищется как есть. Работают и в консоли.",
@@ -210,17 +220,19 @@
           "Уведомление об обновлении: после установки новой версии (автообновление или установщик, скачанный заново) программа показывает уведомление Windows и окно «Что нового» с описанием изменений. При первой установке и при повторной установке той же версии ничего не показывается."
         ],
         "date": "2026-11-13"
-      },
-      {
-        "version": "0.4.0",
-        "items": [
-          "Дубликаты: можно выбрать, какую копию оставить (первую в списке, самую старую, самую новую или с самым коротким путём), и отметить остальные одним нажатием.",
-          "Фоновое обновление индекса: меню «Фоновое обновление» (выкл., каждые 15 минут, каждый час, каждые 6 часов), пока программа открыта."
-        ],
-        "date": "2026-11-13"
       }
     ],
     "changelogEn": [
+      {
+        "version": "0.7.0",
+        "items": [
+          "Indexing a whole drive is now safe and faster: system folders at the drive root (Windows, Program Files, ProgramData, Recycle Bin) and AppData are skipped, junctions are not followed, and cloud placeholders (OneDrive etc.) are not read so nothing gets downloaded.",
+          "Folder scanning is faster: size and dates come straight from the scan with no extra disk calls (50,000 files are scanned in a fraction of a second). The progress counter no longer floods the UI, and a re-index shows a percentage based on the previous pass.",
+          "Indexing runs at lower priority, so the computer stays responsive.",
+          "Adding a whole drive now shows a warning about how long it takes and asks for confirmation."
+        ],
+        "date": "2026-11-16"
+      },
       {
         "version": "0.6.0",
         "items": [
