@@ -147,3 +147,4 @@ nav.desktop-nav a:hover::after, nav.desktop-nav a.active::after { width: 100%; }
 .changelog-version { font-family: var(--font-mono, ui-monospace, monospace); font-size: 1.05rem; margin: 0 0 .4rem; color: var(--accent); display: flex; gap: .8rem; align-items: baseline; }
 .changelog-date { font-size: .8rem; color: var(--text-muted); font-weight: 400; }
 .detail-version { font-family: var(--font-mono, ui-monospace, monospace); font-size: .85rem; color: var(--text-muted); margin: 1.2rem 0 .6rem; }
+.version-badge { margin-left: .6rem; padding: .1rem .45rem; border: 1px solid var(--border); color: var(--accent); font-family: var(--font-mono, ui-monospace, monospace); font-size: .7rem; font-weight: 400; vertical-align: middle; letter-spacing: .02em; }

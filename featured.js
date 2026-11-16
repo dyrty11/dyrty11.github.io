@@ -44,7 +44,10 @@
             c.appendChild(th);
         }
 
-        c.appendChild(el('h3', null, String(p.title || '')));
+        var h3 = el('h3', null, String(p.title || ''));
+        var cv = Array.isArray(p.changelog) && p.changelog[0];
+        if (cv && /^\d+\.\d+\.\d+$/.test(String(cv.version))) h3.appendChild(el('span', 'version-badge', 'v' + cv.version));
+        c.appendChild(h3);
         c.appendChild(el('p', null, String(p.description || '')));
 
         var tags = el('div', 'project-tags');

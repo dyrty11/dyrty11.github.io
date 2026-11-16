@@ -141,6 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     iconDiv.innerHTML = icons[iconKey];
                 }
                 const titleEl = document.createElement('h3'); titleEl.textContent = String(project.title || '');
+                const cv = Array.isArray(project.changelog) && project.changelog[0]; if (cv && /^\d+\.\d+\.\d+$/.test(String(cv.version))) { const vb = document.createElement('span'); vb.className = 'version-badge'; vb.textContent = 'v' + cv.version; titleEl.appendChild(vb); }
                 const descEl = document.createElement('p'); descEl.textContent = String(project.description || '');
                 const tagsDiv = document.createElement('div'); tagsDiv.className = 'project-tags';
                 if (Array.isArray(project.tags)) {

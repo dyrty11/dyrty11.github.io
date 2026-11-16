@@ -74,6 +74,7 @@ def main():
         extra = nl.join([
             '    <link rel="canonical" href="%s">' % url,
             '    <meta property="og:url" content="%s">' % url,
+            *(['    <link rel="alternate" type="application/atom+xml" title="%s: что нового" href="%s/%s.atom">' % (e(title), SITE, slug)] if p.get('changelog') else []),
             '    <meta name="project-slug" content="%s">' % e(re.sub(r'[^a-z0-9а-яё]+', '-', title.lower()).strip('-')),
             '    <script type="application/ld+json">%s</script>' % ld, ''])
         sub(r'    <meta name="twitter:card"', extra + '    <meta name="twitter:card"')
@@ -86,6 +87,23 @@ def main():
         print('OK', page)
     if changed:
         (ROOT / 'projects.json').write_text(json.dumps(projects, ensure_ascii=False, indent=2), encoding='utf-8')
+    for p in projects:  # лента Atom «что нового» для программ с журналом изменений
+        if not p.get('changelog'):
+            continue
+        slug = ascii_slug(p)
+        page_url = '%s/project-%s.html' % (SITE, slug)
+        entries = []
+        for v in p['changelog']:
+            when = v.get('date') or today
+            body = '<ul>' + ''.join('<li>%s</li>' % e(i) for i in v['items']) + '</ul>'
+            entries.append('  <entry><title>%s %s</title><id>%s#v%s</id><link href="%s"/><updated>%sT00:00:00Z</updated>'
+                           '<content type="html">%s</content></entry>' % (e(p['title']), v['version'], page_url, v['version'], page_url, when, e(body)))
+        newest = (p['changelog'][0].get('date') or today)
+        feed = ['<?xml version="1.0" encoding="UTF-8"?>', '<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ru">',
+                '  <title>%s: что нового</title>' % e(p['title']), '  <id>%s/%s.atom</id>' % (SITE, slug),
+                '  <link rel="self" href="%s/%s.atom"/>' % (SITE, slug), '  <link href="%s"/>' % page_url,
+                '  <updated>%sT00:00:00Z</updated>' % newest, '  <author><name>dyrty11</name></author>'] + entries + ['</feed>']
+        (ROOT / ('%s.atom' % slug)).write_text('\n'.join(feed) + '\n', encoding='utf-8')
     sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for path, prio in urls:
         sm.append('  <url><loc>%s%s</loc><lastmod>%s</lastmod></url>' % (SITE, path, today))
