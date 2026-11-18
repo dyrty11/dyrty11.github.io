@@ -180,6 +180,16 @@
     "featured": true,
     "changelog": [
       {
+        "version": "0.9.0",
+        "items": [
+          "Значок в трее: меню «Окно» → «Сворачивать в трей при закрытии». Крестик прячет окно, индексация и фоновое обновление продолжают работать. Значок: клик открывает окно, правый клик даёт «Открыть и искать», «Индексировать», «Выход».",
+          "Горячая клавиша Ctrl+Alt+F (Windows, включается в меню «Окно»): показывает окно FilePilot и ставит курсор в строку поиска из любой программы. Если сочетание занято другой программой, FilePilot об этом скажет.",
+          "Обе функции по умолчанию выключены.",
+          "Действия с файлами: правый щелчок (или Delete) на найденном файле и в списке «Крупные файлы» карты диска. «В корзину» с подтверждением (всегда в корзину, не насовсем), «Переместить в папку», «Копировать в папку», «Переименовать». Можно выбрать несколько файлов сразу. Индекс обновляется сразу: переименованный и перенесённый файл находится по новому пути без повторной индексации."
+        ],
+        "date": "2026-11-18"
+      },
+      {
         "version": "0.8.0",
         "items": [
           "Оператор newer:7 в строке поиска: только файлы, изменённые за последние 7 дней (парный к older:).",
@@ -217,19 +227,19 @@
           "Поиск в выбранной папке: в панели «Фильтры» появился список «Папка» (по умолчанию «Все папки»). Выбор сохраняется в сохранённых поисках. В консоли: filepilot search ... --folder <путь>."
         ],
         "date": "2026-11-14"
-      },
-      {
-        "version": "0.4.2",
-        "items": [
-          "Постоянная ссылка на установщик: FilePilotSetup.exe (рядом с версионным файлом), её используют кнопки «Скачать» на сайте и в README.",
-          "Окно «О программе» (меню «Обновления»): версия, ссылки на сайт, установщик и исходный код.",
-          "Новое описание и скриншоты на русском и английском (README.md, README.en.md), скрипт scripts/make_screenshots.py.",
-          "Окно пробного запуска правил: колонки подгоняются под содержимое."
-        ],
-        "date": "2026-11-14"
       }
     ],
     "changelogEn": [
+      {
+        "version": "0.9.0",
+        "items": [
+          "Tray icon: the \"Window\" menu → \"Minimize to tray on close\". The close button hides the window while indexing and the background refresh keep running. Click the icon to open the window; right-click gives \"Open and search\", \"Index\" and \"Quit\".",
+          "Hotkey Ctrl+Alt+F (Windows, turned on in the \"Window\" menu): shows the FilePilot window and puts the cursor in the search box from any program. If another program already uses the combination, FilePilot tells you.",
+          "Both features are off by default.",
+          "File actions: right-click (or Delete) on a found file and in the \"Largest files\" list of the disk map. \"Move to Recycle Bin\" with confirmation (always the bin, never permanent), \"Move to folder\", \"Copy to folder\", \"Rename\". You can select several files at once. The index updates right away: a renamed or moved file is found at its new path without re-indexing."
+        ],
+        "date": "2026-11-18"
+      },
       {
         "version": "0.8.0",
         "items": [
