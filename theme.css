@@ -83,54 +83,19 @@ html { scrollbar-color: var(--border) var(--bg-color); scrollbar-width: thin; }
 .footer-links { flex-wrap: wrap; }
 .footer-content { min-width: 0; }
 
-/* ====== Характер: редакторская типографика и терминальные детали ====== */
-:root { --mono-xs: 11px; }
-
-/* Статус и «курсор» в первом экране (без анимации) */
+/* Мелкие детали */
 .hero .badge { display: inline-flex; align-items: center; gap: 10px; }
-.hero .badge::before { content: ""; width: 7px; height: 7px; background: var(--accent); flex-shrink: 0; }
-.hero h1::after { content: "_"; color: var(--accent); margin-left: 4px; }
-
-/* Нумерация разделов: 01 / Избранное */
-body { counter-reset: sec; }
-.section-title::before {
-    counter-increment: sec; content: "0" counter(sec); display: inline-block; margin-right: 14px;
-    font-family: var(--font-mono); font-size: 13px; font-weight: 500; letter-spacing: 1px; color: var(--accent);
-    vertical-align: 0.3em; padding: 2px 8px; border: 1px solid var(--border);
-}
-
-/* Карточки: номер в углу и акцентная линия сверху при наведении */
-.projects-grid { counter-reset: card; }
-.project-card::before {
-    counter-increment: card; content: "0" counter(card); position: absolute; top: 16px; right: 20px;
-    font-family: var(--font-mono); font-size: var(--mono-xs); letter-spacing: 1px; color: var(--text-muted);
-}
-.project-card { transition: box-shadow 0.2s, background 0.2s, opacity 0.5s ease, transform 0.5s ease; }
-.project-card:hover { box-shadow: inset 0 2px 0 var(--accent); }
-.project-thumb { filter: saturate(0.8); transition: filter 0.25s; }
-.project-card:hover .project-thumb { filter: none; }
-
-/* Кнопки: жёсткая смещённая тень, без размытия */
-.btn { transition: transform 0.12s, box-shadow 0.12s, background 0.2s, color 0.2s, border-color 0.2s; }
-.btn:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--accent); }
-.btn:active { transform: translate(0, 0); box-shadow: none; }
-.btn-primary:hover { background: var(--accent); color: var(--on-accent); }
-
-/* Навигация: подчёркивание выезжает слева */
-nav.desktop-nav a::after { content: ""; position: absolute; left: 0; bottom: -6px; height: 2px; width: 0; background: var(--accent); transition: width 0.2s ease; }
-nav.desktop-nav a:hover::after, nav.desktop-nav a.active::after { width: 100%; }
-
-/* Линии и ссылки */
-.hero { border-bottom-style: dashed; }
+.hero .badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
 .about-text a, .detail-text a, .page-header a { text-underline-offset: 3px; }
-.stack-list li { transition: border-color 0.2s, color 0.2s; }
-.stack-list li:hover { border-color: var(--accent); color: var(--accent); }
-.service-card, .contact-card { transition: box-shadow 0.2s, border-color 0.2s; }
-.service-card:hover { box-shadow: inset 0 2px 0 var(--accent); }
+.stack-list li { transition: background-color 0.25s, color 0.25s; }
+.stack-list li:hover { color: var(--accent); }
+.service-card, .contact-card { transition: transform 0.35s cubic-bezier(.2,.7,.2,1), border-color 0.35s; }
+.service-card:hover, .contact-card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
+.project-thumb { transition: transform 0.5s cubic-bezier(.2,.7,.2,1); }
+.project-card:hover .project-thumb { transform: scale(1.02); }
 
 @media (prefers-reduced-motion: reduce) {
-    .btn, .btn:hover, nav.desktop-nav a::after, .project-card, .project-thumb { transition: none; }
-    .btn:hover { transform: none; }
+    .btn, .btn:hover, .project-card, .project-thumb, .service-card { transition: none; transform: none; }
 }
 
 /* Открытый исходный код: ссылка в карточке и блок на странице проекта */

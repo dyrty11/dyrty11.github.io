@@ -137,8 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (project.customIcon && /^data:image\/(png|jpe?g|gif|webp);base64,[A-Za-z0-9+/=]+$/.test(project.customIcon)) {
                     const img = document.createElement('img'); img.src = project.customIcon; img.className = 'custom-project-icon'; img.alt = ''; iconDiv.appendChild(img);
                 } else {
-                    const iconKey = Object.prototype.hasOwnProperty.call(icons, project.icon) ? project.icon : 'file';
-                    iconDiv.innerHTML = icons[iconKey];
+                    iconDiv.innerHTML = '<svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><polygon points="50,10 84,30 84,70 50,90 16,70 16,30" stroke="currentColor" stroke-width="9" stroke-linejoin="round"/><circle cx="50" cy="50" r="13" fill="var(--accent)"/></svg>';
                 }
                 const titleEl = document.createElement('h3'); titleEl.textContent = String(project.title || '');
                 const cv = Array.isArray(project.changelog) && project.changelog[0]; if (cv && /^\d+\.\d+\.\d+$/.test(String(cv.version))) { const vb = document.createElement('span'); vb.className = 'version-badge'; vb.textContent = 'v' + cv.version; titleEl.appendChild(vb); }
