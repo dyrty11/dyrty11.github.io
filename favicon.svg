@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
     <style>
-        .bg     { fill: #101113; }
-        .stroke { stroke: #7fc28a; }
-        .dot    { fill: #7fc28a; }
+        .bg     { fill: #0a0c0b; }
+        .stroke { stroke: #8fe0b0; }
+        .dot    { fill: #8fe0b0; }
         
         /* Светлая тема браузера */
         @media (prefers-color-scheme: light) {
-            .bg     { fill: #f5f4ef; }
-            .stroke { stroke: #1a1b1d; }
-            .dot    { fill: #2e6b3d; }
+            .bg     { fill: #f3f7f4; }
+            .stroke { stroke: #101613; }
+            .dot    { fill: #1f7a4a; }
         }
     </style>
     

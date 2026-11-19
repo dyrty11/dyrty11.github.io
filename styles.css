@@ -1,27 +1,31 @@
 :root {
-    --bg-color: #101113;
-    --text-main: #e8e8e4;
-    --text-muted: #8d9198;
-    --accent: #7fc28a;
-    --on-accent: #0b0d0c;
-    --border: #2c2f34;
-    --card-bg: #16181b;
+    --bg-color: #0a0c0b;
+    --text-main: #e9efeb;
+    --text-muted: #8b968f;
+    --accent: #8fe0b0;
+    --on-accent: #07100b;
+    --border: #222a26;
+    --card-bg: #111513;
 
-    --font-display: 'Space Grotesk', sans-serif;
-    --font-mono: 'IBM Plex Mono', monospace;
+    --font-display: 'Onest', system-ui, sans-serif;
+    --font-mono: 'Onest', system-ui, sans-serif;
+    --font-code: 'IBM Plex Mono', ui-monospace, monospace;
+    --card-2: #171c19;
+    --r-lg: 28px; --r-md: 18px; --r-sm: 12px;
 }
 
 [data-theme="light"] {
-    --bg-color: #f5f4ef;
-    --text-main: #1a1b1d;
-    --text-muted: #5b5e64;
-    --accent: #2e6b3d;
+    --bg-color: #f3f7f4;
+    --text-main: #101613;
+    --text-muted: #56625b;
+    --accent: #1f7a4a;
     --on-accent: #ffffff;
-    --border: #d6d4cc;
-    --card-bg: #fbfaf6;
+    --border: #d3ddd7;
+    --card-bg: #ffffff;
+    --card-2: #eaf0ec;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0 !important; }
+* { margin: 0; padding: 0; box-sizing: border-box;  }
 
 html { background-color: var(--bg-color); overflow-x: hidden; scroll-behavior: smooth; }
 body { 

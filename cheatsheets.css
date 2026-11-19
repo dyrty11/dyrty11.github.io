@@ -1,7 +1,7 @@
 /* Конструктор шпаргалок: интерфейс (тёмный, в стиле сайта) и лист A4 */
-:root { --bg: #101113; --surface: #16181b; --surface2: #1c1f23; --border: #2c2f34; --text: #e8e8e4; --muted: #8d9198; --accent: #7fc28a; --on-accent: #0b0d0c; color-scheme: dark; }
-* { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0 !important; }
-body { font-family: 'IBM Plex Mono', Consolas, monospace; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.5; }
+:root { --bg: #0a0c0b; --surface: #111513; --surface2: #171c19; --border: #222a26; --text: #e9efeb; --muted: #8b968f; --accent: #8fe0b0; --on-accent: #07100b; color-scheme: dark; }
+* { margin: 0; padding: 0; box-sizing: border-box;  }
+body { font-family: 'Onest', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.5; }
 code { font-family: inherit; background: var(--surface2); border: 1px solid var(--border); padding: 0 5px; color: var(--accent); }
 .skip { position: absolute; left: -999px; top: 8px; background: var(--accent); color: var(--on-accent); padding: 8px 14px; z-index: 50; text-decoration: none; }
 .skip:focus { left: 8px; }
@@ -11,7 +11,7 @@ code { font-family: inherit; background: var(--surface2); border: 1px solid var(
 .bar { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 24px; }
 .back { display: inline-block; color: var(--muted); text-decoration: none; font-size: 13px; margin-bottom: 14px; }
 .back:hover, .back:focus-visible { color: var(--accent); }
-h1 { font-family: 'Space Grotesk', system-ui, sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); text-transform: none; letter-spacing: -0.5px; font-weight: 600; line-height: 1.1; }
+h1 { font-family: 'Onest', system-ui, sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); text-transform: none; letter-spacing: -0.5px; font-weight: 600; line-height: 1.1; }
 h1 span { color: var(--accent); }
 .lead { color: var(--muted); font-size: 14px; margin-top: 10px; max-width: 760px; }
 .lead.warn { color: #ff8a80; }
@@ -20,7 +20,7 @@ h1 span { color: var(--accent); }
 
 /* --- панель --- */
 .panel { background: var(--surface); border: 1px solid var(--border); padding: 20px; display: grid; gap: 24px; }
-.grp h2 { font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.grp h2 { font-family: 'Onest', system-ui, sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 .grp > label, .custom-color { display: block; font-size: 12px; color: var(--muted); margin: 10px 0 6px; }
 input[type="text"], select, textarea { width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--border); padding: 10px 12px; font-family: inherit; font-size: 13px; }
 input[type="text"]:focus, select:focus, textarea:focus { border-color: var(--accent); outline: none; }
@@ -68,9 +68,9 @@ textarea { resize: vertical; min-height: 96px; line-height: 1.5; white-space: pr
 /* --- лист --- */
 .sheet {
     --paper: #fff; --ink: #111; --muted-ink: #5b5b5b; --line: #d6d6d6;
-    --accent: #7fc28a; --on: #0b0d0c; --tint: rgba(127, 194, 138, 0.18); --fz: 1; --cols: 2; --pw: 794px; --ph: 1123px;
+    --accent: #8fe0b0; --on: #07100b; --tint: rgba(127, 194, 138, 0.18); --fz: 1; --cols: 2; --pw: 794px; --ph: 1123px;
     position: relative; width: var(--pw); min-height: var(--ph); padding: 40px 44px 26px; background: var(--paper); color: var(--ink);
-    font-family: 'Space Grotesk', 'Segoe UI', Arial, sans-serif; font-size: calc(12.5px * var(--fz)); line-height: 1.4;
+    font-family: 'Onest', 'Segoe UI', Arial, sans-serif; font-size: calc(12.5px * var(--fz)); line-height: 1.4;
     transform-origin: 0 0; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
     display: flex; flex-direction: column;
 }
