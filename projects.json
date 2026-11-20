@@ -25,7 +25,37 @@
     ],
     "page": "project-voidforge.html",
     "source": "https://github.com/dyrty11/dyrty11.github.io",
-    "featured": true
+    "featured": true,
+    "gallery": [
+      {
+        "src": "img/voidforge-1.webp",
+        "alt": "VoidForge: пустой генератор",
+        "caption": "Генератор: выберите картинку и звук",
+        "width": 1100,
+        "height": 730
+      },
+      {
+        "src": "img/voidforge-2.webp",
+        "alt": "VoidForge: файлы выбраны",
+        "caption": "Файлы выбраны, предпросмотр и статус звука",
+        "width": 1100,
+        "height": 730
+      },
+      {
+        "src": "img/voidforge-3.webp",
+        "alt": "VoidForge: сайт готов",
+        "caption": "Сайт готов: скачайте index.html или откройте предпросмотр",
+        "width": 1100,
+        "height": 730
+      },
+      {
+        "src": "img/voidforge-4.webp",
+        "alt": "VoidForge: инструкция",
+        "caption": "Встроенный гайд: розыгрыш с NFC-меткой",
+        "width": 1100,
+        "height": 730
+      }
+    ]
   },
   {
     "title": "FilePilot",
@@ -311,6 +341,36 @@
     ],
     "page": "project-cheatsheets.html",
     "source": "https://github.com/dyrty11/dyrty11.github.io",
-    "featured": true
+    "featured": true,
+    "gallery": [
+      {
+        "src": "img/cheatsheets-1.webp",
+        "alt": "Шпаргалка по Git на светлом листе",
+        "caption": "Шаблон «Git» на светлом листе A4",
+        "width": 1280,
+        "height": 850
+      },
+      {
+        "src": "img/cheatsheets-2.webp",
+        "alt": "Шпаргалка по PowerShell на тёмном листе",
+        "caption": "«PowerShell» на тёмном листе, цвет акцента меняется",
+        "width": 1280,
+        "height": 850
+      },
+      {
+        "src": "img/cheatsheets-3.webp",
+        "alt": "Шпаргалка по безопасности сайта, альбомный лист",
+        "caption": "Альбомная ориентация и кремовая тема",
+        "width": 1280,
+        "height": 850
+      },
+      {
+        "src": "img/cheatsheets-4.webp",
+        "alt": "Шпаргалка по регулярным выражениям в две колонки",
+        "caption": "Две колонки, печать в PDF или PNG",
+        "width": 1280,
+        "height": 850
+      }
+    ]
   }
 ]

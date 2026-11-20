@@ -31,20 +31,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 3. Глобальная анимация появления карточек ---
+    // --- 3. Появление карточек: мягкий подъём со сдвигом по очереди (анимация, не transition: наведение не страдает) ---
     let projectCardObserver = null;
     if (window.IntersectionObserver) {
         projectCardObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); projectCardObserver.unobserve(entry.target); } });
-        }, { threshold: 0.1 });
+            entries.forEach(entry => { if (entry.isIntersecting) { const c = entry.target; c.classList.remove('card-wait'); c.classList.add('card-in'); projectCardObserver.unobserve(c); } });
+        }, { threshold: 0.08 });
     }
 
     function observeProjectCards() {
-        document.querySelectorAll('.project-card:not(.visible)').forEach((card, i) => {
-            card.classList.add('reveal-init'); card.style.transitionDelay = `${(i % 6) * 0.08}s`;
-            if (projectCardObserver) projectCardObserver.observe(card); else card.classList.add('visible');
+        document.querySelectorAll('.project-card:not(.card-in):not(.card-wait)').forEach((card, i) => {
+            card.style.setProperty('--i', String(i % 6));
+            if (projectCardObserver) { card.classList.add('card-wait'); projectCardObserver.observe(card); } else card.classList.add('card-in');
         });
-        setTimeout(() => { document.querySelectorAll('.project-card.reveal-init:not(.visible)').forEach(card => card.classList.add('visible')); }, 1500);
+        setTimeout(() => { document.querySelectorAll('.project-card.card-wait').forEach(card => { card.classList.remove('card-wait'); card.classList.add('card-in'); }); }, 1500);
     }
     setTimeout(observeProjectCards, 100);
 
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (project.customIcon && /^data:image\/(png|jpe?g|gif|webp);base64,[A-Za-z0-9+/=]+$/.test(project.customIcon)) {
                     const img = document.createElement('img'); img.src = project.customIcon; img.className = 'custom-project-icon'; img.alt = ''; iconDiv.appendChild(img);
                 } else {
-                    iconDiv.innerHTML = '<svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><polygon points="50,10 84,30 84,70 50,90 16,70 16,30" stroke="currentColor" stroke-width="9" stroke-linejoin="round"/><circle cx="50" cy="50" r="13" fill="var(--accent)"/></svg>';
+                    iconDiv.innerHTML = '<span class="logo-mark" aria-hidden="true"></span>';
                 }
                 const titleEl = document.createElement('h3'); titleEl.textContent = String(project.title || '');
                 const cv = Array.isArray(project.changelog) && project.changelog[0]; if (cv && /^\d+\.\d+\.\d+$/.test(String(cv.version))) { const vb = document.createElement('span'); vb.className = 'version-badge'; vb.textContent = 'v' + cv.version; titleEl.appendChild(vb); }

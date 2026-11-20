@@ -180,29 +180,104 @@
             info.appendChild(a);
         }
         grid.appendChild(info);
+        if (Array.isArray(p.gallery) && p.gallery.length) { var gal = buildGallery(p.gallery); if (gal) { gal.classList.add('gal-first'); root.appendChild(gal); } }
         root.appendChild(grid);
         addChangelog(root, p);
-        if (Array.isArray(p.gallery) && p.gallery.length) {
-            var gal = el('section', 'detail-gallery');
-            gal.appendChild(el('h2', 'detail-sub', 'Скриншоты'));
-            var lastGroup = '';
-            p.gallery.slice(0, 12).forEach(function (g) {
-                var src = safeImg(g && g.src); if (!src) return;
-                if (g.group && g.group !== lastGroup) {
-                    lastGroup = String(g.group);
-                    var gh = el('h3', 'detail-group', lastGroup);
-                    if (/^[A-Za-z]/.test(lastGroup)) gh.setAttribute('lang', 'en');
-                    gal.appendChild(gh);
-                }
-                var fig = el('figure', 'detail-shot');
-                var gi = el('img'); gi.src = src; gi.alt = String(g.alt || ''); gi.loading = 'lazy'; gi.decoding = 'async';
-                if (g.width && g.height) { gi.width = Number(g.width) || 0; gi.height = Number(g.height) || 0; }
-                fig.appendChild(gi);
-                if (g.caption) fig.appendChild(el('figcaption', null, String(g.caption)));
-                gal.appendChild(fig);
+    }
+
+    /* Карусель скриншотов: стрелки, свайп, клавиши, миниатюры; группы (например, языки) переключаются вкладками */
+    function buildGallery(items) {
+        var list = items.slice(0, 24).map(function (g) {
+            var src = safeImg(g && g.src);
+            return src ? { src: src, alt: String(g.alt || ''), caption: String(g.caption || ''), group: String(g.group || ''), w: Number(g.width) || 0, h: Number(g.height) || 0 } : null;
+        }).filter(Boolean);
+        if (!list.length) return null;
+        var groups = [];
+        list.forEach(function (g) { if (groups.indexOf(g.group) < 0) groups.push(g.group); });
+        var cur = 0, slides = [], group = groups[0];
+        var sec = el('section', 'detail-gallery');
+        sec.setAttribute('aria-label', 'Скриншоты');
+        sec.appendChild(el('h2', 'detail-sub', 'Скриншоты'));
+        var tabs = null, tabBtns = [];
+        if (groups.length > 1) {
+            tabs = el('div', 'gal-tabs'); tabs.setAttribute('role', 'tablist');
+            groups.forEach(function (name) {
+                var t = el('button', 'gal-tab', name || 'Все'); t.type = 'button'; t.setAttribute('role', 'tab');
+                if (/^[A-Za-z]/.test(name)) t.setAttribute('lang', 'en');
+                t.addEventListener('click', function () { setGroup(name); });
+                tabs.appendChild(t); tabBtns.push(t);
             });
-            root.appendChild(gal);
+            sec.appendChild(tabs);
         }
+        var view = el('div', 'gal');
+        view.setAttribute('role', 'group'); view.setAttribute('aria-roledescription', 'карусель'); view.tabIndex = 0;
+        var track = el('div', 'gal-track');
+        var prev = el('button', 'gal-nav gal-prev'); prev.type = 'button'; prev.setAttribute('aria-label', 'Предыдущий скриншот'); prev.textContent = '‹';
+        var next = el('button', 'gal-nav gal-next'); next.type = 'button'; next.setAttribute('aria-label', 'Следующий скриншот'); next.textContent = '›';
+        var count = el('div', 'gal-count');
+        view.appendChild(track); view.appendChild(prev); view.appendChild(next); view.appendChild(count);
+        var cap = el('p', 'gal-caption'); cap.setAttribute('aria-live', 'polite');
+        var thumbs = el('div', 'gal-thumbs');
+        sec.appendChild(view); sec.appendChild(cap); sec.appendChild(thumbs);
+
+        function width() { return track.clientWidth || 1; }
+        function update(i) {
+            cur = Math.max(0, Math.min(slides.length - 1, i));
+            count.textContent = (cur + 1) + ' / ' + slides.length;
+            cap.textContent = slides[cur] ? slides[cur].caption : '';
+            Array.prototype.forEach.call(thumbs.children, function (t, k) { t.classList.toggle('on', k === cur); if (k === cur) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current'); });
+            prev.disabled = cur === 0; next.disabled = cur === slides.length - 1;
+            var on = thumbs.children[cur];
+            if (on && thumbs.scrollWidth > thumbs.clientWidth) thumbs.scrollTo({ left: on.offsetLeft - (thumbs.clientWidth - on.offsetWidth) / 2, behavior: 'smooth' });
+        }
+        function go(i) { i = Math.max(0, Math.min(slides.length - 1, i)); track.scrollTo({ left: i * width(), behavior: 'smooth' }); update(i); }
+        function setGroup(name) {
+            group = name;
+            slides = list.filter(function (g) { return g.group === name; });
+            track.textContent = ''; thumbs.textContent = '';
+            slides.forEach(function (g, i) {
+                var fig = el('figure', 'gal-slide');
+                var im = el('img'); im.src = g.src; im.alt = g.alt; im.decoding = 'async';
+                if (i > 0) im.loading = 'lazy';
+                if (g.w && g.h) { im.width = g.w; im.height = g.h; }
+                fig.appendChild(im); track.appendChild(fig);
+                var tb = el('button', 'gal-thumb'); tb.type = 'button'; tb.setAttribute('aria-label', 'Скриншот ' + (i + 1));
+                var ti = el('img'); ti.src = g.src; ti.alt = ''; ti.loading = 'lazy'; ti.width = 96; ti.height = 64;
+                tb.appendChild(ti); tb.addEventListener('click', function () { go(i); });
+                thumbs.appendChild(tb);
+            });
+            tabBtns.forEach(function (t, k) { var on = groups[k] === name; t.classList.toggle('on', on); t.setAttribute('aria-selected', on ? 'true' : 'false'); });
+            var multi = slides.length > 1;
+            [prev, next, count, thumbs].forEach(function (n) { n.hidden = !multi; });
+            track.scrollTo({ left: 0 });
+            update(0);
+        }
+        prev.addEventListener('click', function () { go(cur - 1); });
+        next.addEventListener('click', function () { go(cur + 1); });
+        view.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowLeft') { go(cur - 1); e.preventDefault(); }
+            else if (e.key === 'ArrowRight') { go(cur + 1); e.preventDefault(); }
+        });
+        var raf = 0;
+        track.addEventListener('scroll', function () {
+            if (raf) return;
+            raf = requestAnimationFrame(function () { raf = 0; var i = Math.round(track.scrollLeft / width()); if (i !== cur) update(i); });
+        }, { passive: true });
+        /* перетаскивание мышью (касанием листает сам браузер) */
+        var down = false, sx = 0, sl = 0, dragged = false;
+        track.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse' || e.button !== 0) return; down = true; dragged = false; sx = e.clientX; sl = track.scrollLeft; });
+        window.addEventListener('pointermove', function (e) {
+            if (!down) return;
+            var d = e.clientX - sx; if (Math.abs(d) > 4) { dragged = true; track.classList.add('drag'); }
+            if (dragged) track.scrollLeft = sl - d;
+        });
+        window.addEventListener('pointerup', function () {
+            if (!down) return; down = false;
+            if (dragged) { track.classList.remove('drag'); go(Math.round(track.scrollLeft / width())); }
+        });
+        window.addEventListener('resize', function () { track.scrollTo({ left: cur * width() }); });
+        setGroup(group);
+        return sec;
     }
 
     var want = STATIC ? String(STATIC.getAttribute('content') || '') : (new URLSearchParams(location.search).get('p') || '');

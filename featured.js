@@ -26,13 +26,13 @@
     function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
     function card(p) {
-        var c = el('div', 'project-card visible');
+        var c = el('div', 'project-card card-in');
 
         var icon = el('div', 'project-icon');
         if (typeof p.customIcon === 'string' && DATA_ICON.test(p.customIcon) && p.customIcon.length < 300 * 1024) {
             var im = document.createElement('img'); im.src = p.customIcon; im.alt = ''; im.width = 32; im.height = 32; icon.appendChild(im);
         } else {
-            icon.innerHTML = '<svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><polygon points="50,10 84,30 84,70 50,90 16,70 16,30" stroke="currentColor" stroke-width="9" stroke-linejoin="round"/><circle cx="50" cy="50" r="13" fill="var(--accent)"/></svg>';
+            icon.innerHTML = '<span class="logo-mark" aria-hidden="true"></span>';
         }
         c.appendChild(icon);
 
