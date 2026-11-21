@@ -220,8 +220,7 @@
           "Горячая клавиша Ctrl+Alt+F (Windows, включается в меню «Окно»): показывает окно FilePilot и ставит курсор в строку поиска из любой программы. Если сочетание занято другой программой, FilePilot об этом скажет.",
           "Обе функции по умолчанию выключены.",
           "Действия с файлами: правый щелчок (или Delete) на найденном файле и в списке «Крупные файлы» карты диска. «В корзину» с подтверждением (всегда в корзину, не насовсем), «Переместить в папку», «Копировать в папку», «Переименовать». Можно выбрать несколько файлов сразу. Индекс обновляется сразу: переименованный и перенесённый файл находится по новому пути без повторной индексации."
-        ],
-        "date": "2026-11-18"
+        ]
       },
       {
         "version": "0.8.0",
@@ -230,8 +229,7 @@
           "Оператор name:счёт ищет только в имени файла, а не в содержимом: name:счёт ext:pdf.",
           "Результаты поиска сортируются кликом по заголовку колонки (путь, размер, дата): по возрастанию, по убыванию, снова по релевантности. Выбор сохраняется между поисками.",
           "Кнопка «Сжать индекс» (и команда filepilot optimize): индекс сжимается, свободное место возвращается диску. Размер индекса виден в строке состояния и в filepilot stats."
-        ],
-        "date": "2026-11-16"
+        ]
       },
       {
         "version": "0.7.0",
@@ -240,8 +238,7 @@
           "Обход папок ускорен: размер и даты берутся прямо из обхода без лишних обращений к диску (50 000 файлов обходятся за доли секунды). Счётчик прогресса больше не заваливает интерфейс, при повторной индексации показывается процент по прошлому проходу.",
           "Индексация идёт с пониженным приоритетом, компьютер не тормозит.",
           "При добавлении диска целиком программа предупреждает, сколько это займёт, и спрашивает подтверждение."
-        ],
-        "date": "2026-11-16"
+        ]
       },
       {
         "version": "0.6.0",
@@ -251,16 +248,14 @@
           "Папки перетаскиваются из Проводника прямо в окно программы: они добавляются в индекс, и индексация начинается сама.",
           "Экспорт в CSV для списка дубликатов и таблицы карты диска (Excel открывает файл сразу, кодировка UTF-8 с BOM, разделитель ;).",
           "README: установка и быстрый старт идут первыми, запуск из исходников, консольные команды и сборка вынесены в раздел «Для разработчиков»."
-        ],
-        "date": "2026-11-15"
+        ]
       },
       {
         "version": "0.5.0",
         "items": [
           "Исключения индексации: в окне «Папки» можно исключить папку целиком или маску имени (node_modules, *.tmp, ~$*). Уже проиндексированные файлы из исключённых мест убираются из индекса при следующей индексации. В консоли: filepilot exclude add|remove|list.",
           "Поиск в выбранной папке: в панели «Фильтры» появился список «Папка» (по умолчанию «Все папки»). Выбор сохраняется в сохранённых поисках. В консоли: filepilot search ... --folder <путь>."
-        ],
-        "date": "2026-11-14"
+        ]
       }
     ],
     "changelogEn": [
@@ -271,8 +266,7 @@
           "Hotkey Ctrl+Alt+F (Windows, turned on in the \"Window\" menu): shows the FilePilot window and puts the cursor in the search box from any program. If another program already uses the combination, FilePilot tells you.",
           "Both features are off by default.",
           "File actions: right-click (or Delete) on a found file and in the \"Largest files\" list of the disk map. \"Move to Recycle Bin\" with confirmation (always the bin, never permanent), \"Move to folder\", \"Copy to folder\", \"Rename\". You can select several files at once. The index updates right away: a renamed or moved file is found at its new path without re-indexing."
-        ],
-        "date": "2026-11-18"
+        ]
       },
       {
         "version": "0.8.0",
@@ -281,8 +275,7 @@
           "The name:invoice operator searches the file name only, not the contents: name:invoice ext:pdf.",
           "Search results sort by clicking a column header (path, size, date): ascending, descending, then back to relevance. The choice is kept between searches.",
           "A \"Compact index\" button (and the filepilot optimize command): the index is compacted and free space goes back to the disk. The index size is shown in the status line and in filepilot stats."
-        ],
-        "date": "2026-11-16"
+        ]
       },
       {
         "version": "0.7.0",
@@ -291,8 +284,7 @@
           "Folder scanning is faster: size and dates come straight from the scan with no extra disk calls (50,000 files are scanned in a fraction of a second). The progress counter no longer floods the UI, and a re-index shows a percentage based on the previous pass.",
           "Indexing runs at lower priority, so the computer stays responsive.",
           "Adding a whole drive now shows a warning about how long it takes and asks for confirmation."
-        ],
-        "date": "2026-11-16"
+        ]
       },
       {
         "version": "0.6.0",
@@ -302,16 +294,14 @@
           "Drag folders from Explorer into the app window: they are added to the index and indexing starts by itself.",
           "CSV export for the duplicates list and the disk map table (opens in Excel right away, UTF-8 with BOM, ; separator).",
           "README: install and quick start come first; running from source, command line and build moved to a \"For developers\" section."
-        ],
-        "date": "2026-11-15"
+        ]
       },
       {
         "version": "0.5.0",
         "items": [
           "Index exclusions: in the Folders window you can exclude a whole folder or a name mask (node_modules, *.tmp, ~$*). Files already indexed from excluded places are removed from the index on the next run. Command line: filepilot exclude add|remove|list.",
           "Search inside one folder: a \"Folder\" list in the Filters panel (default \"All folders\"). The choice is saved with saved searches. Command line: filepilot search ... --folder <path>."
-        ],
-        "date": "2026-11-14"
+        ]
       }
     ]
   },
