@@ -36,6 +36,7 @@
     function merge(a, b) {
         var r = clone(a); if (!b) return r;
         Object.keys(b).forEach(function (k) {
+            if (k === '__proto__' || k === 'constructor' || k === 'prototype') return;
             if (b[k] && typeof b[k] === 'object' && !Array.isArray(b[k]) && r[k] && typeof r[k] === 'object') r[k] = merge(r[k], b[k]); else r[k] = b[k];
         });
         return r;
@@ -152,7 +153,7 @@
     /* ---------- сборка SVG ---------- */
     function build(text, options) {
         var o = merge(DEFAULTS, options), L = o.logo || {};
-        var hasLogo = L.type && L.type !== 'none' && (L.type !== 'image' || L.data);
+        var hasLogo = L.type && L.type !== 'none' && (L.type !== 'image' || /^data:image\/(png|jpe?g|webp|gif|svg\+xml);base64,[A-Za-z0-9+\/=]+$/.test(String(L.data || '')));
         var ecl = o.ecl;
         if (hasLogo && ecl !== 'H' && ecl !== 'Q') ecl = 'Q';
         if (hasLogo && Number(L.size) > 0.24) ecl = 'H';
@@ -276,38 +277,56 @@
         });
     }
 
-    function decodeCanvas(cv) {
-        var ctx = cv.getContext('2d'), d = ctx.getImageData(0, 0, cv.width, cv.height);
-        var r = window.jsQR && jsQR(d.data, d.width, d.height, { inversionAttempts: 'attemptBoth' });
-        return r ? r.data : null;
-    }
+    function syncDecode(d) { var q = window.jsQR && jsQR(d.data, d.width, d.height, { inversionAttempts: 'attemptBoth' }); return q ? q.data : null; }
+    function decodeCanvas(cv) { var d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height); return syncDecode(d); }
 
-    // Реальная проверка: рисуем код и читаем его так же, как камера (jsQR на нескольких размерах + BarcodeDetector, если он есть).
+    // Чтение в отдельном потоке (Worker); если его нет, читаем здесь.
+    var worker = null, wid = 0, pending = {};
+    function getWorker() {
+        if (worker !== null) return worker;
+        try {
+            worker = new Worker('qr/decode-worker.js');
+            worker.onmessage = function (e) { var p = pending[e.data.id]; if (p) { delete pending[e.data.id]; p(e.data.text); } };
+            worker.onerror = function () { worker = false; Object.keys(pending).forEach(function (k) { var p = pending[k]; delete pending[k]; p(undefined); }); };
+        } catch (e) { worker = false; }
+        return worker;
+    }
+    function decodeCanvasAsync(cv) {
+        var d = cv.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, cv.width, cv.height), w = getWorker();
+        if (!w) return Promise.resolve(syncDecode(d));
+        return new Promise(function (resolve) {
+            var id = ++wid; pending[id] = function (t) { resolve(t === undefined ? syncDecode(d) : t); };
+            w.postMessage({ id: id, buf: d.data.buffer, w: d.width, h: d.height });
+        });
+    }
+    var nativeDet = null;
+    function native() { if (nativeDet === null) { try { nativeDet = window.BarcodeDetector ? new BarcodeDetector({ formats: ['qr_code'] }) : false; } catch (e) { nativeDet = false; } } return nativeDet; }
+
+    // Проверка читаемости: рисуем код и читаем так же, как камера. Идёт в фоне, при новом вводе прерывается (isStale).
     function readAt(res, px) {
         return raster(res, px, 'canvas').then(function (cv) {
             var back = document.createElement('canvas'); back.width = cv.width; back.height = cv.height;
-            var x = back.getContext('2d'); x.fillStyle = '#ffffff'; x.fillRect(0, 0, back.width, back.height); x.drawImage(cv, 0, 0);
+            var x = back.getContext('2d', { willReadFrequently: true }); x.fillStyle = '#ffffff'; x.fillRect(0, 0, back.width, back.height); x.drawImage(cv, 0, 0);
             return back;
         });
     }
-    function verify(res0) {
+    function verify(res0, isStale) {
         var res = res0.options.frame && res0.options.frame !== 'none' ? build(res0.text, merge(res0.options, { frame: 'none' })) : res0; // рамка читаемость модулей не меняет
-        var sizes = [256, 400, 512, 700, 900], got = null;
+        var side = res.n + 2 * (Number(res.options.margin) || 0), p1 = Math.max(280, Math.min(720, side * 7)), tries = [p1, Math.min(1000, Math.round(p1 * 1.5)), Math.min(1100, Math.round(p1 * 2.2))], got = null, stale = false;
         var chain = Promise.resolve();
-        sizes.forEach(function (px) {
+        tries.forEach(function (px) {
             chain = chain.then(function () {
-                if (got !== null) return;
+                if (got !== null || stale) return;
+                if (isStale && isStale()) { stale = true; return; }
                 return readAt(res, px).then(function (cv) {
-                    var d = decodeCanvas(cv);
-                    if (d === res.text) { got = d; return; }
-                    if (window.BarcodeDetector && !res._bd) {
-                        res._bd = 1;
-                        return new BarcodeDetector({ formats: ['qr_code'] }).detect(cv).then(function (r) { if (r[0] && r[0].rawValue === res.text) got = r[0].rawValue; }).catch(function () {});
-                    }
+                    if (isStale && isStale()) { stale = true; return; }
+                    var nd = native(), first = nd ? nd.detect(cv).then(function (r) { return r[0] ? r[0].rawValue : null; }).catch(function () { return null; }) : Promise.resolve(null);
+                    return first.then(function (t) { return t === res.text ? t : decodeCanvasAsync(cv); }).then(function (t) { if (t === res.text) got = t; });
                 });
             });
         });
         return chain.then(function () {
+            if (stale) return null;
             var notes = [];
             if (res.contrast < 3) notes.push('Низкий контраст (' + res.contrast.toFixed(1) + ':1): сделайте модули темнее или фон светлее.');
             else if (res.contrast < 4.5) notes.push('Контраст ниже рекомендуемого (' + res.contrast.toFixed(1) + ':1). При плохом освещении код может не читаться.');
@@ -317,5 +336,5 @@
         });
     }
 
-    window.QRRender = { build: build, raster: raster, verify: verify, decodeCanvas: decodeCanvas, encode: encode, DEFAULTS: DEFAULTS, merge: merge, clone: clone, ICONS: ICONS, ICON_NAMES: ICON_NAMES, BODY: BODY, FRAME: FRAME, BALL: BALL, FRAMES: FRAMES, ratio: ratio, hex: hex };
+    window.QRRender = { build: build, raster: raster, verify: verify, decodeCanvas: decodeCanvas, decodeCanvasAsync: decodeCanvasAsync, encode: encode, DEFAULTS: DEFAULTS, merge: merge, clone: clone, ICONS: ICONS, ICON_NAMES: ICON_NAMES, BODY: BODY, FRAME: FRAME, BALL: BALL, FRAMES: FRAMES, ratio: ratio, hex: hex };
 })();

@@ -12,7 +12,16 @@
     function rrect(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
 
     /* ---------- сцена ---------- */
-    function scene(g, W, H, t, A, img) {
+    // Узор из символов рисуется один раз на «лист», дальше кадры лишь сдвигают его.
+    function makeSheet(W, H, A) {
+        var T = W / 5.5, D = Math.hypot(W, H), n = Math.ceil(D / T) + 2, S = Math.round((2 * n + 4) * T), c = document.createElement('canvas'), g, i, j;
+        c.width = S; c.height = S; g = c.getContext('2d');
+        g.fillStyle = '#ffffff'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = '600 ' + Math.round(T * 0.5) + 'px Onest, "Segoe UI Emoji", "Apple Color Emoji", sans-serif';
+        var gl = String(A.glyph || '✦').slice(0, 2);
+        for (j = -n - 1; j <= n + 1; j++) for (i = -n - 1; i <= n + 1; i++) g.fillText(gl, S / 2 + i * T + (j & 1 ? T / 2 : 0) - T / 2, S / 2 + j * T);
+        return { cv: c, T: T, S: S, glyph: A.glyph };
+    }
+    function scene(g, W, H, t, A, img, P) {
         var m = A.bg, ph = t * TAU, D = Math.hypot(W, H);
         g.globalAlpha = 1; g.fillStyle = R.hex(A.c1); g.fillRect(0, 0, W, H);
         if (m === 'gradient') {
@@ -25,14 +34,9 @@
                 var rg = g.createRadialGradient(cx, cy, 0, cx, cy, r); rg.addColorStop(0, rgba(cols[k], 0.9)); rg.addColorStop(1, rgba(cols[k], 0));
                 g.fillStyle = rg; g.fillRect(0, 0, W, H);
             }
-        } else if (m === 'pattern') {
+        } else if (m === 'pattern' && P && P.sheet) {
             var bg = g.createLinearGradient(0, 0, W, H); bg.addColorStop(0, R.hex(A.c1)); bg.addColorStop(1, R.hex(A.c2)); g.fillStyle = bg; g.fillRect(0, 0, W, H);
-            var T = W / 5.5, off = t * T, i, j, gl = String(A.glyph || '✦').slice(0, 2);
-            g.save(); g.translate(W / 2, H / 2); g.rotate(-0.26); g.globalAlpha = 0.28; g.fillStyle = '#ffffff'; g.textAlign = 'center'; g.textBaseline = 'middle';
-            g.font = '600 ' + Math.round(T * 0.5) + 'px Onest, "Segoe UI Emoji", "Apple Color Emoji", sans-serif';
-            var n = Math.ceil(D / T) + 2;
-            for (j = -n; j <= n; j++) for (i = -n; i <= n; i++) g.fillText(gl, i * T + (j & 1 ? T / 2 : 0) + off - T / 2, j * T + off * 0 + 0);
-            g.restore();
+            g.save(); g.translate(W / 2, H / 2); g.rotate(-0.26); g.globalAlpha = 0.28; g.drawImage(P.sheet.cv, -P.sheet.S / 2 + t * P.sheet.T, -P.sheet.S / 2); g.restore(); g.globalAlpha = 1;
         } else if (m === 'image' && img) {
             var z = 1.1 + 0.05 * Math.sin(ph), sc = Math.max(W / img.width, H / img.height) * z, iw = img.width * sc, ih = img.height * sc;
             g.drawImage(img, (W - iw) / 2 + Math.sin(ph) * W * 0.02, (H - ih) / 2 + Math.cos(ph) * H * 0.012, iw, ih);
@@ -51,7 +55,12 @@
         }
         g.restore();
     }
-    function paintFx(g, Q, t, S, A) {
+    function sparkSprite(color) {
+        var c = document.createElement('canvas'); c.width = c.height = 48; var g = c.getContext('2d'), gr = g.createRadialGradient(24, 24, 0, 24, 24, 24);
+        gr.addColorStop(0, rgba(color, 1)); gr.addColorStop(1, rgba(color, 0)); g.fillStyle = gr; g.fillRect(0, 0, 48, 48); return c;
+    }
+    var SPARKS = (function () { var rnd = rng(11), a = [], i; for (i = 0; i < 50; i++) a.push({ x: rnd(), y: rnd(), f: rnd(), r: 0.008 + rnd() * 0.02 }); return a; })();
+    function paintFx(g, Q, t, S, A, P) {
         var c1 = R.hex(S.fg), c2 = S.grad !== 'none' ? R.hex(S.fg2) : c1, ang = (Number(S.angle) || 0) * Math.PI / 180, e = A.effect, fx = R.hex(A.fx);
         g.clearRect(0, 0, Q, Q); g.globalAlpha = 1;
         if (e === 'flow') return strips(g, Q, t, [c1, c2, c1], 1, ang);
@@ -66,13 +75,12 @@
         } else if (e === 'scan') {
             var bw = Q * 0.14, y = t * (Q + bw) - bw, gr2 = g.createLinearGradient(0, y, 0, y + bw);
             gr2.addColorStop(0, rgba(fx, 0)); gr2.addColorStop(0.5, rgba(fx, 1)); gr2.addColorStop(1, rgba(fx, 0)); g.fillStyle = gr2; g.fillRect(0, y, Q, bw);
-        } else if (e === 'sparkle') {
-            var rnd = rng(11), p;
-            for (p = 0; p < 90; p++) {
-                var x = rnd() * Q, y2 = rnd() * Q, f = rnd(), a = Math.pow(Math.max(0, Math.sin(TAU * (t + f))), 6), r2 = Q * (0.008 + rnd() * 0.02);
-                if (a < 0.02) continue;
-                var sg = g.createRadialGradient(x, y2, 0, x, y2, r2 * 2.2); sg.addColorStop(0, rgba(fx, a)); sg.addColorStop(1, rgba(fx, 0)); g.fillStyle = sg; g.fillRect(x - r2 * 2.2, y2 - r2 * 2.2, r2 * 4.4, r2 * 4.4);
-            }
+        } else if (e === 'sparkle' && P && P.spark) {
+            SPARKS.forEach(function (s) {
+                var a = Math.pow(Math.max(0, Math.sin(TAU * (t + s.f))), 6); if (a < 0.02) return;
+                var r = Q * s.r * 2.2; g.globalAlpha = a; g.drawImage(P.spark, s.x * Q - r, s.y * Q - r, r * 2, r * 2);
+            });
+            g.globalAlpha = 1;
         }
     }
 
@@ -81,39 +89,61 @@
         var H = A.aspect === 'story' ? Math.round(W * 16 / 9) : W, Q = Math.round(W * (1 - 2 * Math.max(0.05, Math.min(0.3, A.pad))));
         var mres = R.build(text, R.merge(style, { _layer: 'mask' }));
         if (mres.error) return Promise.reject(new Error(mres.error));
-        var hasLogo = style.logo && style.logo.type !== 'none' && (style.logo.type !== 'image' || style.logo.data);
+        var hasLogo = style.logo && style.logo.type !== 'none' && (style.logo.type !== 'image' || /^data:image\/(png|jpe?g|webp|gif|svg\+xml);base64,[A-Za-z0-9+\/=]+$/.test(String(style.logo.data || '')));
         var lres = hasLogo ? R.build(text, R.merge(style, { _layer: 'logo' })) : null;
         return Promise.all([R.raster(mres, Q, 'canvas-alpha'), lres ? R.raster(lres, Q, 'canvas-alpha') : null]).then(function (r) {
             var tmp = document.createElement('canvas'); tmp.width = Q; tmp.height = Q;
             var panel = style.transparent ? '#ffffff' : R.hex(style.bg);
-            return { W: W, H: H, Q: Q, mask: r[0], logo: r[1], tmp: tmp, style: style, A: A, img: img || null, panel: panel };
+            var capH = A.caption ? W * 0.12 : 0, qx = Math.round((W - Q) / 2), qy = Math.round((H - Q - capH) / 2), rad = Q * 0.07;
+            var P = { W: W, H: H, Q: Q, mask: r[0], logo: r[1], tmp: tmp, style: style, A: A, img: img || null, panel: panel, qx: qx, qy: qy, rad: rad };
+            // тень панели и подпись рисуются один раз, а не в каждом кадре
+            var sh = document.createElement('canvas'); sh.width = W; sh.height = H; var sg = sh.getContext('2d');
+            sg.shadowColor = 'rgba(0,0,0,0.35)'; sg.shadowBlur = W * 0.05; sg.shadowOffsetX = W; sg.shadowOffsetY = W * 0.012; sg.fillStyle = '#000'; rrect(sg, qx - W, qy, Q, Q, rad); sg.fill(); P.shadow = sh;
+            if (A.caption) {
+                var fs = Math.round(W * 0.05), cc = document.createElement('canvas'); cc.width = W; cc.height = Math.round(capH + fs); var cg = cc.getContext('2d');
+                cg.font = '700 ' + fs + 'px Onest, Arial, sans-serif'; cg.textAlign = 'center'; cg.textBaseline = 'middle'; cg.fillStyle = R.hex(A.capColor);
+                cg.shadowColor = 'rgba(0,0,0,0.35)'; cg.shadowBlur = fs * 0.4; cg.fillText(String(A.caption).slice(0, 32), W / 2, capH * 0.55); P.cap = cc;
+            }
+            if (A.bg === 'pattern') P.sheet = makeSheet(W, H, A);
+            if (A.effect === 'sparkle') P.spark = sparkSprite(A.fx);
+            return P;
         });
     }
     function draw(g, t, P) {
-        var A = P.A, W = P.W, H = P.H, Q = P.Q, capH = A.caption ? W * 0.12 : 0, qx = Math.round((W - Q) / 2), qy = Math.round((H - Q - capH) / 2), rad = Q * 0.07;
-        scene(g, W, H, t, A, P.img);
-        g.save(); g.shadowColor = 'rgba(0,0,0,0.35)'; g.shadowBlur = W * 0.05; g.shadowOffsetY = W * 0.012; g.fillStyle = P.panel; rrect(g, qx, qy, Q, Q, rad); g.fill(); g.restore();
-        var tg = P.tmp.getContext('2d'); paintFx(tg, Q, t, P.style, A); tg.globalCompositeOperation = 'destination-in'; tg.drawImage(P.mask, 0, 0); tg.globalCompositeOperation = 'source-over';
+        var A = P.A, W = P.W, H = P.H, Q = P.Q, qx = P.qx, qy = P.qy, rad = P.rad;
+        scene(g, W, H, t, A, P.img, P);
+        g.drawImage(P.shadow, 0, 0);
+        g.fillStyle = P.panel; rrect(g, qx, qy, Q, Q, rad); g.fill();
+        var tg = P.tmp.getContext('2d'); paintFx(tg, Q, t, P.style, A, P); tg.globalCompositeOperation = 'destination-in'; tg.drawImage(P.mask, 0, 0); tg.globalCompositeOperation = 'source-over';
         g.save(); rrect(g, qx, qy, Q, Q, rad); g.clip(); g.drawImage(P.tmp, qx, qy); if (P.logo) g.drawImage(P.logo, qx, qy); g.restore();
-        if (A.caption) {
-            var fs = Math.round(W * 0.05); g.font = '700 ' + fs + 'px Onest, Arial, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = R.hex(A.capColor);
-            g.shadowColor = 'rgba(0,0,0,0.35)'; g.shadowBlur = fs * 0.4; g.fillText(String(A.caption).slice(0, 32), W / 2, qy + Q + capH * 0.55); g.shadowBlur = 0;
-        }
+        if (P.cap) g.drawImage(P.cap, 0, qy + Q);
     }
 
-    /* ---------- проигрыватель ---------- */
+    /* ---------- проигрыватель: 30 кадров/с, стоит вне экрана и в фоновой вкладке ---------- */
     function player(cv, P) {
-        cv.width = P.W; cv.height = P.H; var g = cv.getContext('2d'), raf = 0, start = performance.now(), still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-        function frame(now) { draw(g, still ? 0 : ((now - start) / (P.A.dur * 1000)) % 1, P); raf = requestAnimationFrame(frame); }
-        raf = requestAnimationFrame(frame);
-        return { stop: function () { cancelAnimationFrame(raf); } };
+        cv.width = P.W; cv.height = P.H; var g = cv.getContext('2d'), raf = 0, start = performance.now(), last = 0, onScreen = true, io = null;
+        var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if ('IntersectionObserver' in window) { io = new IntersectionObserver(function (e) { onScreen = e[0].isIntersecting; }); io.observe(cv); }
+        function frame(now) {
+            raf = requestAnimationFrame(frame);
+            if (!onScreen || now - last < 32) return; last = now;
+            draw(g, still ? 0 : ((now - start) / (P.A.dur * 1000)) % 1, P);
+        }
+        draw(g, 0, P); raf = requestAnimationFrame(frame);
+        return { stop: function () { cancelAnimationFrame(raf); if (io) io.disconnect(); } };
     }
 
-    /* ---------- проверка кадров ---------- */
-    function verify(P, text) {
-        var cv = document.createElement('canvas'); cv.width = P.W; cv.height = P.H; var g = cv.getContext('2d', { willReadFrequently: true }), ok = 0, N = 8, i;
-        for (i = 0; i < N; i++) { draw(g, i / N, P); if (R.decodeCanvas(cv) === text) ok++; }
-        return { ok: ok, total: N };
+    /* ---------- проверка кадров (в фоне, не блокирует ввод) ---------- */
+    function verify(P, text, isStale) {
+        var cv = document.createElement('canvas'); cv.width = P.W; cv.height = P.H; var g = cv.getContext('2d', { willReadFrequently: true }), N = 4, ok = 0, i = 0;
+        return new Promise(function (resolve) {
+            (function next() {
+                if (isStale && isStale()) return resolve(null);
+                if (i >= N) return resolve({ ok: ok, total: N });
+                draw(g, i / N, P); i++;
+                R.decodeCanvasAsync(cv).then(function (t) { if (t === text) ok++; setTimeout(next, 0); });
+            })();
+        });
     }
 
     /* ---------- GIF ---------- */

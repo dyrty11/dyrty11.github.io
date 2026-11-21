@@ -246,7 +246,7 @@
           } }
     ];
 
-    var byId = {};
+    var byId = Object.create(null);
     TYPES.forEach(function (t) { byId[t.id] = t; });
 
     function defaults(type) {
@@ -254,7 +254,12 @@
         (byId[type] || TYPES[0]).fields.forEach(function (f) { if (f.id) o[f.id] = f.def != null ? f.def : (f.kind === 'checkbox' ? false : ''); });
         return o;
     }
-    function build(type, values) { var t = byId[type]; return t ? String(t.build(values || {}) || '') : ''; }
+    function build(type, values) {
+        var t = byId[type]; if (!t) return '';
+        var v = {}; Object.keys(values || {}).forEach(function (k) { v[k] = values[k]; });
+        t.fields.forEach(function (f) { if (f.id && f.kind !== 'textarea' && typeof v[f.id] === 'string') v[f.id] = v[f.id].replace(/[\r\n\u2028\u2029]+/g, ' '); });
+        return String(t.build(v) || '');
+    }
     function check(type, values) { var t = byId[type]; return t && t.check ? t.check(values || {}) : []; }
 
     /* ---------- разбор того, что нашёл сканер ---------- */

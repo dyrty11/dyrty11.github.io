@@ -27,8 +27,9 @@
     var state = { type: 'url', vals: {}, style: R.clone(R.DEFAULTS), anim: R.clone(AN.DEFAULTS) }, animImg = null;
     (function restore() {
         var s = LS.get('qr.state.v1');
-        if (s && C.byId[s.type]) { state.type = s.type; state.vals = s.vals || {}; state.style = R.merge(R.DEFAULTS, s.style); state.anim = R.merge(AN.DEFAULTS, s.anim); }
+        if (s && C.byId[s.type]) { state.type = s.type; state.vals = clean(s.vals); state.style = R.merge(R.DEFAULTS, s.style); state.anim = R.merge(AN.DEFAULTS, s.anim); }
     })();
+    function clean(o) { var r = {}; if (o && typeof o === 'object') Object.keys(o).forEach(function (k) { if (k !== '__proto__' && k !== 'constructor' && k !== 'prototype') r[k] = o[k]; }); return r; }
     function vals() { if (!state.vals[state.type]) state.vals[state.type] = C.defaults(state.type); return state.vals[state.type]; }
     var saveState = debounce(function () {
         var st = R.clone(state.style); if (st.logo && st.logo.data && st.logo.data.length > 150000) st.logo = R.clone(R.DEFAULTS.logo);
@@ -200,9 +201,14 @@
 
     /* ---------------- вывод ---------------- */
     var lastRes = null, vTok = 0;
-    var verifyLater = debounce(runVerify, 350);
-    function update() { render(); saveState(); }
+    var verifyLater = debounce(runVerify, 700), updTimer = 0, updLast = 0;
+    // При быстром наборе код перерисовывается не чаще раза в ~100 мс; первый символ после паузы рисуется сразу
+    function update() {
+        if (updTimer) return;
+        updTimer = setTimeout(function () { updTimer = 0; updLast = performance.now(); render(); saveState(); }, Math.max(0, 100 - (performance.now() - updLast)));
+    }
     function render() {
+        vTok++; animTok++;
         var stage = $('#stage'), text = C.build(state.type, vals()), errs = C.check(state.type, vals());
         var ul = $('#errs'); ul.textContent = ''; errs.forEach(function (e) { ul.appendChild(h('li', { text: e })); });
         stage.classList.toggle('checker', !!state.style.transparent);
@@ -224,9 +230,9 @@
     }
     function setStatus(t, cls) { var s = $('#status'); s.textContent = t; s.className = 'status' + (cls ? ' ' + cls : ''); }
     function runVerify() {
-        var res = lastRes; if (!res) return; var tok = ++vTok;
-        R.verify(res).then(function (v) {
-            if (tok !== vTok || res !== lastRes) return;
+        var res = lastRes; if (!res) return; var tok = vTok;
+        R.verify(res, function () { return tok !== vTok || res !== lastRes; }).then(function (v) {
+            if (!v || tok !== vTok || res !== lastRes) return;
             if (v.ok) setStatus('Код читается: проверено тестовым сканером', 'ok');
             else setStatus('Тестовый сканер не смог прочитать этот код. Телефон, скорее всего, справится, но проверьте на своём или упростите оформление.', 'bad');
             var ul = $('#notes'); ul.textContent = ''; v.notes.forEach(function (n) { ul.appendChild(h('li', { text: n })); });
@@ -333,7 +339,7 @@
         var m = /^#c=([\w-]+)$/.exec(location.hash); if (!m) return;
         try {
             var o = JSON.parse(unb64(m[1]));
-            if (o && C.byId[o.t]) { state.type = o.t; state.vals[o.t] = Object.assign(C.defaults(o.t), o.v || {}); state.style = R.merge(R.DEFAULTS, o.s || {}); state.anim = R.merge(AN.DEFAULTS, o.a || {}); }
+            if (o && C.byId[o.t]) { state.type = o.t; state.vals[o.t] = Object.assign(C.defaults(o.t), clean(o.v)); state.style = R.merge(R.DEFAULTS, o.s || {}); state.anim = R.merge(AN.DEFAULTS, o.a || {}); }
         } catch (e) { /* битая ссылка */ }
         try { history.replaceState(null, '', location.pathname); } catch (e) { /* ничего */ }
     })();
@@ -369,7 +375,7 @@
         f.text().then(function (t) { $('#batchIn').value = t.replace(/^﻿/, ''); renderBatchPreview(); });
     });
     function prog(v) { var p = $('#batchProg'); p.hidden = v == null; if (v != null) p.value = v; }
-    function csvq(s) { return '"' + String(s).replace(/"/g, '""') + '"'; }
+    function csvq(s) { s = String(s); if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g, '""') + '"'; }
     $('#batchZip').addEventListener('click', async function () {
         var items = parseBatch(), fmt = $('#batchFmt').value, px = Number($('#batchPx').value), st = $('#batchStatus'), btn = this;
         if (!items.length) return toast('Добавьте хотя бы одну строку');
@@ -440,7 +446,7 @@
                 if (detector) { var r = await detector.detect(v); if (r[0]) text = r[0].rawValue; }
                 if (!text) {
                     var s = Math.min(1, 720 / v.videoWidth); scanCv.width = Math.round(v.videoWidth * s); scanCv.height = Math.round(v.videoHeight * s);
-                    var cx = scanCv.getContext('2d', { willReadFrequently: true }); cx.drawImage(v, 0, 0, scanCv.width, scanCv.height); text = decodeCanvasAny(scanCv);
+                    var cx = scanCv.getContext('2d', { willReadFrequently: true }); cx.drawImage(v, 0, 0, scanCv.width, scanCv.height); text = await R.decodeCanvasAsync(scanCv);
                 }
             } catch (e) { /* кадр пропускаем */ }
         }
@@ -459,7 +465,7 @@
             var sizes = [Math.min(big, 1600), 1000, 700, 450];
             for (var i = 0; i < sizes.length && !text; i++) {
                 var s = Math.min(1, sizes[i] / big); scanCv.width = Math.max(1, Math.round(img.naturalWidth * s)); scanCv.height = Math.max(1, Math.round(img.naturalHeight * s));
-                var cx = scanCv.getContext('2d', { willReadFrequently: true }); cx.fillStyle = '#fff'; cx.fillRect(0, 0, scanCv.width, scanCv.height); cx.drawImage(img, 0, 0, scanCv.width, scanCv.height); text = decodeCanvasAny(scanCv);
+                var cx = scanCv.getContext('2d', { willReadFrequently: true }); cx.fillStyle = '#fff'; cx.fillRect(0, 0, scanCv.width, scanCv.height); cx.drawImage(img, 0, 0, scanCv.width, scanCv.height); text = await R.decodeCanvasAsync(scanCv);
                 await tick();
             }
             if (text) { st.textContent = ''; showScan(text); } else st.textContent = 'QR-код на картинке не найден. Попробуйте более чёткое или обрезанное изображение.';
@@ -515,7 +521,7 @@
             var secret = e.type === 'wifi' || e.type === 'otp' || e.type === 'sbp' || e.type === 'crypto';
             var info = h('div', {}, [h('div', { class: 't1', text: (TYPE_NAME[e.type] || 'Текст') + ' · ' + new Date(e.ts).toLocaleString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) }), h('div', { class: 't2', text: secret ? 'Содержимое скрыто, откройте, чтобы посмотреть' : e.text.slice(0, 90) })]);
             var open = h('button', { type: 'button', class: 'b', text: 'Открыть' }), del = h('button', { type: 'button', class: 'b', text: 'Удалить' });
-            open.addEventListener('click', function () { state.type = e.type; state.vals[e.type] = Object.assign(C.defaults(e.type), e.vals); state.style = R.merge(R.DEFAULTS, e.style); renderTypes(); renderFields(); syncControls(); setMode('create'); update(); });
+            open.addEventListener('click', function () { state.type = e.type; state.vals[e.type] = Object.assign(C.defaults(e.type), clean(e.vals)); state.style = R.merge(R.DEFAULTS, e.style); renderTypes(); renderFields(); syncControls(); setMode('create'); update(); });
             del.addEventListener('click', function () { list.splice(i, 1); LS.set('qr.hist', list); renderHist(); });
             ul.appendChild(h('li', {}, [th, info, h('div', { class: 'acts' }, [open, del])]));
         });
@@ -529,17 +535,23 @@
     function animStop() { if (animPlayer) { animPlayer.stop(); animPlayer = null; } $('#animStage').hidden = true; $('#stage').hidden = false; $('#animBtns').hidden = true; }
     var animBuild = debounce(function () {
         if (!state.anim.on || !lastRes || $('#mode-create').hidden) return;
-        var tok = ++animTok;
-        AN.prepare(lastRes.text, state.style, state.anim, 480, animImg).then(function (P) {
+        var tok = animTok, text = lastRes.text;
+        AN.prepare(text, state.style, state.anim, 480, animImg).then(function (P) {
             if (tok !== animTok || !state.anim.on) return;
             if (animPlayer) animPlayer.stop();
             animPrep = P; animPlayer = AN.player($('#animCv'), P);
             $('#stage').hidden = true; $('#animStage').hidden = false; $('#animBtns').hidden = false;
-            var v = AN.verify(P, lastRes.text);
-            setStatus(v.ok === v.total ? 'Код читается на всех кадрах анимации' : v.ok > 0 ? 'Код читается в ' + v.ok + ' из ' + v.total + ' кадров анимации. Для надёжности уберите яркие эффекты или упростите фон.' : 'На кадрах анимации код не читается. Выберите эффект спокойнее или светлее фон панели.', v.ok === v.total ? 'ok' : 'bad');
-            var ul = $('#notes'); ul.textContent = ''; if (!lastRes.options.frame || lastRes.options.frame !== 'none') ul.appendChild(h('li', { text: 'Рамка с подписью в анимации не используется.' }));
+            var ul = $('#notes'); ul.textContent = ''; if (lastRes && lastRes.options.frame && lastRes.options.frame !== 'none') ul.appendChild(h('li', { text: 'Рамка с подписью в анимации не используется.' }));
+            setStatus('Проверяю кадры анимации…', '');
+            setTimeout(function () {
+                if (tok !== animTok) return;
+                AN.verify(P, text, function () { return tok !== animTok; }).then(function (v) {
+                    if (!v || tok !== animTok) return;
+                    setStatus(v.ok === v.total ? 'Код читается на всех кадрах анимации' : v.ok > 0 ? 'Код читается в ' + v.ok + ' из ' + v.total + ' кадров анимации. Для надёжности уберите яркие эффекты или упростите фон.' : 'На кадрах анимации код не читается. Выберите эффект спокойнее или светлее фон панели.', v.ok === v.total ? 'ok' : 'bad');
+                });
+            }, 500);
         }).catch(function (e) { setStatus(e.message || 'Не получилось собрать анимацию', 'bad'); });
-    }, 160);
+    }, 300);
     function animUpdate() {
         if (!state.anim.on) { animStop(); return; }
         $('#animBody').hidden = false; setStatus('Собираю анимацию…', ''); animBuild();
