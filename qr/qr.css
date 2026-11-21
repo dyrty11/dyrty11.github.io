@@ -15,6 +15,8 @@ a { color: var(--accent); }
 h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); letter-spacing: -0.5px; font-weight: 600; line-height: 1.1; }
 h1 span { color: var(--accent); }
 .lead { color: var(--muted); font-size: 14px; margin-top: 10px; max-width: 780px; }
+.install { margin-top: 14px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.install .hint { margin: 0; }
 .lead.warn { color: var(--bad); }
 h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); font-weight: 500; }
 
@@ -86,6 +88,9 @@ output { color: var(--text); }
 .sw:hover { border-color: var(--muted); }
 .sw[aria-pressed="true"] { border-color: var(--accent); }
 
+.stage.anim { padding: 0; background: transparent; }
+.stage canvas { width: 100%; height: auto; max-height: 560px; max-width: 100%; border-radius: 18px; display: block; margin: 0 auto; object-fit: contain; }
+#animBtns { display: grid; gap: 4px; }
 /* кнопки */
 .btns { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
 .b { background: var(--surface2); color: var(--text); border: 1px solid var(--border); padding: 9px 16px; font: inherit; font-size: 13px; cursor: pointer; border-radius: 999px; text-decoration: none; display: inline-block; }

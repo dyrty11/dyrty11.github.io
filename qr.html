@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Генератор QR-кодов: Wi‑Fi, визитка, оплата, логотип, пакетно — Portfolio</title>
-    <meta name="description" content="Бесплатный генератор QR-кодов в браузере: ссылка, Wi‑Fi, визитка, оплата по реквизитам, СБП, события, свой дизайн и логотип, пакетное создание, сканер, PNG, SVG, PDF. Данные не уходят на сервер.">
+    <meta name="description" content="Бесплатный генератор QR-кодов в браузере: ссылка, Wi‑Fi, визитка, оплата по реквизитам, анимированные QR (GIF, видео), свой дизайн и логотип, пакетное создание, сканер. Работает офлайн, данные не уходят на сервер.">
     <link rel="canonical" href="https://dyrty11.github.io/qr.html">
     <meta name="theme-color" content="#0a0c0b">
     <meta property="og:site_name" content="Portfolio">
     <meta property="og:locale" content="ru_RU">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Генератор QR-кодов: Wi‑Fi, визитка, оплата, логотип, пакетно — Portfolio">
-    <meta property="og:description" content="Бесплатный генератор QR-кодов в браузере: 16 типов содержимого, свой дизайн и логотип, пакетное создание, сканер, PNG, SVG, PDF. Данные не уходят на сервер.">
+    <meta property="og:description" content="Бесплатный генератор QR-кодов в браузере: 16 типов, анимированные QR (GIF, видео), свой дизайн и логотип, пакетное создание, сканер. Работает офлайн.">
     <meta property="og:url" content="https://dyrty11.github.io/qr.html">
     <meta property="og:image" content="https://dyrty11.github.io/img/og-qr.jpg">
     <meta property="og:image:width" content="1200">
@@ -23,6 +23,11 @@
     <meta name="twitter:image" content="https://dyrty11.github.io/img/og-qr.jpg">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="manifest" href="qr.webmanifest">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="QR">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; object-src 'none'; upgrade-insecure-requests; base-uri 'none'; form-action 'none';">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <script src="frame-bust.js"></script>
@@ -37,6 +42,7 @@
             <a class="back" href="index.html">← Назад в портфолио</a>
             <h1>Генератор <span>QR-кодов</span></h1>
             <p class="lead">Ссылки, Wi‑Fi, визитки, оплата по реквизитам, события и ещё десяток типов. Свой дизайн, логотип, рамка, пакетное создание и сканер. Всё считается у вас в браузере, ничего не отправляется на сервер.</p>
+            <div class="install" id="install" hidden><button type="button" class="b primary" id="installBtn">Установить как приложение</button><span id="iosHint" class="hint" hidden>На iPhone: кнопка «Поделиться» → «На экран Домой».</span></div>
             <noscript><p class="lead warn">Для работы генератора нужен включённый JavaScript.</p></noscript>
         </header>
 
@@ -128,6 +134,45 @@
                                 </div>
                             </details>
 
+
+                            <details class="acc">
+                                <summary>Анимация и фон</summary>
+                                <div class="acc-body">
+                                    <label class="chk"><input type="checkbox" data-a="on"> Анимированный QR (GIF и видео, как в мессенджерах)</label>
+                                    <div id="animBody">
+                                        <label class="fld">Движение кода
+                                            <select data-a="effect"></select>
+                                        </label>
+                                        <label class="fld">Фон за кодом
+                                            <select data-a="bg"></select>
+                                        </label>
+                                        <div class="row3">
+                                            <label class="fld">Цвет 1<input type="color" data-a="c1"></label>
+                                            <label class="fld">Цвет 2<input type="color" data-a="c2"></label>
+                                            <label class="fld">Цвет 3<input type="color" data-a="c3"></label>
+                                        </div>
+                                        <label class="fld" id="animGlyphRow">Символ узора (эмодзи или буква)<input type="text" maxlength="2" data-a="glyph"></label>
+                                        <div id="animImgRow">
+                                            <label class="fld">Картинка для фона<input type="file" id="animFile" accept="image/png,image/jpeg,image/webp"></label>
+                                            <label class="fld"><span>Затемнение: <output id="dimOut">35</output>%</span><input type="range" min="0" max="80" step="5" data-a="dim" data-pct></label>
+                                        </div>
+                                        <div class="row2">
+                                            <label class="fld"><span>Длина цикла: <output id="durOut">4</output> с</span><input type="range" min="2" max="8" step="1" data-a="dur" data-num></label>
+                                            <label class="fld">Формат кадра
+                                                <select data-a="aspect"><option value="square">Квадрат</option><option value="story">Сторис 9:16</option></select>
+                                            </label>
+                                        </div>
+                                        <label class="fld"><span>Отступ кода от края: <output id="padOut">14</output>%</span><input type="range" min="6" max="28" step="1" data-a="pad" data-pct></label>
+                                        <div class="row2">
+                                            <label class="fld">Подпись под кодом<input type="text" maxlength="32" data-a="caption" placeholder="@username"></label>
+                                            <label class="fld">Цвет подписи<input type="color" data-a="capColor"></label>
+                                        </div>
+                                        <label class="fld">Цвет эффекта (круги, луч, искры)<input type="color" data-a="fx"></label>
+                                        <p class="hint">В анимации не используется рамка с подписью: её заменяет сцена. Код проверяется на нескольких кадрах цикла.</p>
+                                    </div>
+                                </div>
+                            </details>
+
                             <details class="acc">
                                 <summary>Точность и поля</summary>
                                 <div class="acc-body">
@@ -159,6 +204,7 @@
 
                     <aside class="preview" aria-label="Предпросмотр">
                         <div class="stage" id="stage" role="img" aria-label="Предпросмотр QR-кода"></div>
+                        <div class="stage anim" id="animStage" hidden><canvas id="animCv" role="img" aria-label="Анимированный QR-код"></canvas></div>
                         <p class="status" id="status" aria-live="polite"></p>
                         <ul class="notes" id="notes"></ul>
                         <div class="dlrow">
@@ -180,6 +226,18 @@
                             <button type="button" class="b" id="copyImg">Копировать картинку</button>
                             <button type="button" class="b" id="shareBtn">Поделиться</button>
                             <button type="button" class="b" id="printBtn">Печать</button>
+                        </div>
+                        <div id="animBtns" hidden>
+                            <div class="dlrow">
+                                <label class="fld sm">Размер GIF / видео
+                                    <select id="animPx"><option value="360">360 px</option><option value="480" selected>480 px</option><option value="640">640 px</option><option value="720">720 px</option></select>
+                                </label>
+                            </div>
+                            <div class="btns">
+                                <button type="button" class="b primary" id="animGif">Скачать GIF</button>
+                                <button type="button" class="b" id="animVid">Скачать видео</button>
+                            </div>
+                            <progress id="animProg" max="100" value="0" hidden></progress>
                         </div>
                         <details class="raw">
                             <summary>Что внутри кода</summary>
@@ -278,6 +336,7 @@
     <script src="qr/vendor/jsQR.min.js"></script>
     <script src="qr/content.js"></script>
     <script src="qr/render.js"></script>
+    <script src="qr/anim.js"></script>
     <script src="qr/files.js"></script>
     <script src="qr/app.js"></script>
 </body>

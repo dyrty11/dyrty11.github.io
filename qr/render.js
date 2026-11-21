@@ -173,6 +173,7 @@
         var inEye = function (r, c) { return (r < 7 && c < 7) || (r < 7 && c >= n - 7) || (r >= n - 7 && c < 7) || (o.body !== 'square' && inAlign(r, c)); };
 
         var fg = hex(o.fg), fg2 = hex(o.fg2), useGrad = o.grad === 'linear' || o.grad === 'radial';
+        var layer = o._layer || ''; if (layer) o.frame = 'none'; if (layer === 'mask') useGrad = false;
         var defs = '', paint = fg;
         if (useGrad) {
             var cx = mg + n / 2, cy = mg + n / 2;
@@ -188,6 +189,8 @@
         var ballFill = o.eyeBallColor ? hex(o.eyeBallColor) : paint;
         var bgc = o.transparent ? 'none' : hex(o.bg);
         var panelBg = o.transparent ? (o.frame !== 'none' ? '#ffffff' : 'none') : hex(o.bg);
+        if (layer) panelBg = 'none';
+        if (layer === 'mask') { paint = frameFill = ballFill = '#000000'; }
 
         // QR-часть в локальных координатах (0..side)
         var g = '';
@@ -197,19 +200,21 @@
         }
         g += '<g transform="translate(' + mg + ' ' + mg + ')">';
         var body = bodyPath(o.body, q.m, n, function (r, c) { return inEye(r, c) || inLogo(r, c); });
-        if (body) g += '<path fill="' + paint + '"' + (o.body === 'square' ? ' shape-rendering="crispEdges"' : '') + ' d="' + body + '"/>';
+        if (body && layer !== 'logo') g += '<path fill="' + paint + '"' + (o.body === 'square' ? ' shape-rendering="crispEdges"' : '') + ' d="' + body + '"/>';
         var eyes = [[0, 0, 'tl'], [n - 7, 0, 'tr'], [0, n - 7, 'bl']];
         var fp = '', bp = '';
         eyes.forEach(function (e) { var p = eyePaths('', e[0], e[1], e[2], o.eyeFrame, o.eyeBall); fp += p.frame; bp += p.ball; });
-        if (o.body !== 'square') {
+        if (o.body !== 'square' && layer !== 'logo') {
             var ap = '';
             aligns.forEach(function (a) { var x = a[1] - 2, y = a[0] - 2; ap += rr(x, y, 5, 5, 0, 0, 0, 0) + rr(x + 1, y + 1, 3, 3, 0, 0, 0, 0) + rr(x + 2, y + 2, 1, 1, 0, 0, 0, 0); });
             if (ap) g += '<path fill="' + paint + '" fill-rule="evenodd" d="' + ap + '"/>';
         }
-        g += '<path fill="' + frameFill + '" fill-rule="evenodd" d="' + fp + '"/>';
-        g += '<path fill="' + ballFill + '" d="' + bp + '"/>';
+        if (layer !== 'logo') {
+            g += '<path fill="' + frameFill + '" fill-rule="evenodd" d="' + fp + '"/>';
+            g += '<path fill="' + ballFill + '" d="' + bp + '"/>';
+        }
 
-        if (hasLogo) {
+        if (hasLogo && layer !== 'mask') {
             var lx = s0, ly = s0, ls = cells, lc = L.color ? hex(L.color) : fg;
             var back = L.shape === 'none' ? '' : (L.shape === 'circle' ? circ(lx + ls / 2, ly + ls / 2, ls / 2) : L.shape === 'square' ? rr(lx, ly, ls, ls, 0, 0, 0, 0) : rr(lx, ly, ls, ls, ls * 0.22, ls * 0.22, ls * 0.22, ls * 0.22));
             if (back) g += '<path fill="' + (bgc === 'none' ? '#ffffff' : bgc) + '" d="' + back + '"/>';
@@ -259,11 +264,11 @@
                 var w = Math.round(px), h = Math.round(px * res.h / res.w), cv = document.createElement('canvas');
                 cv.width = w; cv.height = h;
                 var ctx = cv.getContext('2d');
-                if (mime && mime !== 'image/png') { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h); }
+                if (mime && mime !== 'image/png' && mime !== 'canvas-alpha') { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h); }
                 ctx.imageSmoothingQuality = 'high';
                 ctx.drawImage(img, 0, 0, w, h);
                 URL.revokeObjectURL(url);
-                if (mime === 'canvas') return resolve(cv);
+                if (mime === 'canvas' || mime === 'canvas-alpha') return resolve(cv);
                 cv.toBlob(function (b) { b ? resolve(b) : reject(new Error('Не удалось сохранить изображение')); }, mime || 'image/png', quality || 0.92);
             };
             img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('Не удалось отрисовать код')); };

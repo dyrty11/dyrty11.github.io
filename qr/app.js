@@ -1,7 +1,7 @@
 /* Генератор QR-кодов: интерфейс. Всё работает локально, данные никуда не отправляются. */
 (function () {
     'use strict';
-    var C = window.QRContent, R = window.QRRender, F = window.QRFiles;
+    var C = window.QRContent, R = window.QRRender, F = window.QRFiles, AN = window.QRAnim;
     var $ = function (s, r) { return (r || document).querySelector(s); };
     var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
     var LS = {
@@ -24,15 +24,15 @@
     function debounce(fn, ms) { var t; return function () { clearTimeout(t); t = setTimeout(fn, ms); }; }
 
     /* ---------------- состояние ---------------- */
-    var state = { type: 'url', vals: {}, style: R.clone(R.DEFAULTS) };
+    var state = { type: 'url', vals: {}, style: R.clone(R.DEFAULTS), anim: R.clone(AN.DEFAULTS) }, animImg = null;
     (function restore() {
         var s = LS.get('qr.state.v1');
-        if (s && C.byId[s.type]) { state.type = s.type; state.vals = s.vals || {}; state.style = R.merge(R.DEFAULTS, s.style); }
+        if (s && C.byId[s.type]) { state.type = s.type; state.vals = s.vals || {}; state.style = R.merge(R.DEFAULTS, s.style); state.anim = R.merge(AN.DEFAULTS, s.anim); }
     })();
     function vals() { if (!state.vals[state.type]) state.vals[state.type] = C.defaults(state.type); return state.vals[state.type]; }
     var saveState = debounce(function () {
         var st = R.clone(state.style); if (st.logo && st.logo.data && st.logo.data.length > 150000) st.logo = R.clone(R.DEFAULTS.logo);
-        LS.set('qr.state.v1', { type: state.type, vals: state.vals, style: st });
+        LS.set('qr.state.v1', { type: state.type, vals: state.vals, style: st, anim: state.anim });
     }, 400);
 
     function getPath(o, p) { return p.split('.').reduce(function (a, k) { return a == null ? a : a[k]; }, o); }
@@ -47,6 +47,7 @@
             $('#mode-' + k).hidden = !on;
         });
         if (m !== 'scan') camStop();
+        if (m === 'create') { if (lastRes) animUpdate(); } else animStop();
         if (m === 'hist') renderHist();
         if (m === 'batch') renderBatchPreview();
     }
@@ -205,20 +206,21 @@
         var stage = $('#stage'), text = C.build(state.type, vals()), errs = C.check(state.type, vals());
         var ul = $('#errs'); ul.textContent = ''; errs.forEach(function (e) { ul.appendChild(h('li', { text: e })); });
         stage.classList.toggle('checker', !!state.style.transparent);
-        var dis = function (v) { $$('[data-dl],#copyImg,#shareBtn,#printBtn,#copyRaw,#linkBtn').forEach(function (b) { b.disabled = v; }); };
+        var dis = function (v) { $$('[data-dl],#copyImg,#shareBtn,#printBtn,#copyRaw,#linkBtn,#animGif,#animVid').forEach(function (b) { b.disabled = v; }); };
         if (!text) {
-            lastRes = null; stage.textContent = ''; stage.appendChild(h('div', { class: 'ph', text: 'Заполните обязательные поля слева, и здесь появится код' }));
+            lastRes = null; animStop(); stage.textContent = ''; stage.appendChild(h('div', { class: 'ph', text: 'Заполните обязательные поля слева, и здесь появится код' }));
             setStatus('', ''); $('#notes').textContent = ''; $('#raw').textContent = ''; $('#meta').textContent = ''; dis(true); return;
         }
         var res = R.build(text, state.style);
-        if (res.error) { lastRes = null; stage.textContent = ''; stage.appendChild(h('div', { class: 'ph', text: res.error })); setStatus(res.error, 'bad'); dis(true); return; }
+        if (res.error) { lastRes = null; animStop(); stage.textContent = ''; stage.appendChild(h('div', { class: 'ph', text: res.error })); setStatus(res.error, 'bad'); dis(true); return; }
         lastRes = res; dis(false);
         stage.textContent = ''; stage.appendChild(svgNode(res.svg));
         $('#raw').textContent = text;
         var bytes = new TextEncoder().encode(text).length;
         $('#meta').textContent = 'Версия ' + res.version + ', ' + res.n + '×' + res.n + ' модулей, коррекция ' + res.ecl + ', ' + bytes + ' байт данных.';
         setStatus('Проверяю читаемость…', ''); $('#notes').textContent = '';
-        verifyLater();
+        if (state.anim.on) { animUpdate(); return; }
+        animStop(); verifyLater();
     }
     function setStatus(t, cls) { var s = $('#status'); s.textContent = t; s.className = 'status' + (cls ? ' ' + cls : ''); }
     function runVerify() {
@@ -324,14 +326,14 @@
     function unb64(s) { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; var bin = atob(s), u = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return new TextDecoder().decode(u); }
     $('#linkBtn').addEventListener('click', function () {
         var st = R.clone(state.style); if (st.logo.type === 'image') st.logo = R.clone(R.DEFAULTS.logo);
-        var url = location.origin + location.pathname + '#c=' + b64(JSON.stringify({ t: state.type, v: vals(), s: st }));
+        var url = location.origin + location.pathname + '#c=' + b64(JSON.stringify({ t: state.type, v: vals(), s: st, a: state.anim }));
         F.copyText(url).then(function () { toast('Ссылка скопирована'); }).catch(function () { toast('Не удалось скопировать'); });
     });
     (function fromHash() {
         var m = /^#c=([\w-]+)$/.exec(location.hash); if (!m) return;
         try {
             var o = JSON.parse(unb64(m[1]));
-            if (o && C.byId[o.t]) { state.type = o.t; state.vals[o.t] = Object.assign(C.defaults(o.t), o.v || {}); state.style = R.merge(R.DEFAULTS, o.s || {}); }
+            if (o && C.byId[o.t]) { state.type = o.t; state.vals[o.t] = Object.assign(C.defaults(o.t), o.v || {}); state.style = R.merge(R.DEFAULTS, o.s || {}); state.anim = R.merge(AN.DEFAULTS, o.a || {}); }
         } catch (e) { /* битая ссылка */ }
         try { history.replaceState(null, '', location.pathname); } catch (e) { /* ничего */ }
     })();
@@ -521,7 +523,84 @@
     $('#histClear').addEventListener('click', function () { LS.set('qr.hist', []); renderHist(); });
     $('#histOn').addEventListener('change', function () { LS.set('qr.hist.off', !this.checked); if (!this.checked) LS.set('qr.hist', []); renderHist(); });
 
+
+    /* ---------------- анимированный QR ---------------- */
+    var animPlayer = null, animPrep = null, animTok = 0;
+    function animStop() { if (animPlayer) { animPlayer.stop(); animPlayer = null; } $('#animStage').hidden = true; $('#stage').hidden = false; $('#animBtns').hidden = true; }
+    var animBuild = debounce(function () {
+        if (!state.anim.on || !lastRes || $('#mode-create').hidden) return;
+        var tok = ++animTok;
+        AN.prepare(lastRes.text, state.style, state.anim, 480, animImg).then(function (P) {
+            if (tok !== animTok || !state.anim.on) return;
+            if (animPlayer) animPlayer.stop();
+            animPrep = P; animPlayer = AN.player($('#animCv'), P);
+            $('#stage').hidden = true; $('#animStage').hidden = false; $('#animBtns').hidden = false;
+            var v = AN.verify(P, lastRes.text);
+            setStatus(v.ok === v.total ? 'Код читается на всех кадрах анимации' : v.ok > 0 ? 'Код читается в ' + v.ok + ' из ' + v.total + ' кадров анимации. Для надёжности уберите яркие эффекты или упростите фон.' : 'На кадрах анимации код не читается. Выберите эффект спокойнее или светлее фон панели.', v.ok === v.total ? 'ok' : 'bad');
+            var ul = $('#notes'); ul.textContent = ''; if (!lastRes.options.frame || lastRes.options.frame !== 'none') ul.appendChild(h('li', { text: 'Рамка с подписью в анимации не используется.' }));
+        }).catch(function (e) { setStatus(e.message || 'Не получилось собрать анимацию', 'bad'); });
+    }, 160);
+    function animUpdate() {
+        if (!state.anim.on) { animStop(); return; }
+        $('#animBody').hidden = false; setStatus('Собираю анимацию…', ''); animBuild();
+    }
+    function animProg(v) { var p = $('#animProg'); p.hidden = v == null; if (v != null) p.value = Math.round(v * 100); }
+    function exportAnim(kind, btn) {
+        if (!lastRes) return; var W = kind === 'video' ? Math.max(Number($('#animPx').value), 640) : Number($('#animPx').value);
+        btn.disabled = true; animProg(0);
+        AN.prepare(lastRes.text, state.style, state.anim, W, animImg).then(function (P) {
+            return kind === 'gif' ? AN.gif(P, 20, animProg).then(function (b) { return { blob: b, ext: 'gif' }; }) : AN.video(P, animProg);
+        }).then(function (r) { F.download(r.blob, 'qr-anim-' + F.slug(lastRes.text) + '.' + r.ext); remember(); toast('Анимация сохранена'); })
+            .catch(function (e) { toast((e && e.message) || 'Не удалось собрать анимацию'); }).then(function () { animProg(null); btn.disabled = !lastRes; });
+    }
+    $('#animGif').addEventListener('click', function () { exportAnim('gif', this); });
+    $('#animVid').addEventListener('click', function () { exportAnim('video', this); });
+    if (!AN.videoMime()) $('#animVid').hidden = true;
+    function syncAnim() {
+        var a = state.anim;
+        $$('[data-a]').forEach(function (el) {
+            var v = a[el.dataset.a];
+            if (el.type === 'checkbox') el.checked = !!v; else if (el.dataset.pct !== undefined) el.value = Math.round(v * 100); else el.value = v;
+        });
+        $('#animBody').hidden = !a.on; $('#animGlyphRow').hidden = a.bg !== 'pattern'; $('#animImgRow').hidden = a.bg !== 'image';
+        $('#dimOut').textContent = Math.round(a.dim * 100); $('#durOut').textContent = a.dur; $('#padOut').textContent = Math.round(a.pad * 100);
+    }
+    function bindAnim() {
+        var e = $('[data-a="effect"]'), b = $('[data-a="bg"]');
+        AN.EFFECTS.forEach(function (o) { e.appendChild(h('option', { value: o[0], text: o[1] })); });
+        AN.BGS.forEach(function (o) { b.appendChild(h('option', { value: o[0], text: o[1] })); });
+        $$('[data-a]').forEach(function (el) {
+            el.addEventListener(el.type === 'checkbox' || el.tagName === 'SELECT' ? 'change' : 'input', function () {
+                var v = el.type === 'checkbox' ? el.checked : el.value;
+                if (el.dataset.num !== undefined) v = Number(v); if (el.dataset.pct !== undefined) v = Number(v) / 100;
+                state.anim[el.dataset.a] = v; syncAnim();
+                if (el.dataset.a === 'on' && !v) { animStop(); update(); return; }
+                update();
+            });
+        });
+        $('#animFile').addEventListener('change', function () {
+            var f = this.files && this.files[0]; if (!f) return; if (f.size > 8 * 1024 * 1024) return toast('Файл больше 8 МБ');
+            var url = URL.createObjectURL(f), img = new Image();
+            img.onload = function () { animImg = img; state.anim.bg = 'image'; syncAnim(); update(); };
+            img.onerror = function () { URL.revokeObjectURL(url); toast('Не удалось открыть картинку'); };
+            img.src = url;
+        });
+    }
+
     /* ---------------- старт ---------------- */
-    renderTypes(); renderFields(); renderChoices(); renderPalettes(); renderPresets(); bindControls(); syncControls(); update();
+    renderTypes(); renderFields(); renderChoices(); renderPalettes(); renderPresets(); bindControls(); bindAnim(); syncControls(); syncAnim(); update();
     window.addEventListener('pagehide', camStop);
+
+    /* ---------------- приложение: офлайн, установка, быстрые ссылки ---------------- */
+    (function pwa() {
+        var standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone;
+        if ('serviceWorker' in navigator && /^https:|^http:\/\/localhost/.test(location.href)) navigator.serviceWorker.register('qr-sw.js').catch(function () { /* без офлайна */ });
+        var deferred = null, box = $('#install');
+        window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; if (!standalone) box.hidden = false; });
+        $('#installBtn').addEventListener('click', function () { if (!deferred) return; deferred.prompt(); deferred.userChoice.finally(function () { deferred = null; box.hidden = true; }); });
+        window.addEventListener('appinstalled', function () { box.hidden = true; toast('Приложение установлено'); });
+        if (!standalone && /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream) { box.hidden = false; $('#installBtn').hidden = true; $('#iosHint').hidden = false; }
+        function deep() { var m = /^#(scan|batch|hist)$/.exec(location.hash); if (m) setMode(m[1]); }
+        deep(); window.addEventListener('hashchange', deep);
+    })();
 })();

@@ -1,0 +1,22 @@
+{
+  "name": "Генератор QR-кодов",
+  "short_name": "QR",
+  "description": "QR-коды для ссылок, Wi‑Fi, визиток и оплаты. Свой дизайн, анимация, сканер. Работает без интернета.",
+  "lang": "ru",
+  "start_url": "/qr.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0c0b",
+  "theme_color": "#0a0c0b",
+  "categories": ["utilities", "productivity"],
+  "icons": [
+    { "src": "qr/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "qr/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "qr/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Сканер", "url": "/qr.html#scan", "icons": [{ "src": "qr/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Пакетное создание", "url": "/qr.html#batch", "icons": [{ "src": "qr/icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
