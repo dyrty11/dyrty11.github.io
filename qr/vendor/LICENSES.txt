@@ -1,0 +1,9 @@
+Сторонние библиотеки, лежащие на сайте (внешних запросов нет):
+
+1. qrcode-generator 2.0.4, Copyright (c) 2009 Kazuhiko Arase. Лицензия MIT.
+   https://github.com/kazuhikoarase/qrcode-generator
+   The word "QR Code" is a registered trademark of DENSO WAVE INCORPORATED.
+
+2. jsQR 1.4.0, Copyright (c) Cosmo Wolfe. Лицензия Apache-2.0 (текст: jsQR.LICENSE.txt).
+   https://github.com/cozmo/jsQR
+   Файл jsQR.min.js: тот же код после минификации (terser), без изменений логики.

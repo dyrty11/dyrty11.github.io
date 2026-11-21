@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор QR-кодов: Wi‑Fi, визитка, оплата, логотип, пакетно — Portfolio</title>
+    <meta name="description" content="Бесплатный генератор QR-кодов в браузере: ссылка, Wi‑Fi, визитка, оплата по реквизитам, СБП, события, свой дизайн и логотип, пакетное создание, сканер, PNG, SVG, PDF. Данные не уходят на сервер.">
+    <link rel="canonical" href="https://dyrty11.github.io/qr.html">
+    <meta name="theme-color" content="#0a0c0b">
+    <meta property="og:site_name" content="Portfolio">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Генератор QR-кодов: Wi‑Fi, визитка, оплата, логотип, пакетно — Portfolio">
+    <meta property="og:description" content="Бесплатный генератор QR-кодов в браузере: 16 типов содержимого, свой дизайн и логотип, пакетное создание, сканер, PNG, SVG, PDF. Данные не уходят на сервер.">
+    <meta property="og:url" content="https://dyrty11.github.io/qr.html">
+    <meta property="og:image" content="https://dyrty11.github.io/img/og-qr.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Генератор QR-кодов">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Генератор QR-кодов: Wi‑Fi, визитка, оплата, логотип, пакетно — Portfolio">
+    <meta name="twitter:description" content="Бесплатный генератор QR-кодов в браузере: 16 типов содержимого, свой дизайн и логотип, пакетное создание, сканер, PNG, SVG, PDF.">
+    <meta name="twitter:image" content="https://dyrty11.github.io/img/og-qr.jpg">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; object-src 'none'; upgrade-insecure-requests; base-uri 'none'; form-action 'none';">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <script src="frame-bust.js"></script>
+    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="qr/qr.css">
+    <link rel="stylesheet" href="ttyou.css">
+</head>
+<body>
+    <a class="skip" href="#main">К генератору</a>
+    <div class="app">
+        <header class="bar">
+            <a class="back" href="index.html">← Назад в портфолио</a>
+            <h1>Генератор <span>QR-кодов</span></h1>
+            <p class="lead">Ссылки, Wi‑Fi, визитки, оплата по реквизитам, события и ещё десяток типов. Свой дизайн, логотип, рамка, пакетное создание и сканер. Всё считается у вас в браузере, ничего не отправляется на сервер.</p>
+            <noscript><p class="lead warn">Для работы генератора нужен включённый JavaScript.</p></noscript>
+        </header>
+
+        <div class="modes" role="tablist" aria-label="Режимы">
+            <button type="button" role="tab" id="tab-create" data-mode="create" aria-selected="true" aria-controls="mode-create">Создать</button>
+            <button type="button" role="tab" id="tab-batch" data-mode="batch" aria-selected="false" aria-controls="mode-batch" tabindex="-1">Пакетно</button>
+            <button type="button" role="tab" id="tab-scan" data-mode="scan" aria-selected="false" aria-controls="mode-scan" tabindex="-1">Сканер</button>
+            <button type="button" role="tab" id="tab-hist" data-mode="hist" aria-selected="false" aria-controls="mode-hist" tabindex="-1">История</button>
+        </div>
+
+        <main id="main">
+            <!-- ===== Создать ===== -->
+            <section class="mode" id="mode-create" role="tabpanel" aria-labelledby="tab-create">
+                <div class="layout">
+                    <div class="left">
+                        <section class="card" aria-label="Содержимое">
+                            <h2>Что закодировать</h2>
+                            <div id="types" class="types"></div>
+                            <p id="typeHint" class="hint"></p>
+                            <div id="fields" class="fields"></div>
+                            <ul id="errs" class="errs" aria-live="polite"></ul>
+                        </section>
+
+                        <section class="card" aria-label="Оформление">
+                            <h2>Оформление</h2>
+
+                            <details class="acc" open>
+                                <summary>Форма</summary>
+                                <div class="acc-body">
+                                    <div class="lbl">Точки</div><div class="choices" data-choice="body"></div>
+                                    <div class="lbl">Рамка глаза</div><div class="choices" data-choice="eyeFrame"></div>
+                                    <div class="lbl">Центр глаза</div><div class="choices" data-choice="eyeBall"></div>
+                                </div>
+                            </details>
+
+                            <details class="acc">
+                                <summary>Цвета</summary>
+                                <div class="acc-body">
+                                    <div class="lbl">Готовые схемы</div><div class="swatches" id="palettes"></div>
+                                    <div class="row2">
+                                        <label class="fld">Цвет кода<input type="color" data-s="fg"></label>
+                                        <label class="fld">Фон<input type="color" data-s="bg"></label>
+                                    </div>
+                                    <label class="chk"><input type="checkbox" data-s="transparent"> Прозрачный фон (в PNG и SVG)</label>
+                                    <label class="fld">Градиент
+                                        <select data-s="grad"><option value="none">Нет</option><option value="linear">Линейный</option><option value="radial">Радиальный</option></select>
+                                    </label>
+                                    <div class="row2" id="gradRow">
+                                        <label class="fld">Второй цвет<input type="color" data-s="fg2"></label>
+                                        <label class="fld"><span>Угол: <output id="angleOut">45</output>°</span><input type="range" min="0" max="360" step="5" data-s="angle" data-num></label>
+                                    </div>
+                                    <label class="fld"><span>Скругление фона: <output id="bgrOut">0</output></span><input type="range" min="0" max="6" step="0.5" data-s="bgRadius" data-num></label>
+                                    <label class="chk"><input type="checkbox" id="eyeColors"> Свои цвета глаз</label>
+                                    <div class="row2" id="eyeRow">
+                                        <label class="fld">Рамка глаза<input type="color" data-s="eyeFrameColor"></label>
+                                        <label class="fld">Центр глаза<input type="color" data-s="eyeBallColor"></label>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <details class="acc">
+                                <summary>Логотип в центре</summary>
+                                <div class="acc-body">
+                                    <label class="fld">Что поставить
+                                        <select data-s="logo.type"><option value="none">Ничего</option><option value="icon">Значок</option><option value="text">Буквы</option><option value="image">Своя картинка</option></select>
+                                    </label>
+                                    <div id="logoIcon" class="choices icons"></div>
+                                    <label class="fld" id="logoTextRow">Текст (до 4 символов)<input type="text" maxlength="4" data-s="logo.text"></label>
+                                    <div id="logoImgRow"><label class="fld">Файл (PNG, JPG, SVG, WebP)<input type="file" id="logoFile" accept="image/png,image/jpeg,image/webp,image/svg+xml"></label></div>
+                                    <label class="fld"><span>Размер: <output id="lsOut">22</output>% стороны</span><input type="range" min="10" max="34" step="1" data-s="logo.size" data-pct></label>
+                                    <div class="row2">
+                                        <label class="fld">Подложка
+                                            <select data-s="logo.shape"><option value="rounded">Скруглённая</option><option value="circle">Круг</option><option value="square">Квадрат</option><option value="none">Без подложки</option></select>
+                                        </label>
+                                        <label class="fld">Цвет значка<input type="color" data-s="logo.color"></label>
+                                    </div>
+                                    <p class="hint">Под логотипом убираются точки кода, поэтому уровень коррекции повышается сам. Читаемость проверяется автоматически.</p>
+                                </div>
+                            </details>
+
+                            <details class="acc">
+                                <summary>Рамка с подписью</summary>
+                                <div class="acc-body">
+                                    <label class="fld">Стиль
+                                        <select data-s="frame"></select>
+                                    </label>
+                                    <label class="fld">Подпись<input type="text" maxlength="28" data-s="frameText"></label>
+                                    <label class="fld">Цвет рамки<input type="color" data-s="frameColor"></label>
+                                </div>
+                            </details>
+
+                            <details class="acc">
+                                <summary>Точность и поля</summary>
+                                <div class="acc-body">
+                                    <label class="fld">Коррекция ошибок
+                                        <select data-s="ecl"><option value="L">L: 7%, самый простой код</option><option value="M">M: 15%, обычный выбор</option><option value="Q">Q: 25%</option><option value="H">H: 30%, для печати на неровном</option></select>
+                                    </label>
+                                    <label class="fld"><span>Белое поле вокруг: <output id="mgOut">4</output> мод.</span><input type="range" min="0" max="10" step="1" data-s="margin" data-num></label>
+                                </div>
+                            </details>
+
+                            <details class="acc">
+                                <summary>Стили и ссылка</summary>
+                                <div class="acc-body">
+                                    <div class="btns">
+                                        <button type="button" class="b" id="randBtn">Случайный стиль</button>
+                                        <button type="button" class="b" id="resetStyle">Сбросить оформление</button>
+                                    </div>
+                                    <div class="row-save">
+                                        <input type="text" id="presetName" maxlength="30" placeholder="Название стиля" aria-label="Название стиля">
+                                        <button type="button" class="b" id="presetSave">Сохранить стиль</button>
+                                    </div>
+                                    <ul id="presets" class="plist"></ul>
+                                    <button type="button" class="b" id="linkBtn">Скопировать ссылку на этот код</button>
+                                    <p class="hint">Ссылка хранит содержимое и оформление после знака #, на сервер оно не попадает.</p>
+                                </div>
+                            </details>
+                        </section>
+                    </div>
+
+                    <aside class="preview" aria-label="Предпросмотр">
+                        <div class="stage" id="stage" role="img" aria-label="Предпросмотр QR-кода"></div>
+                        <p class="status" id="status" aria-live="polite"></p>
+                        <ul class="notes" id="notes"></ul>
+                        <div class="dlrow">
+                            <label class="fld sm">Размер PNG / JPG
+                                <select id="px"><option value="512">512 px</option><option value="1024" selected>1024 px</option><option value="2048">2048 px</option><option value="4096">4096 px</option></select>
+                            </label>
+                            <label class="fld sm">Размер на листе PDF
+                                <select id="pdfSz"><option value="5">5 см</option><option value="8">8 см</option><option value="12" selected>12 см</option><option value="16">16 см</option></select>
+                            </label>
+                        </div>
+                        <div class="btns">
+                            <button type="button" class="b primary" data-dl="png">PNG</button>
+                            <button type="button" class="b" data-dl="svg">SVG</button>
+                            <button type="button" class="b" data-dl="jpg">JPG</button>
+                            <button type="button" class="b" data-dl="webp">WebP</button>
+                            <button type="button" class="b" data-dl="pdf">PDF</button>
+                        </div>
+                        <div class="btns">
+                            <button type="button" class="b" id="copyImg">Копировать картинку</button>
+                            <button type="button" class="b" id="shareBtn">Поделиться</button>
+                            <button type="button" class="b" id="printBtn">Печать</button>
+                        </div>
+                        <details class="raw">
+                            <summary>Что внутри кода</summary>
+                            <pre id="raw"></pre>
+                            <p id="meta" class="hint"></p>
+                            <button type="button" class="b" id="copyRaw">Копировать текст</button>
+                        </details>
+                    </aside>
+                </div>
+            </section>
+
+            <!-- ===== Пакетно ===== -->
+            <section class="mode" id="mode-batch" role="tabpanel" aria-labelledby="tab-batch" hidden>
+                <div class="layout one">
+                    <section class="card">
+                        <h2>Пакетное создание</h2>
+                        <p class="hint">Одна строка — один код. Можно писать «значение» или «название | значение»: название попадёт в имя файла и в подпись на листе. Оформление берётся из вкладки «Создать».</p>
+                        <textarea id="batchIn" rows="10" spellcheck="false" placeholder="Меню | https://example.com/menu&#10;Стол 1 | https://example.com/t/1&#10;Стол 2 | https://example.com/t/2"></textarea>
+                        <div class="row3">
+                            <label class="fld">Из файла (.txt, .csv)<input type="file" id="batchFile" accept=".txt,.csv,text/plain,text/csv"></label>
+                            <label class="fld">Тип строк
+                                <select id="batchType"><option value="auto">Определять сам</option><option value="text">Всегда текст</option><option value="url">Всегда ссылка</option></select>
+                            </label>
+                            <label class="fld">Формат файлов
+                                <select id="batchFmt"><option value="png">PNG</option><option value="svg">SVG</option><option value="jpg">JPG</option></select>
+                            </label>
+                            <label class="fld">Размер PNG / JPG
+                                <select id="batchPx"><option value="512">512 px</option><option value="1024" selected>1024 px</option><option value="2048">2048 px</option></select>
+                            </label>
+                        </div>
+                        <div class="btns">
+                            <button type="button" class="b primary" id="batchZip">Скачать ZIP</button>
+                            <button type="button" class="b" id="batchPdf">Лист наклеек (PDF, A4)</button>
+                            <label class="fld sm inline">Колонок на листе
+                                <select id="batchCols"><option>2</option><option selected>3</option><option>4</option><option>5</option></select>
+                            </label>
+                        </div>
+                        <progress id="batchProg" max="100" value="0" hidden></progress>
+                        <p class="status" id="batchStatus" aria-live="polite"></p>
+                        <div class="minigrid" id="batchPrev"></div>
+                    </section>
+                </div>
+            </section>
+
+            <!-- ===== Сканер ===== -->
+            <section class="mode" id="mode-scan" role="tabpanel" aria-labelledby="tab-scan" hidden>
+                <div class="layout">
+                    <section class="card">
+                        <h2>Сканер</h2>
+                        <p class="hint">Наведите камеру на код или откройте картинку. Можно перетащить файл сюда или вставить скриншот через Ctrl+V.</p>
+                        <div class="camwrap" id="camWrap" hidden><video id="cam" playsinline muted></video><div class="reticle" aria-hidden="true"></div></div>
+                        <div class="btns">
+                            <button type="button" class="b primary" id="camBtn">Включить камеру</button>
+                            <button type="button" class="b" id="camFlip" hidden>Другая камера</button>
+                            <label class="b filebtn">Открыть картинку<input type="file" id="scanFile" accept="image/*"></label>
+                        </div>
+                        <div class="drop" id="drop" tabindex="0">Перетащите картинку с QR-кодом сюда</div>
+                        <p class="status" id="scanStatus" aria-live="polite"></p>
+                    </section>
+                    <section class="card" id="scanCard" aria-label="Результат" hidden>
+                        <h2 id="scanKind">Результат</h2>
+                        <dl class="rows" id="scanRows"></dl>
+                        <pre id="scanRaw"></pre>
+                        <p class="warnbox" id="scanWarn" hidden></p>
+                        <div class="btns">
+                            <button type="button" class="b" id="scanCopy">Копировать</button>
+                            <a class="b" id="scanOpen" href="#" target="_blank" rel="noopener noreferrer" hidden>Открыть ссылку</a>
+                            <button type="button" class="b" id="scanEdit">Сделать такой же код</button>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <!-- ===== История ===== -->
+            <section class="mode" id="mode-hist" role="tabpanel" aria-labelledby="tab-hist" hidden>
+                <div class="layout one">
+                    <section class="card">
+                        <h2>История</h2>
+                        <p class="hint">Коды, которые вы скачали, скопировали или отправили. Хранятся только в этом браузере.</p>
+                        <label class="chk"><input type="checkbox" id="histOn" checked> Запоминать историю</label>
+                        <ul id="histList" class="hist"></ul>
+                        <button type="button" class="b" id="histClear">Очистить историю</button>
+                    </section>
+                </div>
+            </section>
+        </main>
+
+        <p class="foot">«QR Code» — зарегистрированный товарный знак DENSO WAVE INCORPORATED. Используются библиотеки <a href="qr/vendor/LICENSES.txt">qrcode-generator (MIT) и jsQR (Apache‑2.0)</a>. Для кодов с оплатой всегда проверяйте реквизиты в приложении банка.</p>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="print-area" id="printArea" aria-hidden="true"></div>
+
+    <script src="qr/vendor/qrcode.min.js"></script>
+    <script src="qr/vendor/qrcode_utf8.js"></script>
+    <script src="qr/vendor/jsQR.min.js"></script>
+    <script src="qr/content.js"></script>
+    <script src="qr/render.js"></script>
+    <script src="qr/files.js"></script>
+    <script src="qr/app.js"></script>
+</body>
+</html>

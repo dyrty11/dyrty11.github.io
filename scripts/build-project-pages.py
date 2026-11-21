@@ -25,7 +25,7 @@ def main():
     tpl = (ROOT / 'project.html').read_bytes().decode('utf-8')
     nl = '\r\n' if '\r\n' in tpl else '\n'
     today = datetime.date.today().isoformat()
-    urls = [('/', 1.0), ('/projects.html', 0.8), ('/contacts.html', 0.6), ('/privacy.html', 0.3), ('/voidforge.html', 0.7), ('/cheatsheets.html', 0.7)]
+    urls = [('/', 1.0), ('/projects.html', 0.8), ('/contacts.html', 0.6), ('/privacy.html', 0.3), ('/voidforge.html', 0.7), ('/cheatsheets.html', 0.7), ('/qr.html', 0.7)]
     changed = False
     for p in projects:
         slug = ascii_slug(p)

@@ -90,6 +90,7 @@ img.shot, .detail-gallery img, .gallery img, .detail-cover { border-radius: var(
 .mq-card { --p: #b9f0cf; --ink: #0f5a36; --tint: #8fe0b0; display: block; flex: none; width: 296px; margin-right: 14px; text-decoration: none; -webkit-user-drag: none; will-change: transform; }
 .mq-card:nth-child(3n+2) { --p: #a9d4ff; --ink: #0d4a85; --tint: #7fbcfa; }
 .mq-card:nth-child(3n+3) { --p: #ffc9b0; --ink: #8a3a17; --tint: #ffab88; }
+.mq-card[href="project-qr.html"] { --p: #e3d4ff; --ink: #4f2a86; --tint: #c9a9f7; }
 .mq-card:nth-child(3n+1) .mq-body { }
 .mq-body { display: flex; flex-direction: column; height: 214px; padding: 22px; border-radius: 32px; background: var(--p); color: #14201a;
     box-shadow: 0 18px 40px -18px rgba(0, 0, 0, .65), 0 0 0 1px rgba(255, 255, 255, .25) inset; transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
