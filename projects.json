@@ -214,6 +214,14 @@
     "featured": true,
     "changelog": [
       {
+        "version": "0.10.2",
+        "items": [
+          "Горячая клавиша Ctrl+Alt+F включается сама при первом запуске этой версии (раньше она была выключена, и её нужно было искать в меню «Окно»). Вместе с ней включается работа в трее, чтобы клавиша действовала и после закрытия окна. В строке состояния внизу написано, что клавиша активна; выключить можно в меню «Окно». Если сочетание занято, там же будет код ошибки.",
+          "Дубликаты: по умолчанию проверяются файлы от 100 КБ, мелкие конфиги и пустые заглушки (вроде {}) больше не попадают в список. Порог меняется в поле «Не меньше». В списке появилась колонка с датой изменения."
+        ],
+        "date": "2026-11-22"
+      },
+      {
         "version": "0.10.1",
         "items": [
           "Дубликаты: файлы меньше 1 КБ больше не проверяются по умолчанию. Крошечные файлы вроде пустого {} у Firefox почти всегда одинаковы, копиями они не являются. Порог можно менять в поле «Не меньше» (0 включает всё); в консоли это --min-kb.",
@@ -250,19 +258,17 @@
           "Кнопка «Сжать индекс» (и команда filepilot optimize): индекс сжимается, свободное место возвращается диску. Размер индекса виден в строке состояния и в filepilot stats."
         ],
         "date": "2026-11-16"
-      },
-      {
-        "version": "0.7.0",
-        "items": [
-          "Индексация целого диска стала безопасной и быстрее: системные папки в корне диска (Windows, Program Files, ProgramData, корзина) и AppData пропускаются, папки-junction не обходятся, заглушки облака (OneDrive и др.) не читаются, чтобы не запускать скачивание файлов.",
-          "Обход папок ускорен: размер и даты берутся прямо из обхода без лишних обращений к диску (50 000 файлов обходятся за доли секунды). Счётчик прогресса больше не заваливает интерфейс, при повторной индексации показывается процент по прошлому проходу.",
-          "Индексация идёт с пониженным приоритетом, компьютер не тормозит.",
-          "При добавлении диска целиком программа предупреждает, сколько это займёт, и спрашивает подтверждение."
-        ],
-        "date": "2026-11-16"
       }
     ],
     "changelogEn": [
+      {
+        "version": "0.10.2",
+        "items": [
+          "Hotkey Ctrl+Alt+F turns on by itself on the first start of this version (before, it was off and had to be found in the \"Window\" menu). Running in the tray is turned on with it, so the key keeps working after the window is closed. The status bar says the key is active; turn it off in the \"Window\" menu. If the combination is taken, the error code appears there.",
+          "Duplicates: files of 100 KB and more are checked by default, so small configs and empty stubs (like {}) no longer show up. Change the limit in the \"At least\" box. The list now has a column with the modification date."
+        ],
+        "date": "2026-11-22"
+      },
       {
         "version": "0.10.1",
         "items": [
@@ -298,16 +304,6 @@
           "The name:invoice operator searches the file name only, not the contents: name:invoice ext:pdf.",
           "Search results sort by clicking a column header (path, size, date): ascending, descending, then back to relevance. The choice is kept between searches.",
           "A \"Compact index\" button (and the filepilot optimize command): the index is compacted and free space goes back to the disk. The index size is shown in the status line and in filepilot stats."
-        ],
-        "date": "2026-11-16"
-      },
-      {
-        "version": "0.7.0",
-        "items": [
-          "Indexing a whole drive is now safe and faster: system folders at the drive root (Windows, Program Files, ProgramData, Recycle Bin) and AppData are skipped, junctions are not followed, and cloud placeholders (OneDrive etc.) are not read so nothing gets downloaded.",
-          "Folder scanning is faster: size and dates come straight from the scan with no extra disk calls (50,000 files are scanned in a fraction of a second). The progress counter no longer floods the UI, and a re-index shows a percentage based on the previous pass.",
-          "Indexing runs at lower priority, so the computer stays responsive.",
-          "Adding a whole drive now shows a warning about how long it takes and asks for confirmation."
         ],
         "date": "2026-11-16"
       }
