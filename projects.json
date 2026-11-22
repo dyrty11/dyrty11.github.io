@@ -214,6 +214,14 @@
     "featured": true,
     "changelog": [
       {
+        "version": "0.10.1",
+        "items": [
+          "Дубликаты: файлы меньше 1 КБ больше не проверяются по умолчанию. Крошечные файлы вроде пустого {} у Firefox почти всегда одинаковы, копиями они не являются. Порог можно менять в поле «Не меньше» (0 включает всё); в консоли это --min-kb.",
+          "Горячая клавиша Ctrl+Alt+F: при включении сама включается и работа в трее, иначе закрытие окна завершало программу и клавиша переставала действовать. Если сочетание занято, в строке состояния появляется код ошибки."
+        ],
+        "date": "2026-11-22"
+      },
+      {
         "version": "0.10.0",
         "items": [
           "Новое ядро на Rust: обход папок, чтение текста из файлов (txt, код, docx, xlsx, pptx, odt) и сравнение файлов для поиска дубликатов идут параллельно на всех ядрах процессора. Если ядро по какой-то причине не загрузилось, FilePilot работает на прежнем коде, только медленнее.",
@@ -252,20 +260,17 @@
           "При добавлении диска целиком программа предупреждает, сколько это займёт, и спрашивает подтверждение."
         ],
         "date": "2026-11-16"
-      },
-      {
-        "version": "0.6.0",
-        "items": [
-          "Операторы в строке поиска: ext:pdf,docx, in:\"C:\\Папка\", older:30, bigger:5mb, smaller:100kb. Они сильнее панели «Фильтры»; фраза в кавычках ищется как есть. Работают и в консоли.",
-          "История запросов: Enter или «Найти» запоминает запрос (последние 20), подсказки появляются при наборе.",
-          "Папки перетаскиваются из Проводника прямо в окно программы: они добавляются в индекс, и индексация начинается сама.",
-          "Экспорт в CSV для списка дубликатов и таблицы карты диска (Excel открывает файл сразу, кодировка UTF-8 с BOM, разделитель ;).",
-          "README: установка и быстрый старт идут первыми, запуск из исходников, консольные команды и сборка вынесены в раздел «Для разработчиков»."
-        ],
-        "date": "2026-11-15"
       }
     ],
     "changelogEn": [
+      {
+        "version": "0.10.1",
+        "items": [
+          "Duplicates: files smaller than 1 KB are no longer checked by default. Tiny files such as Firefox's empty {} are almost always identical without being real copies. Change the limit in the \"At least\" box (0 includes everything); on the command line it is --min-kb.",
+          "Hotkey Ctrl+Alt+F: turning it on now also turns on running in the tray; before, closing the window quit the program and the key stopped working. If the combination is taken, the status bar shows the error code."
+        ],
+        "date": "2026-11-22"
+      },
       {
         "version": "0.10.0",
         "items": [
@@ -305,17 +310,6 @@
           "Adding a whole drive now shows a warning about how long it takes and asks for confirmation."
         ],
         "date": "2026-11-16"
-      },
-      {
-        "version": "0.6.0",
-        "items": [
-          "Operators in the search box: ext:pdf,docx, in:\"C:\\Folder\", older:30, bigger:5mb, smaller:100kb. They override the Filters panel; a quoted phrase is searched as is. They work in the command line too.",
-          "Query history: Enter or Find saves the query (last 20), suggestions appear as you type.",
-          "Drag folders from Explorer into the app window: they are added to the index and indexing starts by itself.",
-          "CSV export for the duplicates list and the disk map table (opens in Excel right away, UTF-8 with BOM, ; separator).",
-          "README: install and quick start come first; running from source, command line and build moved to a \"For developers\" section."
-        ],
-        "date": "2026-11-15"
       }
     ]
   },
