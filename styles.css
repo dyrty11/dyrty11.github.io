@@ -1,28 +1,28 @@
 :root {
-    --bg-color: #0a0c0b;
-    --text-main: #e9efeb;
-    --text-muted: #8b968f;
-    --accent: #8fe0b0;
-    --on-accent: #07100b;
-    --border: #222a26;
-    --card-bg: #111513;
+    --bg-color: #121212;
+    --text-main: #e6e0e9;
+    --text-muted: #bab4c0;
+    --accent: #d0bcff;
+    --on-accent: #381e72;
+    --border: #36343b;
+    --card-bg: #1d1b20;
 
     --font-display: 'Onest', system-ui, sans-serif;
     --font-mono: 'Onest', system-ui, sans-serif;
     --font-code: 'IBM Plex Mono', ui-monospace, monospace;
-    --card-2: #171c19;
+    --card-2: #25232a;
     --r-lg: 28px; --r-md: 18px; --r-sm: 12px;
 }
 
 [data-theme="light"] {
-    --bg-color: #f3f7f4;
-    --text-main: #101613;
-    --text-muted: #56625b;
-    --accent: #1f7a4a;
+    --bg-color: #fef7ff;
+    --text-main: #1d1b20;
+    --text-muted: #49454f;
+    --accent: #6750a4;
     --on-accent: #ffffff;
-    --border: #d3ddd7;
+    --border: #cac4d0;
     --card-bg: #ffffff;
-    --card-2: #eaf0ec;
+    --card-2: #f3edf7;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box;  }

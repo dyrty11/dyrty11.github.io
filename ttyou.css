@@ -87,10 +87,9 @@ img.shot, .detail-gallery img, .gallery img, .detail-cover { border-radius: var(
 .marquee.is-js .marquee-track { animation: none; }
 .marquee:not(.is-js):hover .marquee-track { animation-play-state: paused; }
 .marquee-group { display: flex; }
-.mq-card { --p: #b9f0cf; --ink: #0f5a36; --tint: #8fe0b0; display: block; flex: none; width: 296px; margin-right: 8px; text-decoration: none; -webkit-user-drag: none; will-change: transform; }
-.mq-card:nth-child(3n+2) { --p: #a9d4ff; --ink: #0d4a85; --tint: #7fbcfa; }
-.mq-card:nth-child(3n+3) { --p: #ffc9b0; --ink: #8a3a17; --tint: #ffab88; }
-.mq-card[href="project-qr.html"] { --p: #e3d4ff; --ink: #4f2a86; --tint: #c9a9f7; }
+.mq-card { --p: #ffb3c1; --ink: #5c0a22; --tint: #ff8fa5; display: block; flex: none; width: 296px; margin-right: 8px; text-decoration: none; -webkit-user-drag: none; will-change: transform; }
+.mq-card:nth-child(3n+2) { --p: #8fcdff; --ink: #0a3f6b; --tint: #5fb2f0; }
+.mq-card:nth-child(3n+3) { --p: #ffb59e; --ink: #6e2a0e; --tint: #ff9877; }
 .mq-card:nth-child(3n+1) .mq-body { }
 .mq-body { display: flex; flex-direction: column; height: 196px; padding: 20px; border-radius: 32px; background: var(--p); color: #14201a;
     box-shadow: 0 0 0 1px rgba(255, 255, 255, .25) inset; transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
@@ -155,7 +154,11 @@ img.shot, .detail-gallery img, .gallery img, .detail-cover { border-radius: var(
 .action-btn:hover { background: var(--accent); color: var(--on-accent); }
 .footer-socials a { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--card-2); }
 .footer-socials a:hover { background: var(--accent); color: var(--on-accent); }
-footer { border-radius: var(--r-lg) var(--r-lg) 0 0; }
+/* Подвал: волнистая линия сверху, как у TikTok You */
+footer { position: relative; border-top: 0; border-radius: 0; padding-top: 56px; }
+footer::before { content: ""; position: absolute; left: 0; right: 0; top: -5px; height: 10px; pointer-events: none;
+    background: color-mix(in srgb, var(--text-main) 30%, transparent);
+    -webkit-mask: url(img/wave.svg) repeat-x 0 0 / 24px 10px; mask: url(img/wave.svg) repeat-x 0 0 / 24px 10px; }
 
 /* Другие страницы: админка, 404, VoidForge, шпаргалки */
 .btn, button { font-family: inherit; }
@@ -214,3 +217,10 @@ footer { border-radius: var(--r-lg) var(--r-lg) 0 0; }
 }
 @media (prefers-reduced-motion: reduce) { .gal-track { scroll-behavior: auto; } }
 .detail-gallery.gal-first { margin: 8px 0 56px; }
+
+/* Блок «Поддержать» */
+.support-card { margin: 32px 0 0; max-width: 800px; padding: 28px 32px; border-radius: var(--r-lg); background: var(--card-bg); border: 1px solid var(--border); display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+.support-card h2 { flex: 1 0 100%; margin: 0; font-size: 1.25rem; }
+.support-card p { flex: 1 1 280px; margin: 0; color: var(--text-muted); }
+.about-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.submit-btn { border-radius: 999px; }

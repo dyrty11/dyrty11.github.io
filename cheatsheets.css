@@ -1,5 +1,5 @@
 /* Конструктор шпаргалок: интерфейс (тёмный, в стиле сайта) и лист A4 */
-:root { --bg: #0a0c0b; --surface: #111513; --surface2: #171c19; --border: #222a26; --text: #e9efeb; --muted: #8b968f; --accent: #8fe0b0; --on-accent: #07100b; color-scheme: dark; }
+:root { --bg: #121212; --surface: #1d1b20; --surface2: #25232a; --border: #36343b; --text: #e6e0e9; --muted: #bab4c0; --accent: #d0bcff; --on-accent: #381e72; color-scheme: dark; }
 * { margin: 0; padding: 0; box-sizing: border-box;  }
 body { font-family: 'Onest', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.5; }
 code { font-family: inherit; background: var(--surface2); border: 1px solid var(--border); padding: 0 5px; color: var(--accent); }
