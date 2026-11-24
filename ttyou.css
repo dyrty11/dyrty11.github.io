@@ -224,3 +224,11 @@ footer::before { content: ""; position: absolute; left: 0; right: 0; top: -5px; 
 .support-card p { flex: 1 1 280px; margin: 0; color: var(--text-muted); }
 .about-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .submit-btn { border-radius: 999px; }
+
+/* Boosty: оранжевый, чтобы кнопку было видно */
+.btn-boosty, .boosty-btn { --bo: #ff6b35; background: var(--bo); color: #230d04; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; }
+.btn-boosty svg, .boosty-btn svg { width: 18px; height: 18px; flex: none; }
+.btn-boosty:hover, .boosty-btn:hover { background: #ff8559; color: #230d04; box-shadow: 0 10px 30px -10px rgba(255,107,53,.7); }
+.boosty-btn { height: 40px; padding: 0 16px 0 12px; border-radius: 999px; font-size: .9rem; text-decoration: none; transition: background .2s, box-shadow .2s; }
+.header-controls { gap: 12px; }
+@media (max-width: 420px) { .boosty-btn { padding: 0 12px; } .boosty-btn span { display: none; } }
