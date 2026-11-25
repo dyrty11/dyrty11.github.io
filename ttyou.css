@@ -208,3 +208,18 @@ footer::before { content: ""; position: absolute; left: 0; right: 0; top: -5px; 
 /* Строки в описании проекта не длиннее ~75 знаков */
 #projectDetail p, #projectDetail li { max-width: 62ch; }
 p, li { text-wrap: pretty; }
+
+body > .container { border-radius: var(--r-lg); }
+
+/* VoidForge: кнопка «Сгенерировать» остаётся акцентной */
+.btn.btn-generate { background: var(--accent); color: #381e72; border-color: transparent; }
+.btn.btn-generate:disabled { opacity: .55; }
+.btn.btn-generate:hover:not(:disabled) { background: #e3d7ff; color: #381e72; border-color: transparent; }
+
+/* Телефон: шапка не слипается, вкладки QR переносятся */
+@media (max-width: 700px) {
+    .header-controls { justify-self: end; gap: 10px; }
+    .modes { flex-wrap: wrap; }
+}
+
+@media (max-width: 968px) { header:not(.bar) { display: flex; justify-content: space-between; } }

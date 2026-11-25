@@ -3,7 +3,7 @@
     'use strict';
     var R = window.QRRender, TAU = Math.PI * 2;
 
-    var DEFAULTS = { on: false, effect: 'flow', bg: 'aurora', c1: '#0b2a3a', c2: '#1f7a8c', c3: '#8fe0b0', glyph: '✦', dim: 0.35, dur: 4, aspect: 'square', pad: 0.14, caption: '', capColor: '#ffffff', fx: '#d6336c' };
+    var DEFAULTS = { on: false, effect: 'flow', bg: 'aurora', c1: '#0b2a3a', c2: '#1f7a8c', c3: '#d0bcff', glyph: '✦', dim: 0.35, dur: 4, aspect: 'square', pad: 0.14, caption: '', capColor: '#ffffff', fx: '#d6336c' };
     var EFFECTS = [['static', 'Без движения'], ['flow', 'Течение цвета'], ['wave', 'Волны'], ['rainbow', 'Радуга'], ['pulse', 'Круги от центра'], ['scan', 'Луч сканера'], ['sparkle', 'Искры']];
     var BGS = [['solid', 'Цвет'], ['gradient', 'Вращающийся градиент'], ['aurora', 'Северное сияние'], ['pattern', 'Узор из символов'], ['image', 'Своя картинка']];
 
