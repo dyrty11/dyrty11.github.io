@@ -53,12 +53,12 @@ h1 span { color: var(--accent); }
 .token-hint a { color: var(--accent); }
 .token-warning { color: var(--danger); font-weight: bold; margin-top: 5px; font-size: 11px; text-transform: uppercase; }
 .token-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
-.status-badge { display: inline-block; padding: 4px 8px; font-size: 10px; text-transform: uppercase; border: 1px solid var(--border); color: var(--text-muted); transition: all 0.2s; }
+.status-badge { display: inline-block; padding: 4px 8px; font-size: 11px; text-transform: uppercase; border: 1px solid var(--border); color: var(--text-muted); transition: all 0.2s; }
 .status-badge.connected { border-color: var(--accent); color: var(--accent); }
 .status-badge.checking { border-color: #d29a3a; color: #d29a3a; }
 .status-badge.warning { border-color: #d29a3a; color: #d29a3a; }
 .status-badge.error { border-color: var(--danger); color: var(--danger); }
-.forget-btn { padding: 4px 10px; font-size: 10px; text-transform: uppercase; background: transparent; border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; font-family: 'Onest', system-ui, sans-serif; letter-spacing: 0.5px; }
+.forget-btn { padding: 4px 10px; font-size: 11px; text-transform: uppercase; background: transparent; border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; font-family: 'Onest', system-ui, sans-serif; letter-spacing: 0.5px; }
 .forget-btn:hover { border-color: var(--danger); color: var(--danger); }
 
 .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -97,7 +97,7 @@ h1 span { color: var(--accent); }
 .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px; }
 
 .tag-suggestions { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
-.tag-suggestion { font-family: 'Onest', system-ui, sans-serif; font-size: 10px; padding: 4px 8px; background: transparent; border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; }
+.tag-suggestion { font-family: 'Onest', system-ui, sans-serif; font-size: 11px; padding: 4px 8px; background: transparent; border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; }
 .tag-suggestion:hover { border-color: var(--accent); color: var(--accent); }
 .tag-suggestion.used { opacity: 0.35; cursor: default; pointer-events: none; }
 
@@ -106,7 +106,7 @@ h1 span { color: var(--accent); }
 .icon-preview svg { width: 24px; height: 24px; }
 .icon-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
 .custom-icon-upload { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-.custom-icon-upload label { padding: 6px 10px; border: 1px solid var(--border); color: var(--text-muted); font-size: 10px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; font-family: 'Onest', system-ui, sans-serif; }
+.custom-icon-upload label { padding: 6px 10px; border: 1px solid var(--border); color: var(--text-muted); font-size: 11px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; font-family: 'Onest', system-ui, sans-serif; }
 .custom-icon-upload label:hover { border-color: var(--accent); color: var(--accent); }
 
 .color-row { display: flex; gap: 8px; align-items: center; }

@@ -27,7 +27,7 @@ body {
 .error-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); max-width: 600px; width: 100%; }
 .error-grid a { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 25px; background: var(--surface); color: var(--text); text-decoration: none; transition: background 0.2s; }
 .error-grid a:hover { background: var(--bg); }
-.grid-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+.grid-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
 .grid-path { font-family: 'Onest', system-ui, sans-serif; font-size: 14px; color: var(--accent); }
 .error-hint { margin-top: 40px; font-size: 11px; color: var(--text-muted);  }
 .theme-toggle-wrap { position: absolute; top: 20px; right: 20px; }
