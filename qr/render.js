@@ -44,6 +44,7 @@
 
     /* ---------- матрица ---------- */
     function encode(text, ecl) {
+        if (window.QRWasm && window.QRWasm.ready) { var w = window.QRWasm.encode(text, ecl || 'M'); if (w) return w; }
         var qr = qrcode(0, ecl || 'M');
         var mode = /^\d+$/.test(text) ? 'Numeric' : /^[0-9A-Z $%*+\-.\/:]+$/.test(text) ? 'Alphanumeric' : 'Byte';
         qr.addData(text, mode);

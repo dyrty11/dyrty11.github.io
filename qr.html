@@ -28,7 +28,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="QR">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; object-src 'none'; upgrade-insecure-requests; base-uri 'none'; form-action 'none';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; object-src 'none'; upgrade-insecure-requests; base-uri 'none'; form-action 'none';">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <script src="frame-bust.js"></script>
     <link rel="stylesheet" href="fonts.css">
@@ -333,6 +333,7 @@
 
     <script src="qr/vendor/qrcode.min.js"></script>
     <script src="qr/vendor/qrcode_utf8.js"></script>
+    <script src="qr/qrwasm.js"></script>
     <script src="qr/vendor/jsQR.min.js"></script>
     <script src="qr/content.js"></script>
     <script src="qr/render.js"></script>

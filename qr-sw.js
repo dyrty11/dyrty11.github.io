@@ -1,9 +1,9 @@
 /* Офлайн для генератора QR. Трогает только файлы самого генератора, остальной сайт идёт как обычно. */
 'use strict';
-var CACHE = 'qr-v2';
+var CACHE = 'qr-v3';
 var FILES = [
     'qr.html', 'qr.webmanifest', 'qr/qr.css', 'qr/app.js', 'qr/content.js', 'qr/render.js', 'qr/anim.js', 'qr/files.js', 'qr/decode-worker.js',
-    'qr/vendor/qrcode.min.js', 'qr/vendor/qrcode_utf8.js', 'qr/vendor/jsQR.min.js',
+    'qr/vendor/qrcode.min.js', 'qr/vendor/qrcode_utf8.js', 'qr/vendor/jsQR.min.js', 'qr/qrwasm.js', 'qr/qr_core.wasm',
     'qr/icons/icon-192.png', 'qr/icons/icon-512.png',
     'fonts.css', 'ttyou.css', 'frame-bust.js', 'favicon.svg', 'logo.svg', 'apple-touch-icon.png',
     'fonts/onest-cyr.woff2', 'fonts/onest-lat.woff2', 'fonts/-F63fjptAgt5VM-kVkqdyU8n1isq129k.woff2'

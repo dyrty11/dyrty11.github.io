@@ -1,0 +1,55 @@
+name: build-qr-wasm
+
+# Собирает Rust-движок QR (qr-wasm/) в qr/qr_core.wasm, проверяет его и кладёт файл в репозиторий.
+on:
+  push:
+    branches: [main]
+    paths: ["qr-wasm/**", ".github/workflows/build-qr-wasm.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: build-qr-wasm
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Rust и цель wasm32
+        run: |
+          rustup toolchain install stable --profile minimal --target wasm32-unknown-unknown
+          rustup default stable
+      - name: Тесты Rust
+        working-directory: qr-wasm
+        run: cargo test --locked || cargo test
+      - name: Сборка wasm
+        working-directory: qr-wasm
+        run: cargo build --release --target wasm32-unknown-unknown
+      - name: Проверка (размер, декодирование jsQR, сравнение с JS-библиотекой)
+        run: |
+          cp qr-wasm/target/wasm32-unknown-unknown/release/qr_core.wasm /tmp/qr_core.wasm
+          ls -l /tmp/qr_core.wasm
+          node qr-wasm/verify.mjs /tmp/qr_core.wasm
+      - name: Положить файл в репозиторий
+        run: |
+          cp /tmp/qr_core.wasm qr/qr_core.wasm
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add qr/qr_core.wasm qr-wasm/Cargo.lock
+          if git diff --cached --quiet; then echo "Без изменений"; exit 0; fi
+          git commit -m "QR: пересобран Rust-движок (qr_core.wasm)"
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Обновить Pages
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds"
