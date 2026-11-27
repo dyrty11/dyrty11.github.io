@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прошивальщик ESP32‑S3 и Cardputer: стереть память и прошить .bin из браузера — Portfolio</title>
+    <meta name="description" content="Прошивальщик в браузере для ESP32‑S3 и M5Stack Cardputer: стирает память и прошивает .bin по USB. Файл остаётся на вашем компьютере, на сервер ничего не уходит.">
+    <link rel="canonical" href="https://dyrty11.github.io/flasher.html">
+    <meta name="theme-color" content="#121212">
+    <meta property="og:site_name" content="Portfolio">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Прошивальщик ESP32‑S3 и Cardputer — Portfolio">
+    <meta property="og:description" content="Стереть память и прошить .bin на ESP32‑S3 (M5Stack Cardputer) прямо из браузера. Файл остаётся у вас.">
+    <meta property="og:url" content="https://dyrty11.github.io/flasher.html">
+    <meta property="og:image" content="https://dyrty11.github.io/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Прошивальщик ESP32‑S3 и Cardputer — Portfolio">
+    <meta name="twitter:description" content="Стереть память и прошить .bin на ESP32‑S3 (M5Stack Cardputer) прямо из браузера.">
+    <meta name="twitter:image" content="https://dyrty11.github.io/og-image.jpg">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; upgrade-insecure-requests; base-uri 'none'; form-action 'none';">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <script src="theme-init.js"></script>
+    <script src="frame-bust.js"></script>
+    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="flasher/flasher.css">
+</head>
+<body>
+    <a class="skip" href="#main">К прошивальщику</a>
+    <div class="app" id="root">
+        <header class="bar">
+            <a class="back" href="index.html">← Назад в портфолио</a>
+            <h1>Прошивальщик <span>ESP32‑S3</span></h1>
+            <p class="lead">Стирает память и прошивает .bin прямо из браузера. Сделан под M5Stack Cardputer. Файл читается у вас на компьютере и на сервер не отправляется.</p>
+            <noscript><p class="lead warn">Для работы нужен включённый JavaScript.</p></noscript>
+        </header>
+        <main id="main">
+            <section class="card unsupported">
+      <h2>Этот браузер не подходит</h2>
+      <p>Для работы с USB-портом нужен <b>Chrome</b> или <b>Edge</b> на компьютере (версия 89 и новее). Firefox и Safari не умеют Web Serial. Страница должна быть открыта по <b>https</b>.</p>
+    </section>
+
+    <div class="tool">
+      <section class="card" aria-labelledby="s1">
+        <h2 id="s1"><span class="num">1</span>Подключение</h2>
+        <div class="row">
+          <button type="button" class="b primary" id="btnConnect">Подключить устройство</button>
+          <button type="button" class="b" id="btnDisconnect" hidden>Отключить</button>
+          <span class="pill" id="pillConn" role="status"><span class="dot"></span><span id="pillText">Не подключено</span></span>
+        </div>
+        <p class="note" id="connHint">Подключите Cardputer кабелем USB и нажмите кнопку. В списке выберите «USB JTAG/serial debug unit» или порт с похожим названием. Если не подключается, включите режим загрузки (подсказка ниже).</p>
+        <label class="chk first"><input type="checkbox" id="chkAllPorts"><span>Показать все порты (если нужного устройства нет в списке)</span></label>
+      </section>
+
+      <section class="card" aria-labelledby="s2">
+        <h2 id="s2"><span class="num">2</span>Файл прошивки</h2>
+        <div class="drop" id="drop" tabindex="0" role="button" aria-label="Выбрать файл .bin">
+          <strong>Выберите .bin</strong> или перетащите сюда
+          <input type="file" id="file" accept=".bin,application/octet-stream" hidden>
+        </div>
+        <div class="fileinfo" id="fileinfo">Файл не выбран.</div>
+        <div id="fileNote"></div>
+      </section>
+
+      <section class="card" aria-labelledby="s3">
+        <h2 id="s3"><span class="num">3</span>Параметры</h2>
+        <div class="row">
+          <label class="fld">Что это за файл
+            <select id="selAddr">
+              <option value="0x0">Полный образ (0x0)</option>
+              <option value="0x10000">Только приложение (0x10000)</option>
+              <option value="custom">Другой адрес…</option>
+            </select>
+          </label>
+          <label class="fld" id="customWrap" hidden>Адрес (hex)
+            <input type="text" id="customAddr" value="0x0" inputmode="text" autocomplete="off" spellcheck="false">
+          </label>
+        </div>
+        <label class="chk"><input type="checkbox" id="chkErase" checked><span>Сначала стереть всю память. Пропадут все программы, в том числе M5 Launcher.</span></label>
+        <details class="more">
+          <summary>Дополнительно</summary>
+          <div class="row">
+            <label class="fld">Скорость
+              <select id="selBaud">
+                <option value="115200">115200 (самая надёжная)</option>
+                <option value="460800">460800</option>
+                <option value="921600" selected>921600</option>
+              </select>
+            </label>
+            <label class="fld">Размер flash в заголовке
+              <select id="selSize">
+                <option value="8MB" selected>8 МБ (Cardputer)</option>
+                <option value="keep">Как в файле</option>
+                <option value="detect">Определить автоматически</option>
+                <option value="16MB">16 МБ</option>
+                <option value="4MB">4 МБ</option>
+              </select>
+            </label>
+          </div>
+        </details>
+      </section>
+
+      <section class="card" aria-labelledby="s4">
+        <h2 id="s4"><span class="num">4</span>Прошивка</h2>
+        <div class="row">
+          <button type="button" class="b primary" id="btnFlash" disabled>Прошить</button>
+          <button type="button" class="b danger" id="btnErase" disabled>Только стереть</button>
+        </div>
+        <div class="bar-wrap" id="bar" aria-hidden="true"><i id="barFill"></i></div>
+        <div class="status" id="status" role="status" aria-live="polite">Ждёт подключения и файла.</div>
+        <div id="doneNote"></div>
+        <pre id="log" aria-label="Журнал" hidden></pre>
+      </section>
+    </div>
+
+    <details class="help">
+      <summary>Как включить режим загрузки Cardputer</summary>
+      <ol>
+        <li>Боковой выключатель питания в положение <b>OFF</b>.</li>
+        <li>Зажмите кнопку <span class="kbd">G0</span> и держите.</li>
+        <li>Не отпуская G0, включите питание. Затем G0 можно отпустить.</li>
+        <li>Подключите USB к компьютеру. Экран остаётся чёрным, это нормально.</li>
+      </ol>
+      <p>Часто режим загрузки не нужен: страница сама перезапускает плату в загрузчик. Если подключение не получается, сделайте так.</p>
+    </details>
+
+    <details class="help">
+      <summary>Что-то не работает</summary>
+      <ul>
+        <li><b>Порт не появляется.</b> Попробуйте другой USB-кабель, не только для зарядки, и другой разъём компьютера.</li>
+        <li><b>Обрывается на записи.</b> В «Дополнительно» выберите скорость 115200.</li>
+        <li><b>После прошивки чёрный экран.</b> Выключите и включите устройство выключателем.</li>
+        <li><b>Порт занят.</b> Закройте M5Burner, Arduino IDE, PlatformIO Monitor и другие вкладки с флешерами.</li>
+        <li><b>Прошивка не стартует после «Только приложение».</b> Этот файл работает только если загрузчик и таблица разделов уже записаны. После полного стирания нужен полный образ по адресу 0x0.</li>
+      </ul>
+    </details>
+        </main>
+
+        <footer>
+            Работает на <a href="https://github.com/espressif/esptool-js" target="_blank" rel="noopener">esptool-js</a> (Apache-2.0), версия 0.7.1.
+        </footer>
+    </div>
+    <script type="module" src="flasher/flasher.js"></script>
+</body>
+</html>
