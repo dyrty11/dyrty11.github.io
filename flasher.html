@@ -101,6 +101,10 @@
                         <button type="button" class="b" id="btnBackup" disabled>Сохранить копию памяти</button>
                         <button type="button" class="b danger" id="btnErase" disabled>Только стереть</button>
                     </div>
+                    <div class="row">
+                        <button type="button" class="b" id="btnBoot" disabled>Сбросить выбор запуска</button>
+                    </div>
+                    <p class="hint">Если после запуска чужой программы из Cardputer Kit плата не возвращается в Kit, подключите её и нажмите «Сбросить выбор запуска». Стирается только запись о запущенной программе (8 КБ по адресу 0xE000), остальное остаётся. Плата снова грузит программу из основного раздела, у Kit это Kit.</p>
                     <div class="bar-wrap" id="bar" aria-hidden="true"><i id="barFill"></i></div>
                     <div class="status" id="status" role="status" aria-live="polite">Ждёт подключения.</div>
                     <div id="doneNote"></div>

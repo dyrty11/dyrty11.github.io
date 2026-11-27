@@ -97,6 +97,7 @@ function refresh() {
   $("btnFlash").disabled = busy || !loader || !files.length || block;
   $("btnErase").disabled = busy || !loader;
   $("btnBackup").disabled = busy || !loader;
+  $("btnBoot").disabled = busy || !loader;
   $("btnConnect").disabled = busy || !!loader;
   $("btnDisconnect").hidden = !loader;
   $("btnDisconnect").disabled = busy;
@@ -241,6 +242,36 @@ $("btnErase").addEventListener("click", async () => {
     log("Ошибка: " + errText(e));
     setStatus("Не удалось стереть память.");
     note($("doneNote"), "bad", "Не удалось стереть: " + esc(errText(e)));
+  }
+  busy = false; refresh();
+});
+
+// ---------- сброс выбора запуска (otadata) ----------
+$("btnBoot").addEventListener("click", async () => {
+  if (!loader || busy) return;
+  if (!confirm("Сбросить выбор запуска? Плата снова начнёт с основной программы (у Cardputer Kit это Kit). Остальное в памяти не тронется. Подходит для плат с таблицей разделов Kit и других плат с обычной схемой ESP-IDF.")) return;
+  busy = true; refresh(); note($("doneNote"), "", "");
+  try {
+    setStatus("Сбрасываю выбор запуска…");
+    setBar(0, true);
+    log("Запись 0xFF в 0xE000…0xFFFF (otadata)");
+    await loader.writeFlash({
+      fileArray: [{ data: new Uint8Array(0x2000).fill(0xff), address: 0xe000 }],
+      flashSize: "keep", flashMode: "keep", flashFreq: "keep",
+      eraseAll: false, compress: true, reportProgress: () => {},
+    });
+    setBar(1, false);
+    log("Готово.");
+    try { await loader.after("hard_reset"); } catch (e) { log("Перезагрузка: " + errText(e)); }
+    await dropConn();
+    setConn("", "Не подключено");
+    setStatus("Готово.");
+    note($("doneNote"), "ok", "<b>Выбор запуска сброшен.</b> Выключите и включите плату: она загрузит основную программу.");
+  } catch (e) {
+    setBar(0, false);
+    log("Ошибка: " + errText(e));
+    setStatus("Не удалось сбросить.");
+    note($("doneNote"), "bad", "Не удалось: " + esc(errText(e)));
   }
   busy = false; refresh();
 });
