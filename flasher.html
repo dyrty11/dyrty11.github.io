@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Прошивальщик ESP32‑S3 и Cardputer: стереть память и прошить .bin из браузера — Portfolio</title>
-    <meta name="description" content="Прошивальщик в браузере для ESP32‑S3 и M5Stack Cardputer: стирает память и прошивает .bin по USB. Файл остаётся на вашем компьютере, на сервер ничего не уходит.">
+    <title>Прошивальщик ESP32: стереть память, прошить .bin, сохранить копию — Portfolio</title>
+    <meta name="description" content="Прошивальщик в браузере для плат ESP32, S2, S3, C3, C6 и M5Stack Cardputer: стирает память, прошивает один или несколько .bin по USB и сохраняет копию flash. Файлы остаются на вашем компьютере.">
     <link rel="canonical" href="https://dyrty11.github.io/flasher.html">
     <meta name="theme-color" content="#121212">
     <meta property="og:site_name" content="Portfolio">
     <meta property="og:locale" content="ru_RU">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Прошивальщик ESP32‑S3 и Cardputer — Portfolio">
-    <meta property="og:description" content="Стереть память и прошить .bin на ESP32‑S3 (M5Stack Cardputer) прямо из браузера. Файл остаётся у вас.">
+    <meta property="og:title" content="Прошивальщик ESP32 — Portfolio">
+    <meta property="og:description" content="Стереть память, прошить .bin и сохранить копию flash на ESP32 прямо из браузера. Файлы остаются у вас.">
     <meta property="og:url" content="https://dyrty11.github.io/flasher.html">
     <meta property="og:image" content="https://dyrty11.github.io/og-image.jpg">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Прошивальщик ESP32‑S3 и Cardputer — Portfolio">
-    <meta name="twitter:description" content="Стереть память и прошить .bin на ESP32‑S3 (M5Stack Cardputer) прямо из браузера.">
+    <meta name="twitter:title" content="Прошивальщик ESP32 — Portfolio">
+    <meta name="twitter:description" content="Стереть память, прошить .bin и сохранить копию flash на ESP32 прямо из браузера.">
     <meta name="twitter:image" content="https://dyrty11.github.io/og-image.jpg">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -32,110 +32,102 @@
     <div class="app" id="root">
         <header class="bar">
             <a class="back" href="index.html">← Назад в портфолио</a>
-            <h1>Прошивальщик <span>ESP32‑S3</span></h1>
-            <p class="lead">Стирает память и прошивает .bin прямо из браузера. Сделан под M5Stack Cardputer. Файл читается у вас на компьютере и на сервер не отправляется.</p>
+            <h1>Прошивальщик <span>ESP32</span></h1>
+            <p class="lead">Стирает память, прошивает один или несколько .bin и сохраняет копию flash прямо из браузера. Работает с ESP32, S2, S3, C3, C6, H2 и платами на них, в том числе с M5Stack Cardputer. Файлы читаются у вас на компьютере и на сервер не отправляются.</p>
             <noscript><p class="lead warn">Для работы нужен включённый JavaScript.</p></noscript>
         </header>
         <main id="main">
             <section class="card unsupported">
-      <h2>Этот браузер не подходит</h2>
-      <p>Для работы с USB-портом нужен <b>Chrome</b> или <b>Edge</b> на компьютере (версия 89 и новее). Firefox и Safari не умеют Web Serial. Страница должна быть открыта по <b>https</b>.</p>
-    </section>
+                <h2>Этот браузер не подходит</h2>
+                <p>Для работы с USB-портом нужен <b>Chrome</b> или <b>Edge</b> на компьютере (версия 89 и новее). Firefox и Safari не умеют Web Serial. Страница должна быть открыта по <b>https</b>.</p>
+            </section>
 
-    <div class="tool">
-      <section class="card" aria-labelledby="s1">
-        <h2 id="s1"><span class="num">1</span>Подключение</h2>
-        <div class="row">
-          <button type="button" class="b primary" id="btnConnect">Подключить устройство</button>
-          <button type="button" class="b" id="btnDisconnect" hidden>Отключить</button>
-          <span class="pill" id="pillConn" role="status"><span class="dot"></span><span id="pillText">Не подключено</span></span>
-        </div>
-        <p class="note" id="connHint">Подключите Cardputer кабелем USB и нажмите кнопку. В списке выберите «USB JTAG/serial debug unit» или порт с похожим названием. Если не подключается, включите режим загрузки (подсказка ниже).</p>
-        <label class="chk first"><input type="checkbox" id="chkAllPorts"><span>Показать все порты (если нужного устройства нет в списке)</span></label>
-      </section>
+            <div class="tool">
+                <section class="card" aria-labelledby="s1">
+                    <h2 id="s1"><span class="num">1</span>Подключение</h2>
+                    <div class="row">
+                        <button type="button" class="b primary" id="btnConnect">Подключить устройство</button>
+                        <button type="button" class="b" id="btnDisconnect" hidden>Отключить</button>
+                        <span class="pill" id="pillConn" role="status"><span class="dot"></span><span id="pillText">Не подключено</span></span>
+                    </div>
+                    <p class="note" id="connHint">Подключите плату кабелем USB и нажмите кнопку, затем выберите порт в списке браузера. Если подключение не получается, включите режим загрузки (подсказка ниже).</p>
+                    <label class="chk first"><input type="checkbox" id="chkEspOnly"><span>Показывать только устройства Espressif (платы с USB JTAG/serial, например S3 и C3). Для плат с переходником CH340 или CP210x галочку не ставьте.</span></label>
+                </section>
 
-      <section class="card" aria-labelledby="s2">
-        <h2 id="s2"><span class="num">2</span>Файл прошивки</h2>
-        <div class="drop" id="drop" tabindex="0" role="button" aria-label="Выбрать файл .bin">
-          <strong>Выберите .bin</strong> или перетащите сюда
-          <input type="file" id="file" accept=".bin,application/octet-stream" hidden>
-        </div>
-        <div class="fileinfo" id="fileinfo">Файл не выбран.</div>
-        <div id="fileNote"></div>
-      </section>
+                <section class="card" aria-labelledby="s2">
+                    <h2 id="s2"><span class="num">2</span>Файлы прошивки</h2>
+                    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Выбрать файлы .bin">
+                        <strong>Выберите .bin</strong> или перетащите сюда. Можно несколько файлов сразу.
+                        <input type="file" id="file" accept=".bin,application/octet-stream" multiple hidden>
+                    </div>
+                    <div class="fileinfo" id="fileinfo">Файлы не выбраны.</div>
+                    <div class="files" id="files"></div>
+                    <datalist id="addrs"><option value="0x0"></option><option value="0x1000"></option><option value="0x2000"></option><option value="0x8000"></option><option value="0xE000"></option><option value="0x10000"></option></datalist>
+                    <div id="fileNote"></div>
+                    <p class="hint">Один полный образ (в нём загрузчик, разделы и программа) прошивается с 0x0. Если файлов несколько, у каждого свой адрес: загрузчик 0x0 (ESP32 и S2: 0x1000), таблица разделов 0x8000, приложение 0x10000. Адрес подставляется сам и правится вручную.</p>
+                </section>
 
-      <section class="card" aria-labelledby="s3">
-        <h2 id="s3"><span class="num">3</span>Параметры</h2>
-        <div class="row">
-          <label class="fld">Что это за файл
-            <select id="selAddr">
-              <option value="0x0">Полный образ (0x0)</option>
-              <option value="0x10000">Только приложение (0x10000)</option>
-              <option value="custom">Другой адрес…</option>
-            </select>
-          </label>
-          <label class="fld" id="customWrap" hidden>Адрес (hex)
-            <input type="text" id="customAddr" value="0x0" inputmode="text" autocomplete="off" spellcheck="false">
-          </label>
-        </div>
-        <label class="chk"><input type="checkbox" id="chkErase" checked><span>Сначала стереть всю память. Пропадут все программы, в том числе M5 Launcher.</span></label>
-        <details class="more">
-          <summary>Дополнительно</summary>
-          <div class="row">
-            <label class="fld">Скорость
-              <select id="selBaud">
-                <option value="115200">115200 (самая надёжная)</option>
-                <option value="460800">460800</option>
-                <option value="921600" selected>921600</option>
-              </select>
-            </label>
-            <label class="fld">Размер flash в заголовке
-              <select id="selSize">
-                <option value="8MB" selected>8 МБ (Cardputer)</option>
-                <option value="keep">Как в файле</option>
-                <option value="detect">Определить автоматически</option>
-                <option value="16MB">16 МБ</option>
-                <option value="4MB">4 МБ</option>
-              </select>
-            </label>
-          </div>
-        </details>
-      </section>
+                <section class="card" aria-labelledby="s3">
+                    <h2 id="s3"><span class="num">3</span>Параметры</h2>
+                    <label class="chk first"><input type="checkbox" id="chkErase"><span>Сначала стереть всю память. Пропадут все программы и данные на плате.</span></label>
+                    <details class="more">
+                        <summary>Дополнительно</summary>
+                        <div class="row">
+                            <label class="fld">Скорость
+                                <select id="selBaud">
+                                    <option value="115200">115200 (самая надёжная)</option>
+                                    <option value="460800">460800</option>
+                                    <option value="921600" selected>921600</option>
+                                </select>
+                            </label>
+                            <label class="fld">Размер flash в заголовке
+                                <select id="selSize">
+                                    <option value="detect" selected>Определить автоматически</option>
+                                    <option value="keep">Как в файле</option>
+                                    <option value="2MB">2 МБ</option>
+                                    <option value="4MB">4 МБ</option>
+                                    <option value="8MB">8 МБ</option>
+                                    <option value="16MB">16 МБ</option>
+                                </select>
+                            </label>
+                        </div>
+                    </details>
+                </section>
 
-      <section class="card" aria-labelledby="s4">
-        <h2 id="s4"><span class="num">4</span>Прошивка</h2>
-        <div class="row">
-          <button type="button" class="b primary" id="btnFlash" disabled>Прошить</button>
-          <button type="button" class="b danger" id="btnErase" disabled>Только стереть</button>
-        </div>
-        <div class="bar-wrap" id="bar" aria-hidden="true"><i id="barFill"></i></div>
-        <div class="status" id="status" role="status" aria-live="polite">Ждёт подключения и файла.</div>
-        <div id="doneNote"></div>
-        <pre id="log" aria-label="Журнал" hidden></pre>
-      </section>
-    </div>
+                <section class="card" aria-labelledby="s4">
+                    <h2 id="s4"><span class="num">4</span>Действия</h2>
+                    <div class="row">
+                        <button type="button" class="b primary" id="btnFlash" disabled>Прошить</button>
+                        <button type="button" class="b" id="btnBackup" disabled>Сохранить копию памяти</button>
+                        <button type="button" class="b danger" id="btnErase" disabled>Только стереть</button>
+                    </div>
+                    <div class="bar-wrap" id="bar" aria-hidden="true"><i id="barFill"></i></div>
+                    <div class="status" id="status" role="status" aria-live="polite">Ждёт подключения.</div>
+                    <div id="doneNote"></div>
+                    <pre id="log" aria-label="Журнал" hidden></pre>
+                </section>
+            </div>
 
-    <details class="help">
-      <summary>Как включить режим загрузки Cardputer</summary>
-      <ol>
-        <li>Боковой выключатель питания в положение <b>OFF</b>.</li>
-        <li>Зажмите кнопку <span class="kbd">G0</span> и держите.</li>
-        <li>Не отпуская G0, включите питание. Затем G0 можно отпустить.</li>
-        <li>Подключите USB к компьютеру. Экран остаётся чёрным, это нормально.</li>
-      </ol>
-      <p>Часто режим загрузки не нужен: страница сама перезапускает плату в загрузчик. Если подключение не получается, сделайте так.</p>
-    </details>
+            <details class="help">
+                <summary>Как включить режим загрузки</summary>
+                <p>Часто он не нужен: страница сама перезапускает плату в загрузчик. Если подключение не получается, сделайте так.</p>
+                <ul>
+                    <li><b>Большинство плат:</b> зажмите кнопку <span class="kbd">BOOT</span> (на некоторых <span class="kbd">IO0</span>), коротко нажмите <span class="kbd">EN</span> или <span class="kbd">RST</span>, отпустите BOOT.</li>
+                    <li><b>M5Stack Cardputer:</b> боковой выключатель в положение OFF, зажмите <span class="kbd">G0</span>, включите питание, отпустите G0, подключите USB. Экран остаётся чёрным.</li>
+                    <li><b>Платы с USB-переходником:</b> один раз поставьте драйвер CH340 или CP210x, если Windows не показывает порт.</li>
+                </ul>
+            </details>
 
-    <details class="help">
-      <summary>Что-то не работает</summary>
-      <ul>
-        <li><b>Порт не появляется.</b> Попробуйте другой USB-кабель, не только для зарядки, и другой разъём компьютера.</li>
-        <li><b>Обрывается на записи.</b> В «Дополнительно» выберите скорость 115200.</li>
-        <li><b>После прошивки чёрный экран.</b> Выключите и включите устройство выключателем.</li>
-        <li><b>Порт занят.</b> Закройте M5Burner, Arduino IDE, PlatformIO Monitor и другие вкладки с флешерами.</li>
-        <li><b>Прошивка не стартует после «Только приложение».</b> Этот файл работает только если загрузчик и таблица разделов уже записаны. После полного стирания нужен полный образ по адресу 0x0.</li>
-      </ul>
-    </details>
+            <details class="help">
+                <summary>Что-то не работает</summary>
+                <ul>
+                    <li><b>Порт не появляется.</b> Попробуйте другой USB-кабель, не только для зарядки, и другой разъём. Снимите галочку «Только Espressif».</li>
+                    <li><b>Обрывается на записи.</b> В «Дополнительно» выберите скорость 115200.</li>
+                    <li><b>Порт занят.</b> Закройте M5Burner, Arduino IDE, PlatformIO Monitor, другие вкладки с прошивальщиками.</li>
+                    <li><b>После прошивки чёрный экран или тишина.</b> Выключите и включите плату. Если не помогло, перепроверьте адреса: полный образ идёт с 0x0, только приложение без загрузчика не запустится.</li>
+                    <li><b>Копия памяти.</b> Это весь flash от нуля. Её можно вернуть обратно как один файл по адресу 0x0. В копии лежат и сохранённые пароли Wi‑Fi, не публикуйте её.</li>
+                </ul>
+            </details>
         </main>
 
         <footer>
